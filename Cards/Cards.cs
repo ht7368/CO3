@@ -35,9 +35,9 @@ namespace Cards
             Health = health;
         }
 
-        public void Play(GameState state)
+        public override void Play(GameState state)
         {
-            state.ActivePlayer().Board.Add(this);
+            state.CurrentPlayer().Board.Add(this);
         }
     }
 
@@ -48,7 +48,7 @@ namespace Cards
             // Nothing here for now
         }
 
-        public void Play(GameState state)
+        public override void Play(GameState state)
         {
             state.CurrentPower = this;
         }
@@ -65,7 +65,7 @@ namespace Cards
             // Nothing here for now
         }
 
-        public void Play(GameState state)
+        public override void Play(GameState state)
         {
             this.Effect(state, this);
         }

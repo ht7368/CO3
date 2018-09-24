@@ -47,6 +47,12 @@
   <ItemGroup>
     <Compile Include="CardData.cs" />
     <Compile Include="Cards.cs" />
+    <Compile Include="GameUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameUI.Designer.cs">
+      <DependentUpon>GameUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -54,6 +60,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network.cs" />
     <Compile Include="Players.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

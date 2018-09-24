@@ -17,11 +17,15 @@ namespace Cards
         public List<Card> Deck;
         public List<Card> Hand;
         public List<MinionCard> Board;
+
+        private static Network Net = new Network();
+
+        public abstract void TakeTurn();
     }
 
     class LocalPlayer : BasePlayer
     {
-
+        
     }
 
     class NetworkPlayer : BasePlayer
