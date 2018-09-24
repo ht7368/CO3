@@ -20,6 +20,11 @@ namespace Cards
                 }
             },
 
+            new PowerCard(name: "Clear Weather", manaCost: 2, description:
+                "No effect. Can overwrite other powers.") 
+            {
+                Effects = new Dictionary<Effect, Action<GameState, PowerCard>>()
+            }    
         };
     }
 }
