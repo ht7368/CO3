@@ -26,5 +26,13 @@ namespace Cards
         public BasePlayer PlayerOne;
         public BasePlayer PlayerTwo;
         public PowerCard CurrentPower;
+        private bool IsP1Turn; // Is it player one's turn?
+
+        public BasePlayer CurrentPlayer() {
+            if (IsP1Turn)
+                return PlayerOne;
+            else
+                return PlayerTwo;
+        }                                
     }
 }

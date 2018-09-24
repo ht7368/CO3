@@ -37,7 +37,7 @@ namespace Cards
 
         public void Play(GameState state)
         {
-            // state.ActivePlayer().Board.Add(this);
+            state.ActivePlayer().Board.Add(this);
         }
     }
 
