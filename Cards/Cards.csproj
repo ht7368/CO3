@@ -53,7 +53,7 @@
     <Compile Include="GameUI.Designer.cs">
       <DependentUpon>GameUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Main.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

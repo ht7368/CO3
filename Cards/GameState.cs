@@ -21,6 +21,7 @@ namespace Cards
 
     // Contains the entirety of the game's logical state.
     // This will be passed about to rendering and logic code to modify the state.
+    // Notably, the rendering code will only see this, rendering elements seperate from logic.
     class GameState
     {
         public BasePlayer PlayerOne;
@@ -35,6 +36,19 @@ namespace Cards
             else
                 return PlayerTwo;
         }
-        
+    }
+
+    static class IdGenerator
+    {
+        // Has to start at 1, 0 is used to represent no target.
+        private static uint CurrMaxId = 1;
+        public static uint NextId()
+        {
+            if (CurrMaxId == uint.MaxValue)
+                throw new OverflowException();
+            CurrMaxId += 1;
+            return CurrMaxId - 1;
+        }
+
     }
 }

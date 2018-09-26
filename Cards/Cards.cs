@@ -11,9 +11,11 @@ namespace Cards
         public int ManaCost { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
+        public readonly uint Id;
 
         public Card(string name, int manaCost, string description)
         {
+            Id = IdGenerator.NextId();
             ManaCost = manaCost;
             Name = name;
             Description = description;
