@@ -71,14 +71,16 @@ namespace Cards
         // Construct with no targeted card
         public Move(uint selected)
         {
-            if (selected == 0)
-                throw new ArgumentException();
-            Selected = selected;
-            Targeted = 0;
+            this._Move(selected, targeted: 0);
         }
 
         // Constructed with a target card
         public Move(uint selected, uint targeted)
+        {
+            this._Move(selected, targeted);
+        }
+
+        private void _Move(uint selected, uint targeted)
         {
             if (selected == 0)
                 throw new ArgumentException();

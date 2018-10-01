@@ -8,7 +8,7 @@ namespace Cards
 {
     class Cards
     {
-        public static List<Card> CardDB = new List<Card>
+        public static List<BaseCard> CardDB = new List<BaseCard>
         {
             // Testing Dummy
             new MinionCard(name: "Testing Dummy", manaCost: 1, attack: 0, health: 1, description:

@@ -13,22 +13,28 @@ namespace Cards
         public int MaxMana;
         public int Mana;
         public int Health;
-        public List<Card> Deck;
-        public List<Card> Hand;
+        public List<BaseCard> Deck;
+        public List<BaseCard> Hand;
         public List<MinionCard> Board;
 
-        private static Network Net = new Network();
+        protected static Network Net = new Network();
 
-        public abstract void TakeTurn();
+        public abstract IEnumerator<Move> TakeTurn();
     }
 
     class LocalPlayer : BasePlayer
     {
-        
+        public override IEnumerator<Move> TakeTurn()
+        {
+            yield break;
+        }
     }
 
     class NetworkPlayer : BasePlayer
     {
-
+        public override IEnumerator<Move> TakeTurn()
+        {
+            yield break;
+        }
     }
 }

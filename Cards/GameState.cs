@@ -36,19 +36,56 @@ namespace Cards
             else
                 return PlayerTwo;
         }
-    }
 
+        public void ProcessMove(Move nextMove)
+        {
+            BaseCard Selected = IdGenerator.GetCardById(nextMove.Selected);
+            BaseCard Targeted = IdGenerator.GetCardById(nextMove.Targeted);
+            // Only the current player can play cards - this invariant means this works.
+            CurrentPlayer().Hand.Remove(Selected);
+
+            // Match on the type of card - every one has a different effect.
+            // These are all the classes that inherit from BaseCard, so no default needed.
+            switch (Selected)
+            {
+                case MinionCard card:
+                    CurrentPlayer().Board.Add(card);
+                    break;
+                case SpellCard card:
+                    card.Effect(this, card);
+                    break;
+                case PowerCard card:
+                    CurrentPower = card;
+                    break;
+            }
+        }
+    }
+    // This class has to be static - if there was multiple instances of it,
+    // The IDs couldn't be synchronised, and there may exist duplicates.
+    // It wouldn't make sense to have multiple ID generators, anyway.
+    // Furthermore, this makes it accessible everywhere - pretty handy.
     static class IdGenerator
     {
+        private static List<BaseCard> AllCards = new List<BaseCard>();
         // Has to start at 1, 0 is used to represent no target.
         private static uint CurrMaxId = 1;
-        public static uint NextId()
+        public static uint NextId(BaseCard newCard)
         {
             if (CurrMaxId == uint.MaxValue)
                 throw new OverflowException();
+            AllCards.Add(newCard);
             CurrMaxId += 1;
             return CurrMaxId - 1;
         }
 
-    }
+        public static BaseCard GetCardById(uint id)
+        {
+            if (id == 0)
+                return null;
+            foreach (BaseCard c in AllCards)
+                if (c.Id == id)
+                    return c;
+            return null;
+        }
+    }   
 }

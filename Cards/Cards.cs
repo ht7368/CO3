@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Cards
 {
-    abstract class Card
+    abstract class BaseCard
     {
         public int ManaCost { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
         public readonly uint Id;
 
-        public Card(string name, int manaCost, string description)
+        public BaseCard(string name, int manaCost, string description)
         {
-            Id = IdGenerator.NextId();
+            Id = IdGenerator.NextId(this);
             ManaCost = manaCost;
             Name = name;
             Description = description;
@@ -24,7 +24,7 @@ namespace Cards
         public abstract void Play(GameState state);
     }
 
-    class MinionCard : Card
+    class MinionCard : BaseCard
     {
         public Dictionary<Effect, Action<GameState, MinionCard>> Effects = new Dictionary<Effect, Action<GameState, MinionCard>>();
         // Health and attack values need to be modifyable
@@ -43,7 +43,7 @@ namespace Cards
         }
     }
 
-    class PowerCard : Card
+    class PowerCard : BaseCard
     {
         public PowerCard(string name, int manaCost, string description) : base(name, manaCost, description)
         {
@@ -58,7 +58,7 @@ namespace Cards
         public Dictionary<Effect, Action<GameState, PowerCard>> Effects = new Dictionary<Effect, Action<GameState, PowerCard>>();
     }
 
-    class SpellCard : Card
+    class SpellCard : BaseCard
     {
         public Action<GameState, SpellCard> Effect;
 
@@ -75,7 +75,7 @@ namespace Cards
 
     class Deck
     {
-        private List<Card> Cards;
+        private List<BaseCard> Cards;
 
     }
 }
