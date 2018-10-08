@@ -20,13 +20,13 @@ namespace Cards
             Name = name;
             Description = description;
         }
-
-        public abstract void Play(GameState state);
     }
+
+    // Revisit Play() at some time?
 
     class MinionCard : BaseCard
     {
-        public Dictionary<Effect, Action<GameState, MinionCard>> Effects = new Dictionary<Effect, Action<GameState, MinionCard>>();
+        public EffectData<MinionCard> Effects = new EffectData<MinionCard>();
         // Health and attack values need to be modifyable
         public int Attack;
         public int Health;
@@ -37,45 +37,39 @@ namespace Cards
             Health = health;
         }
 
-        public override void Play(GameState state)
+        public void Play(Play<MinionCard> p)
         {
-            state.CurrentPlayer().Board.Add(this);
+            p.State.CurrentPlayer().Board.Add(this);
         }
     }
 
     class PowerCard : BaseCard
     {
+        public EffectData<PowerCard> Effect = new EffectData<PowerCard>();
+
         public PowerCard(string name, int manaCost, string description) : base(name, manaCost, description)
         {
             // Nothing here for now
         }
 
-        public override void Play(GameState state)
+        public void Play(Play<PowerCard> p)
         {
-            state.CurrentPower = this;
+            p.State.CurrentPower = this;
         }
-
-        public Dictionary<Effect, Action<GameState, PowerCard>> Effects = new Dictionary<Effect, Action<GameState, PowerCard>>();
     }
 
     class SpellCard : BaseCard
     {
-        public Action<GameState, SpellCard> Effect;
+        public Action<Play<SpellCard>> Effect;
 
         public SpellCard(string name, int manaCost, string description) : base(name, manaCost, description)
         {
             // Nothing here for now
         }
 
-        public override void Play(GameState state)
+        public void Play(Play<SpellCard> p)
         {
-            this.Effect(state, this);
+            Effect(p);
         }
-    }
-
-    class Deck
-    {
-        private List<BaseCard> Cards;
-
     }
 }

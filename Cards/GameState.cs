@@ -39,8 +39,8 @@ namespace Cards
 
         public void ProcessMove(Move nextMove)
         {
-            BaseCard Selected = IdGenerator.GetCardById(nextMove.Selected);
-            BaseCard Targeted = IdGenerator.GetCardById(nextMove.Targeted);
+            BaseCard Selected = IdGenerator.GetById(nextMove.Selected);
+            BaseCard Targeted = IdGenerator.GetById(nextMove.Targeted);
             // Only the current player can play cards - this invariant means this works.
             CurrentPlayer().Hand.Remove(Selected);
 
@@ -49,13 +49,13 @@ namespace Cards
             switch (Selected)
             {
                 case MinionCard card:
-                    CurrentPlayer().Board.Add(card);
+                    card.Play(new Play<MinionCard>(this, card, nextMove));
                     break;
                 case SpellCard card:
-                    card.Effect(this, card);
+                    card.Play(new Play<SpellCard>(this, card, nextMove));
                     break;
                 case PowerCard card:
-                    CurrentPower = card;
+                    card.Play(new Play<PowerCard>(this, card, nextMove));
                     break;
             }
         }
@@ -78,7 +78,7 @@ namespace Cards
             return CurrMaxId - 1;
         }
 
-        public static BaseCard GetCardById(uint id)
+        public static BaseCard GetById(uint id)
         {
             if (id == 0)
                 return null;
