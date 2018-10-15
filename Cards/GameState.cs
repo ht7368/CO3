@@ -9,7 +9,7 @@ namespace Cards
     // Various effects will need to trigger at various points in the game: For example at the start of a turn.
     // How this will be achieved is by keeping a Dictionary<Effect, Action<GameState>> which maps each event to an effect.
     // This effect takes the form of an Action<GameState>, that is, a procedure taking GameState and modifying it.
-    enum Effect
+    public enum Effect
     {
         GameStart,
         TurnStart,
@@ -22,7 +22,7 @@ namespace Cards
     // Contains the entirety of the game's logical state.
     // This will be passed about to rendering and logic code to modify the state.
     // Notably, the rendering code will only see this, rendering elements seperate from logic.
-    class GameState
+    public class GameState
     {
         public BasePlayer PlayerOne;
         public BasePlayer PlayerTwo;
@@ -64,7 +64,7 @@ namespace Cards
     // The IDs couldn't be synchronised, and there may exist duplicates.
     // It wouldn't make sense to have multiple ID generators, anyway.
     // Furthermore, this makes it accessible everywhere - pretty handy.
-    static class IdGenerator
+    public static class IdGenerator
     {
         private static List<BaseCard> AllCards = new List<BaseCard>();
         // Has to start at 1, 0 is used to represent no target.

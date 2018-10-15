@@ -8,7 +8,7 @@ using System.Net.Sockets;
 
 namespace Cards
 {
-    class Network
+    public class Network
     {
         public const int Port = 1420; // Arbitrarily chosen, will change again if a problem arises.
 
@@ -91,7 +91,7 @@ namespace Cards
 
     // If a move is a vague set of 2 ids that can be sent over the network, a play is...
     // A more specified move that includes the specific type of card and an instance of them.
-    class Play<T> : Move where T: BaseCard
+    public class Play<T> : Move where T: BaseCard
     {
         public GameState State;
         public T CardPlayed;
@@ -110,9 +110,11 @@ namespace Cards
             State = currState;
             CardPlayed = cardMoved;
         }
+
+
     }
 
-    class EffectData<T> : Dictionary<Effect, Action<Play<T>>> where T: BaseCard
+    public class EffectData<T> : Dictionary<Effect, Action<Play<T>>> where T: BaseCard
     {
         // Leaving this blank, it just acts as a more specific dictionary with a shorter name,
         // whilst giving us the option to add specific functionality later.

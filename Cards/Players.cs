@@ -8,7 +8,7 @@ namespace Cards
 {
     // A player could be either local or over the network; this will cover both cases.
     // In the network case, functions to get some information will end up sending network requests.
-    abstract class BasePlayer
+    public abstract class BasePlayer
     {
         public int MaxMana;
         public int Mana;
@@ -22,7 +22,7 @@ namespace Cards
         public abstract IEnumerator<Move> TakeTurn();
     }
 
-    class LocalPlayer : BasePlayer
+    public class LocalPlayer : BasePlayer
     {
         public override IEnumerator<Move> TakeTurn()
         {
@@ -30,7 +30,7 @@ namespace Cards
         }
     }
 
-    class NetworkPlayer : BasePlayer
+    public class NetworkPlayer : BasePlayer
     {
         public override IEnumerator<Move> TakeTurn()
         {

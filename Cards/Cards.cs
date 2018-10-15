@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cards
 {
-    abstract class BaseCard
+    public abstract class BaseCard
     {
         public int ManaCost { get; private set; }
         public string Name { get; private set; }
@@ -24,7 +24,7 @@ namespace Cards
 
     // Revisit Play() at some time?
 
-    class MinionCard : BaseCard
+    public class MinionCard : BaseCard
     {
         public EffectData<MinionCard> Effects = new EffectData<MinionCard>();
         // Health and attack values need to be modifyable
@@ -43,7 +43,7 @@ namespace Cards
         }
     }
 
-    class PowerCard : BaseCard
+    public class PowerCard : BaseCard
     {
         public EffectData<PowerCard> Effect = new EffectData<PowerCard>();
 
@@ -58,7 +58,7 @@ namespace Cards
         }
     }
 
-    class SpellCard : BaseCard
+    public class SpellCard : BaseCard
     {
         public Action<Play<SpellCard>> Effect;
 
