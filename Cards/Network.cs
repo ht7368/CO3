@@ -104,11 +104,11 @@ namespace Cards
 
         }
 
-        public Play(GameState currState, T cardMoved, Move basis) : base(basis.Selected, basis.Targeted)
+        public Play(GameState currState, Move basis, T cardUsed) : base(basis.Selected, basis.Targeted)
         {
             Base = basis;
             State = currState;
-            CardPlayed = cardMoved;
+            CardPlayed = cardUsed;
         }
 
 
