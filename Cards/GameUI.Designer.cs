@@ -36,7 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "GameUI";
-            this.Text = "Form2";
+            this.Text = "Cards ";
             this.Load += new System.EventHandler(this.GameUI_Load);
             this.ResumeLayout(false);
 

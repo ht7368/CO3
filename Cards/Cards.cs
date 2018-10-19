@@ -20,9 +20,9 @@ namespace Cards
             Name = name;
             Description = description;
         }
-    }
 
-    // Revisit Play() at some time?
+        public abstract void Play(GameState currState, Move movePlayed);
+    }
 
     public class MinionCard : BaseCard
     {
@@ -37,9 +37,9 @@ namespace Cards
             Health = health;
         }
 
-        public void Play(Play<MinionCard> p)
+        public override void Play(GameState currState, Move movePlayed)
         {
-            p.State.CurrentPlayer().Board.Add(this);
+            
         }
     }
 
@@ -52,9 +52,9 @@ namespace Cards
             // Nothing here for now
         }
 
-        public void Play(Play<PowerCard> p)
+        public override void Play(GameState currState, Move movePlayed)
         {
-            p.State.CurrentPower = this;
+            currState.CurrentPower = this;
         }
     }
 
@@ -67,9 +67,9 @@ namespace Cards
             // Nothing here for now
         }
 
-        public void Play(Play<SpellCard> p)
+        public override void Play(GameState currState, Move movePlayed)
         {
-            Effect(p);
+            this.Effect(new Play<SpellCard>(currState, movePlayed, this));
         }
     }
 }

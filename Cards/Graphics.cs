@@ -15,10 +15,10 @@ namespace Cards
         private Label CardName;
         private TextBox CardInfo;
 
-        public CardBox(BaseCard card)
+        public CardBox(BaseCard card) : base()
         {
             BackColor = Color.Transparent;
-            Size = new Size(50, 100);
+            Size = new Size(100, 200);
             FlatStyle = FlatStyle.Flat;
 
             CardBase = new PictureBox()
@@ -31,16 +31,16 @@ namespace Cards
             };
             CardArt = new PictureBox()
             {
-                Size = new Size(40, 40),
+                Size = new Size(90, 90),
                 Location = new Point(5, 5),
-                // Image = ...,
+                Image = Properties.Resources.ArtPlaceholder,
                 BackColor = Color.Transparent,
             };
             CardName = new Label()
             {
                 Text = card.Name,
-                Location = new Point(5, 50),
-                Size = new Size(40, 5),
+                Location = new Point(5, 100),
+                Size = new Size(90, 25),
                 TextAlign = ContentAlignment.MiddleCenter,
                 BackColor = Color.Transparent,
             };
@@ -48,15 +48,15 @@ namespace Cards
             {
                 TextAlign = HorizontalAlignment.Center,
                 Multiline = true,
-                Location = new Point(5, 60),
-                Size = new Size(40, 40),
+                Location = new Point(5, 130),
+                Size = new Size(90, 65),
                 Lines = new string[] { card.Description },
             };
 
-            Controls.Add(CardBase);
             Controls.Add(CardArt);
-            Controls.Add(CardName);
             Controls.Add(CardInfo);
+            Controls.Add(CardName);
+            Controls.Add(CardBase);
 
             foreach (Control c in Controls)
                 c.Click += (_s, _e) =>

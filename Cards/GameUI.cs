@@ -12,27 +12,33 @@ namespace Cards
 {
     public partial class GameUI : Form
     {
-        const int CARD_WIDTH = 50;
-        const int CARD_HEIGHT = 100;
-        private List<CardBox> VisibleCards = new List<CardBox>();
+        const int CARD_WIDTH = 100;
+        const int CARD_HEIGHT = 200;
+        const int CARD_SPACING = 5;
+
+        GameState Game;
 
         public GameUI()
         {
             InitializeComponent();
         }
 
-        public void Update(GameState state)
+        public void RenderState(GameState state)
         {
-            VisibleCards.Clear();
-            foreach (var c in state.PlayerTwo.Hand)
+            Controls.Clear();
+            for (int i = 0; i < state.PlayerTwo.Hand.Count; i++)
             {
-                VisibleCards.Add(new CardBox(c));
+                Controls.Add(new CardBox(state.PlayerTwo.Hand[i]));
+                Controls[Controls.Count - 1].Location = new Point(CARD_SPACING + i * CARD_WIDTH, CARD_SPACING);
             }
         }
 
         private void GameUI_Load(object sender, EventArgs e)
         {
-            Update();
+            Game = new GameState();
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]);
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);
+            RenderState(Game);
         }
     }
 }

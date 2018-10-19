@@ -27,7 +27,13 @@ namespace Cards
         public BasePlayer PlayerOne;
         public BasePlayer PlayerTwo;
         public PowerCard CurrentPower;
-        private bool IsP1Turn; // Is it player one's turn?
+        private bool IsP1Turn = true; // Is it player one's turn?
+
+        public GameState()
+        {
+            PlayerOne = new LocalPlayer();
+            PlayerTwo = new NetworkPlayer();
+        }
 
         public BasePlayer CurrentPlayer()
         {
@@ -44,20 +50,7 @@ namespace Cards
             // Only the current player can play cards - this invariant means this works.
             CurrentPlayer().Hand.Remove(Selected);
 
-            // Match on the type of card - every one has a different effect.
-            // These are all the classes that inherit from BaseCard, so no default needed.
-            switch (Selected)
-            {
-                case MinionCard card:
-                    card.Play(new Play<MinionCard>(this, card, nextMove));
-                    break;
-                case SpellCard card:
-                    card.Play(new Play<SpellCard>(this, card, nextMove));
-                    break;
-                case PowerCard card:
-                    card.Play(new Play<PowerCard>(this, card, nextMove));
-                    break;
-            }
+            Selected.Play(this, nextMove);
         }
     }
     // This class has to be static - if there was multiple instances of it,
@@ -66,9 +59,11 @@ namespace Cards
     // Furthermore, this makes it accessible everywhere - pretty handy.
     public static class IdGenerator
     {
+        // This is a list of all cards registered with an ID to the game.
         private static List<BaseCard> AllCards = new List<BaseCard>();
-        // Has to start at 1, 0 is used to represent no target.
+        // Has to start at 1, 0 is used to represent no target (null value).
         private static uint CurrMaxId = 1;
+        // Gives a card am ID and adds it to the list of registered cards.
         public static uint NextId(BaseCard newCard)
         {
             if (CurrMaxId == uint.MaxValue)
@@ -77,7 +72,8 @@ namespace Cards
             CurrMaxId += 1;
             return CurrMaxId - 1;
         }
-
+        
+        // Fetches a card from the global list of cards by ID
         public static BaseCard GetById(uint id)
         {
             if (id == 0)

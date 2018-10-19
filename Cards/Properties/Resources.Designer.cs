@@ -63,6 +63,16 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ArtPlaceholder {
+            get {
+                object obj = ResourceManager.GetObject("ArtPlaceholder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CardbackPlaceholder {
             get {
                 object obj = ResourceManager.GetObject("CardbackPlaceholder", resourceCulture);
