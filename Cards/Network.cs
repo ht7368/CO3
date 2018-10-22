@@ -68,6 +68,8 @@ namespace Cards
         public uint Selected;
         public uint Targeted;
 
+        // Constructors...
+
         // Construct with no targeted card
         public Move(uint selected)
         {

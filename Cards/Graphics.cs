@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Cards
 {
-    public class CardBox : GroupBox
+    public class CardBox : System.Windows.Forms.GroupBox
     {
         private PictureBox CardBase;
         private PictureBox CardArt;
