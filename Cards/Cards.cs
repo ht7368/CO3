@@ -60,7 +60,7 @@ namespace Cards
 
     public class SpellCard : BaseCard
     {
-        public Action<Play<SpellCard>> Effect;
+        public Action<GameState, Move> Effect;
 
         public SpellCard(string name, int manaCost, string description) : base(name, manaCost, description)
         {
@@ -69,7 +69,7 @@ namespace Cards
 
         public override void Play(GameState currState, Move movePlayed)
         {
-            this.Effect(new Play<SpellCard>(currState, movePlayed, this));
+            this.Effect(currState, movePlayed);
         }
     }
 }

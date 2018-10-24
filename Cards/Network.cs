@@ -91,32 +91,7 @@ namespace Cards
         }
     }
 
-    // If a move is a vague set of 2 ids that can be sent over the network, a play is...
-    // A more specified move that includes the specific type of card and an instance of them.
-    public class Play<T> : Move where T: BaseCard
-    {
-        public GameState State;
-        public T CardPlayed;
-        private Move Base;
-
-        public Play(GameState currState, Move basis) : base(basis.Selected, basis.Targeted)
-        {
-            CardPlayed = (T)IdGenerator.GetById(basis.Selected);
-
-
-        }
-
-        public Play(GameState currState, Move basis, T cardUsed) : base(basis.Selected, basis.Targeted)
-        {
-            Base = basis;
-            State = currState;
-            CardPlayed = cardUsed;
-        }
-
-
-    }
-
-    public class EffectData<T> : Dictionary<Effect, Action<Play<T>>> where T: BaseCard
+    public class EffectData<T> //: Dictionary<Effect, Action<GameState, Move> where T: BaseCard
     {
         // Leaving this blank, it just acts as a more specific dictionary with a shorter name,
         // whilst giving us the option to add specific functionality later.
