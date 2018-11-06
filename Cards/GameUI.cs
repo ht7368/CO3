@@ -17,6 +17,7 @@ namespace Cards
         const int CARD_SPACING = 5;
 
         GameState Game;
+        CardGroupBox EnemyHand;
 
         public GameUI()
         {
@@ -25,20 +26,27 @@ namespace Cards
 
         public void RenderState(GameState state)
         {
-            Controls.Clear();
+            CardBox[] Cards = new CardBox[state.PlayerTwo.Hand.Count];
             for (int i = 0; i < state.PlayerTwo.Hand.Count; i++)
-            {
-                Controls.Add(new CardBox(state.PlayerTwo.Hand[i]));
-                Controls[Controls.Count - 1].Location = new Point(CARD_SPACING + i * CARD_WIDTH, CARD_SPACING);
-            }
+                Cards[i] = new CardBox(state.PlayerTwo.Hand[i]);
+
+            EnemyHand.Update(Cards);
         }
 
         private void GameUI_Load(object sender, EventArgs e)
         {
+            EnemyHand = new CardGroupBox();
+            EnemyHand.Location = new Point(50, 50);
+            EnemyHand.Width = 1000;
+            Controls.Add(EnemyHand);
+
             Game = new GameState();
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0]);
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);
             RenderState(Game);
+
+            FormBorderStyle = FormBorderStyle.None;
+            WindowState = FormWindowState.Maximized;
         }
     }
 }

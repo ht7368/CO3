@@ -8,8 +8,12 @@ using System.Windows.Forms;
 
 namespace Cards
 {
-    public class CardBox : System.Windows.Forms.GroupBox
+    public class CardBox : GroupBox
     {
+        public const int CARD_WIDTH = 100;
+        public const int CARD_HEIGHT = 200;
+        public const int CARD_SPACING = 5; 
+
         private PictureBox CardBase;
         private PictureBox CardArt;
         private Label CardName;
@@ -71,6 +75,47 @@ namespace Cards
                 CardBase.BackColor = Color.Red;
             else
                 CardBase.BackColor = Color.Transparent;
+        }
+    }
+
+    public class CardGroupBox : GroupBox
+    {
+        private CardBox[] Cards;
+
+        public CardGroupBox()
+        {
+            Cards = new CardBox[0];
+        }
+
+        public CardGroupBox(CardBox[] cards)
+        {
+            Update(cards);
+        }
+
+        public void Update(CardBox[] cards)
+        {
+            this.Height = 2 * CardBox.CARD_SPACING + CardBox.CARD_HEIGHT;
+
+            Cards = cards;
+
+            this.Controls.Clear();
+            // Can be refactored, mathematically
+            int FirstX;
+            if (cards.Length % 2 == 0)
+                // x = mid – (n / 2) * (g + w) + 0.5 * g
+                FirstX = (this.Width / 2) - (cards.Length / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) + (CardBox.CARD_SPACING / 2);
+            else
+                // mid – 0.5 * w – (floor(n / 2) * (g + w)  
+                FirstX = (this.Width / 2) - (cards.Length / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) - (CardBox.CARD_SPACING / 2);
+
+            int NextX = FirstX;
+            foreach (CardBox c in Cards)
+            {
+                c.Left = NextX;
+                c.Top = CardBox.CARD_SPACING;
+                NextX += (CardBox.CARD_WIDTH + CardBox.CARD_SPACING);
+                Controls.Add(c);
+            }
         }
     }
 }
