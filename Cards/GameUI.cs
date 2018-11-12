@@ -24,6 +24,7 @@ namespace Cards
             InitializeComponent();
         }
 
+        // Will update the visuals with the current board state.
         public void RenderState(GameState state)
         {
             CardBox[] Cards = new CardBox[state.PlayerTwo.Hand.Count];
@@ -33,15 +34,18 @@ namespace Cards
             EnemyHand.Update(Cards);
         }
 
+        // Initialise the UI by setting out ALL of the objec
         private void GameUI_Load(object sender, EventArgs e)
         {
             EnemyHand = new CardGroupBox();
-            EnemyHand.Location = new Point(50, 50);
-            EnemyHand.Width = 1000;
+            EnemyHand.Location = new Point(0, 0);
+            EnemyHand.Width = 1920;
             Controls.Add(EnemyHand);
 
             Game = new GameState();
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0]);
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);
             RenderState(Game);
 

@@ -16,7 +16,8 @@ namespace Cards
         TurnEnd,
         CardPlayed,
         MinionKilled,
-        MinionAttacking, // About to attack
+        // About to attack
+        MinionAttacking, 
     }
 
     // Contains the entirety of the game's logical state.
@@ -27,6 +28,7 @@ namespace Cards
         public BasePlayer PlayerOne;
         public BasePlayer PlayerTwo;
         public PowerCard CurrentPower;
+        public Move LastMove;
         private bool IsP1Turn = true; // Is it player one's turn?
 
         public GameState()
@@ -35,7 +37,7 @@ namespace Cards
             PlayerTwo = new NetworkPlayer();
         }
 
-        public BasePlayer CurrentPlayer()
+        public BasePlayer ActivePlayer()
         {
             if (IsP1Turn)
                 return PlayerOne;
@@ -43,14 +45,35 @@ namespace Cards
                 return PlayerTwo;
         }
 
+        public BasePlayer InactivePlayer()
+        {
+            if (!IsP1Turn)
+                return PlayerOne;
+            else
+                return PlayerTwo;
+        }
+
+        public void BroadcastEffect(Effect effect)
+        {
+            if (CurrentPower.Effects.ContainsKey(effect))
+                CurrentPower.Effects[effect](this);
+            foreach (MinionCard c in ActivePlayer().Board)
+                if (c.Effects.ContainsKey(effect))
+                    c.Effects[effect](this);
+            foreach (MinionCard c in ActivePlayer().Board)
+                if (c.Effects.ContainsKey(effect))
+                    c.Effects[effect](this);
+        }
+
+        // Process a move generated either over network or locally and resolve it's events
         public void ProcessMove(Move nextMove)
         {
             BaseCard Selected = IdGenerator.GetById(nextMove.Selected);
             BaseCard Targeted = IdGenerator.GetById(nextMove.Targeted);
             // Only the current player can play cards - this invariant means this works.
-            CurrentPlayer().Hand.Remove(Selected);
-
-            Selected.Play(this, nextMove);
+            this.LastMove = nextMove;
+            ActivePlayer().Hand.Remove(Selected);
+            Selected.Play(this);
         }
     }
     // This class has to be static - if there was multiple instances of it,

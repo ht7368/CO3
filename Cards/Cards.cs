@@ -21,7 +21,8 @@ namespace Cards
             Description = description;
         }
 
-        public abstract void Play(GameState currState, Move movePlayed);
+        // Differs based on class
+        public abstract void Play(GameState currState);
     }
 
     public class MinionCard : BaseCard
@@ -37,22 +38,29 @@ namespace Cards
             Health = health;
         }
 
-        public override void Play(GameState currState, Move movePlayed)
+        // This method is called from the gamestate and passes in itself
+        public override void Play(GameState currState)
         {
-            
+            if (!currState.ActivePlayer().Board.Contains(this))
+            {
+                currState.ActivePlayer().Board.Add(this);
+                return;
+            }
+            currState.BroadcastEffect(Effect.MinionAttacking);
+
         }
     }
 
     public class PowerCard : BaseCard
     {
-        public EffectData<PowerCard> Effect = new EffectData<PowerCard>();
+        public EffectData<PowerCard> Effects = new EffectData<PowerCard>();
 
         public PowerCard(string name, int manaCost, string description) : base(name, manaCost, description)
         {
             // Nothing here for now
         }
 
-        public override void Play(GameState currState, Move movePlayed)
+        public override void Play(GameState currState)
         {
             currState.CurrentPower = this;
         }
@@ -67,9 +75,9 @@ namespace Cards
             // Nothing here for now
         }
 
-        public override void Play(GameState currState, Move movePlayed)
+        public override void Play(GameState currState)
         {
-            this.Effect(currState, movePlayed);
+            this.Effect(currState, currState.LastMove);
         }
     }
 }

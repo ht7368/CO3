@@ -24,7 +24,7 @@ namespace Cards
             new PowerCard(name: "Clear Weather", manaCost: 3, description:
                 "No effect. Can overwrite other powers.")
             {
-                Effect = new EffectData<PowerCard> { /* None */ }
+                Effects = new EffectData<PowerCard> { /* None */ }
             },
 
             new SpellCard(name: "Vanquish", manaCost: 5, description:
