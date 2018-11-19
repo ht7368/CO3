@@ -80,33 +80,33 @@ namespace Cards
 
     public class CardGroupBox : GroupBox
     {
-        private CardBox[] Cards;
+        // A List<BaseCard> (hand or board) is passed in and tracked
+        // This is a reference to the same list, so that works fine
+        private List<BaseCard> TrackedCards;
 
-        public CardGroupBox()
+        public CardGroupBox(List<BaseCard> cards)
         {
-            Cards = new CardBox[0];
+            TrackedCards = cards;
+
+            this.FlatStyle = FlatStyle.Popup;
         }
 
-        public CardGroupBox(CardBox[] cards)
+        public void UpdateCards()
         {
-            Update(cards);
-        }
+            // Firstly, create new CardBox -s from the tracked cards.
+            List<CardBox> Cards = TrackedCards.Select(c => new CardBox(c)).ToList();
 
-        public void Update(CardBox[] cards)
-        {
             this.Height = 2 * CardBox.CARD_SPACING + CardBox.CARD_HEIGHT;
-
-            Cards = cards;
 
             this.Controls.Clear();
             // Can be refactored, mathematically
             int FirstX;
-            if (cards.Length % 2 == 0)
+            if (Cards.Count % 2 == 0)
                 // x = mid – (n / 2) * (g + w) + 0.5 * g
-                FirstX = (this.Width / 2) - (cards.Length / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) + (CardBox.CARD_SPACING / 2);
+                FirstX = (this.Width / 2) - (Cards.Count / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) + (CardBox.CARD_SPACING / 2);
             else
                 // mid – 0.5 * w – (floor(n / 2) * (g + w)  
-                FirstX = (this.Width / 2) - (cards.Length / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) - (CardBox.CARD_SPACING / 2);
+                FirstX = (this.Width / 2) - (Cards.Count / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) - (CardBox.CARD_SPACING / 2);
 
             int NextX = FirstX;
             foreach (CardBox c in Cards)
