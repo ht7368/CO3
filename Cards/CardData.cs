@@ -22,7 +22,7 @@ namespace Cards
             },
 
             new PowerCard(name: "Clear Weather", manaCost: 3, description:
-                "No effect. Can overwrite other powers.")
+                "No effect.")
             {
                 Effects = new EffectData<PowerCard> { /* None */ }
             },

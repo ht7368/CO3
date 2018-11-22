@@ -19,22 +19,33 @@ namespace Cards
 
         //protected static Network Net = new Network();
 
-        public abstract IEnumerator<Move> TakeTurn();
+        //public abstract Move NextMove();
+        //public abstract bool HasNextMove();
     }
 
     public class LocalPlayer : BasePlayer
     {
-        public override IEnumerator<Move> TakeTurn()
+        public bool HasNextMove()
         {
-            yield break;
+            return false;
+        }
+
+        public Move NextMove()
+        {
+            return null;
         }
     }
 
     public class NetworkPlayer : BasePlayer
     {
-        public override IEnumerator<Move> TakeTurn()
+        public bool HasNextMove()
         {
-            yield break;
+            return false;
+        }
+
+        public Move NextMove()
+        {
+            return null;
         }
     }
 }

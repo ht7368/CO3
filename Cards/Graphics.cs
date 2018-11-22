@@ -12,7 +12,9 @@ namespace Cards
     {
         public const int CARD_WIDTH = 100;
         public const int CARD_HEIGHT = 200;
-        public const int CARD_SPACING = 5; 
+        public const int CARD_SPACING = 5;
+
+        private BaseCard CardReferenced;
 
         private PictureBox CardBase;
         private PictureBox CardArt;
@@ -21,6 +23,8 @@ namespace Cards
 
         public CardBox(BaseCard card) : base()
         {
+            CardReferenced = card;
+
             BackColor = Color.Transparent;
             Size = new Size(100, 200);
             FlatStyle = FlatStyle.Flat;
@@ -65,16 +69,49 @@ namespace Cards
             foreach (Control c in Controls)
                 c.Click += (_s, _e) =>
                 {
-                    ToggleClick();
+                    CardClicked();
                 };
         }
 
-        public void ToggleClick()
+        public void CardClicked()
         {
-            if (CardBase.BackColor == Color.Transparent)
-                CardBase.BackColor = Color.Red;
-            else
-                CardBase.BackColor = Color.Transparent;
+            switch (Parent)
+            {
+                case CardGroupBox g:
+                    (g.Parent as GameBox).Processor.AddUserAction(CardReferenced, MoveProcessor.PlayArea.Board);
+                    break;
+
+                default:
+                    throw new Exception();
+            }
+        }
+    }
+
+    public class PowerBox : GroupBox
+    {
+        PowerCard PowerCard;
+
+        public PowerBox(PowerCard power)
+        {
+            PowerCard = power;
+            Height = CardBox.CARD_HEIGHT;
+            Width = CardBox.CARD_WIDTH;
+            Update();
+        }
+
+        public void UpdateUI()
+        {
+            if (PowerCard == null)
+            {
+                // TODO: RENDER `No Power Played` 
+                return;
+            }
+            Controls.Clear();
+            CardBox Visual = new CardBox(PowerCard as BaseCard)
+            {
+                Location = new Point(0, 0),
+            };
+            Controls.Add(Visual);
         }
     }
 

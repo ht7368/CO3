@@ -12,7 +12,6 @@ namespace Cards
 {
     public partial class GameUI : Form
     {
-
         GameBox Game = new GameBox();
 
         public GameUI()
@@ -30,26 +29,29 @@ namespace Cards
                 Width = Screen.PrimaryScreen.Bounds.Width,
                 Height = Screen.PrimaryScreen.Bounds.Height,
             };
+            Game.InitUI();
             Controls.Add(Game);
-            Update();
         }
     }
 
     public class GameBox : GroupBox
     {
-        const int CARD_WIDTH = 100;
-        const int CARD_HEIGHT = 200;
-        const int CARD_SPACING = 5;
+        public const int CARD_WIDTH = 100;
+        public const int CARD_HEIGHT = 200;
+        public const int CARD_SPACING = 5;
 
-        GameState Game;
-        CardGroupBox EnemyHand;
-        CardGroupBox PlayerHand;
-        CardGroupBox EnemyBoard;
-        CardGroupBox PlayerBoard;
+        private GameState Game;
+        private PowerBox PowerRegion;
+        private CardGroupBox EnemyHand;
+        private CardGroupBox PlayerHand;
+        private CardGroupBox EnemyBoard;
+        private CardGroupBox PlayerBoard;
+
+        public MoveProcessor Processor = new MoveProcessor();
 
         public GameBox()
         {
-            InitUI();
+
         }
 
         // Will update the visuals with the current board state.
@@ -59,14 +61,20 @@ namespace Cards
             EnemyBoard.UpdateCards();
             PlayerHand.UpdateCards();
             PlayerBoard.UpdateCards();
+            PowerRegion.UpdateUI();
         }
 
         // Initialise the UI by setting out ALL of the objec
-        private void InitUI()
+        public void InitUI()
         {
-
             Game = new GameState();
 
+            PowerRegion = new PowerBox(Game.CurrentPower);
+            Controls.Add(PowerRegion);
+            PowerRegion.Location = new Point(100, 100);
+            PowerRegion.BringToFront();
+
+            // Everything past here sets up the hand and board zones
             EnemyHand = new CardGroupBox(Game.PlayerTwo.Hand);
             Controls.Add(EnemyHand);
             PlayerHand = new CardGroupBox(Game.PlayerOne.Hand);
@@ -102,6 +110,7 @@ namespace Cards
             Game.PlayerOne.Hand.Add(Cards.CardDB[1]);
             Game.PlayerTwo.Board.Add(Cards.CardDB[0] as MinionCard);
             Game.PlayerOne.Board.Add(Cards.CardDB[0] as MinionCard);
+            Game.CurrentPower = Cards.CardDB[1] as PowerCard;
 
             RenderState(Game);
         }
