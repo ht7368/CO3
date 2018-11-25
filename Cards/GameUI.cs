@@ -29,7 +29,9 @@ namespace Cards
                 Location = new Point(0, 0),
                 Width = Screen.PrimaryScreen.Bounds.Width,
                 Height = Screen.PrimaryScreen.Bounds.Height,
+                //BackColor = Color.LightYellow,
             };
+            Game.InitUI();
             Controls.Add(Game);
             Update();
         }
@@ -49,7 +51,7 @@ namespace Cards
 
         public GameBox()
         {
-            InitUI();
+
         }
 
         // Will update the visuals with the current board state.
@@ -62,7 +64,7 @@ namespace Cards
         }
 
         // Initialise the UI by setting out ALL of the objec
-        private void InitUI()
+        public void InitUI()
         {
 
             Game = new GameState();
@@ -81,7 +83,7 @@ namespace Cards
             // a. each box has an equal height
             // b. each box has the same spacing between them
             // c. the boxes are spaced evenly throughout the window
-            int BoxHeight = (this.Height - 5 * CARD_SPACING) / 4; // Can replace with BOX_SPACING
+            int BoxHeight = (this.Height - (5 * CARD_SPACING)) / 4; // * 4; // Can replace with BOX_SPACING
             EnemyHand.Height = BoxHeight;
             EnemyBoard.Height = BoxHeight;
             PlayerHand.Height = BoxHeight;
@@ -93,7 +95,15 @@ namespace Cards
                 TempArr[i].Top = (i + 1) * CARD_SPACING + i * BoxHeight;
                 TempArr[i].Left = CARD_SPACING;
                 TempArr[i].Width = 1000;
+                TempArr[i].Height = BoxHeight;
             }
+            //TempArr[1].Top = BoxHeight;
+            /*
+            TempArr[0].BackColor = Color.Red;
+            TempArr[1].BackColor = Color.Blue;
+            TempArr[2].BackColor = Color.Green;
+            TempArr[3].BackColor = Color.Purple;
+            */
 
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0]);
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);

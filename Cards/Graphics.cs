@@ -96,7 +96,10 @@ namespace Cards
             // Firstly, create new CardBox -s from the tracked cards.
             List<CardBox> Cards = TrackedCards.Select(c => new CardBox(c)).ToList();
 
-            this.Height = 2 * CardBox.CARD_SPACING + CardBox.CARD_HEIGHT;
+            //this.Height = 2 * CardBox.CARD_SPACING + CardBox.CARD_HEIGHT;
+
+            // The y-coordinate of a card is set up so that it is centred
+            int CoordY = this.Height / 2 - CardBox.CARD_HEIGHT / 2;
 
             this.Controls.Clear();
             // Can be refactored, mathematically
@@ -112,7 +115,7 @@ namespace Cards
             foreach (CardBox c in Cards)
             {
                 c.Left = NextX;
-                c.Top = CardBox.CARD_SPACING;
+                c.Top = CoordY;
                 NextX += (CardBox.CARD_WIDTH + CardBox.CARD_SPACING);
                 Controls.Add(c);
             }
