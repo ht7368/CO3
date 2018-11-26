@@ -41,18 +41,22 @@ namespace Cards
         public const int CARD_HEIGHT = 200;
         public const int CARD_SPACING = 5;
 
-        private GameState Game;
         private PowerBox PowerRegion;
         private CardGroupBox EnemyHand;
         private CardGroupBox PlayerHand;
         private CardGroupBox EnemyBoard;
         private CardGroupBox PlayerBoard;
+        private Button PlayButton;
+        private Button ResetButton;
+        private Button DrawButton;
 
-        public MoveProcessor Processor = new MoveProcessor();
+        private GameState Game;
+        public MoveProcessor Processor; 
 
         public GameBox()
         {
-
+            Game = new GameState();
+            Processor = new MoveProcessor(Game);
         }
 
         // Will update the visuals with the current board state.
@@ -65,15 +69,29 @@ namespace Cards
             PowerRegion.UpdateUI();
         }
 
-        // Initialise the UI by setting out ALL of the objec
+        // Initialise the UI by setting out ALL of the objects
         public void InitUI()
         {
-            Game = new GameState();
-
-            PowerRegion = new PowerBox(Game.CurrentPower);
+            PowerRegion = new PowerBox(Game.CurrentPower)
+            {
+                Location = new Point(100, 100)
+            };
             Controls.Add(PowerRegion);
-            PowerRegion.Location = new Point(100, 100);
             PowerRegion.BringToFront();
+
+            PlayButton = new Button()
+            {
+                Location = new Point(100, 100),
+            }; 
+            PlayButton.Click += PlayButton_Click;
+            Controls.Add(PlayButton);
+            PlayButton.BringToFront();
+
+            ResetButton = new Button();
+            ResetButton.Click += ResetButton_Click;
+
+            DrawButton = new Button();
+            DrawButton.Click += DrawButton_Click;
 
             // Everything past here sets up the hand and board zones
             EnemyHand = new CardGroupBox(Game.PlayerTwo.Hand);
@@ -117,11 +135,37 @@ namespace Cards
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0]);
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);
             Game.PlayerOne.Hand.Add(Cards.CardDB[1]);
+            Game.PlayerOne.Hand.Add(Cards.CardDB[0]);
             Game.PlayerTwo.Board.Add(Cards.CardDB[0] as MinionCard);
             Game.PlayerOne.Board.Add(Cards.CardDB[0] as MinionCard);
             Game.CurrentPower = Cards.CardDB[1] as PowerCard;
 
             RenderState(Game);
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            Move Play = Processor.ProcessMoves();
+            Processor.Clear();
+            Game.ProcessMove(Play);
+
+            foreach (CardGroupBox c in new CardGroupBox[] { EnemyBoard, EnemyHand, PlayerBoard, PlayerHand })
+            {
+                
+            }
+
+            Refresh();
+
+        }
+
+        private void ResetButton_Click(object sender, EventArgs e)
+        {
+            Processor.Clear();
+        }
+
+        private void DrawButton_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

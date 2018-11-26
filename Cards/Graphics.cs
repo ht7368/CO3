@@ -31,11 +31,12 @@ namespace Cards
 
             CardBase = new PictureBox()
             {
-                Size = Size,
-                Location = new Point(0, 0),
+                Height = Height - 6,
+                Width = Width - 6,
+                Location = new Point(3, 3),
                 // Image = ...,
                 SizeMode = PictureBoxSizeMode.StretchImage,
-                BackColor = Color.Transparent,
+                BackColor = Color.Gray,
             };
             CardArt = new PictureBox()
             {
@@ -50,7 +51,7 @@ namespace Cards
                 Location = new Point(5, 100),
                 Size = new Size(90, 25),
                 TextAlign = ContentAlignment.MiddleCenter,
-                BackColor = Color.Transparent,
+                BackColor = Color.LightGray,
             };
             CardInfo = new TextBox()
             {
@@ -59,6 +60,7 @@ namespace Cards
                 Location = new Point(5, 130),
                 Size = new Size(90, 65),
                 Lines = new string[] { card.Description },
+                Enabled = false,
             };
 
             Controls.Add(CardArt);
@@ -75,15 +77,16 @@ namespace Cards
 
         public void CardClicked()
         {
-            switch (Parent)
-            {
-                case CardGroupBox g:
-                    (g.Parent as GameBox).Processor.AddUserAction(CardReferenced, MoveProcessor.PlayArea.Board);
-                    break;
+            var Processor = (Parent.Parent as GameBox).Processor;
 
-                default:
-                    throw new Exception();
-            }
+            if (Processor.NumberOfMoves() > 1)
+                return;
+
+            Processor.AddUserAction(CardReferenced);
+            if (Processor.NumberOfMoves() == 1)
+                this.BackColor = Color.Blue;
+            else
+                this.BackColor = Color.Red;
         }
     }
 
@@ -157,5 +160,7 @@ namespace Cards
                 Controls.Add(c);
             }
         }
+
+
     }
 }

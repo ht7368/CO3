@@ -31,6 +31,7 @@ namespace Cards
         // Health and attack values need to be modifyable
         public int Attack;
         public int Health;
+        public bool OnBoard = false;
 
         public MinionCard(string name, int manaCost, int attack, int health, string description) : base(name, manaCost, description)
         {
@@ -41,12 +42,15 @@ namespace Cards
         // This method is called from the gamestate and passes in itself
         public override void Play(GameState currState)
         {
-            if (!currState.ActivePlayer().Board.Contains(this))
+            if (!OnBoard)
             {
+                OnBoard = true;
                 currState.ActivePlayer().Board.Add(this);
+                //currState.BroadcastEffect(Effect.CardPlayed);
                 return;
             }
-            currState.BroadcastEffect(Effect.MinionAttacking);
+            
+            //currState.BroadcastEffect(Effect.MinionAttacking);
 
         }
     }
@@ -68,6 +72,7 @@ namespace Cards
 
     public class SpellCard : BaseCard
     {
+        public bool isTargeted;
         public Action<GameState, Move> Effect;
 
         public SpellCard(string name, int manaCost, string description) : base(name, manaCost, description)

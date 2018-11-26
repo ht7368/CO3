@@ -43,17 +43,27 @@ namespace Cards
     // It is designed to create moves from this
     public class MoveProcessor
     {
-        public enum PlayArea
+        GameState GameTracked;
+        List<BaseCard> Played = new List<BaseCard>();
+
+        public MoveProcessor(GameState game)
         {
-            HeroOrMinion,
-            Board,
-            PowerSlot,
+            GameTracked = game;
         }
 
-        List<(BaseCard, PlayArea)> Played = new List<(BaseCard, PlayArea)>();
-        public void AddUserAction(BaseCard cardClicked, PlayArea areaClicked)
+        public void AddUserAction(BaseCard cardClicked)
         {
-            Played.Add((cardClicked, areaClicked));
+            Played.Add(cardClicked);
+        }
+
+        public void Clear()
+        {
+            Played.Clear();
+        }
+
+        public int NumberOfMoves()
+        {
+            return Played.Count();
         }
 
         public Move ProcessMoves()
@@ -62,8 +72,27 @@ namespace Cards
             // A minion card can be played onto your board
             // A placed minion can attack an enemy minion or the enemy's hero
             // A power can be played in the power slot
-            return null;
 
+            switch (Played[0])
+            {
+                case PowerCard p:
+                    return new Move(p.Id, 0);
+
+                case MinionCard m:
+                    if (m.OnBoard)
+                        return new Move(m.Id, Played[1].Id);
+                    else
+                        return new Move(m.Id, 0);
+
+                case SpellCard s:
+                    if (s.isTargeted)
+                        return new Move(s.Id, Played[1].Id);
+                    else
+                        return new Move(s.Id, 0);
+
+                default:
+                    throw new Exception();
+            }
         }
 
 
