@@ -68,11 +68,17 @@ namespace Cards
 
         public Move ProcessMoves()
         {
+            Move M = _ProcessMoves();
+            Clear();
+            return M;
+        }
+
+        public Move _ProcessMoves()
+        {
             // A spell card can be played on a target, a board or "everything"
             // A minion card can be played onto your board
             // A placed minion can attack an enemy minion or the enemy's hero
             // A power can be played in the power slot
-
             switch (Played[0])
             {
                 case PowerCard p:
@@ -94,7 +100,5 @@ namespace Cards
                     throw new Exception();
             }
         }
-
-
     }
 }

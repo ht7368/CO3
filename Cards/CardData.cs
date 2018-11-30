@@ -9,10 +9,10 @@ namespace Cards
 {
     class Cards
     {
-        public static List<BaseCard> CardDB = new List<BaseCard>
+        public static List<Func<BaseCard>> CardDB = new List<Func<BaseCard>>
         {
             // Testing Dummy
-            new MinionCard(name: "Testing Dummy", manaCost: 1, attack: 0, health: 1, description:
+            () => new MinionCard(name: "Testing Dummy", manaCost: 1, attack: 0, health: 1, description:
                 "Card dies at end of turn.")
             {
                 /*Effects = new EffectData<MinionCard>
@@ -21,13 +21,13 @@ namespace Cards
                 }*/
             },
 
-            new PowerCard(name: "Clear Weather", manaCost: 3, description:
+            () => new PowerCard(name: "Clear Weather", manaCost: 3, description:
                 "No effect.")
             {
                 Effects = new EffectData<PowerCard> { /* None */ }
             },
 
-            new SpellCard(name: "Vanquish", manaCost: 5, description:
+            () => new SpellCard(name: "Vanquish", manaCost: 5, description:
                 "Destroy a target minion.") 
             {
                 Effect = (s, m) => {  }

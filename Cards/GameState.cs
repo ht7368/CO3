@@ -70,8 +70,8 @@ namespace Cards
         {
             BaseCard Selected = IdGenerator.GetById(nextMove.Selected);
             BaseCard Targeted = IdGenerator.GetById(nextMove.Targeted);
-            // Only the current player can play cards - this invariant means this works.
             this.LastMove = nextMove;
+            InactivePlayer().Hand.Remove(Selected);
             ActivePlayer().Hand.Remove(Selected);
             Selected.Play(this);
         }

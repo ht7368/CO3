@@ -42,10 +42,10 @@ namespace Cards
         public const int CARD_SPACING = 5;
 
         private PowerBox PowerRegion;
-        private CardGroupBox EnemyHand;
-        private CardGroupBox PlayerHand;
-        private CardGroupBox EnemyBoard;
-        private CardGroupBox PlayerBoard;
+        private CardGroupBox<BaseCard> EnemyHand;
+        private CardGroupBox<BaseCard> PlayerHand;
+        private CardGroupBox<MinionCard> EnemyBoard;
+        private CardGroupBox<MinionCard> PlayerBoard;
         private Button PlayButton;
         private Button ResetButton;
         private Button DrawButton;
@@ -94,14 +94,14 @@ namespace Cards
             DrawButton.Click += DrawButton_Click;
 
             // Everything past here sets up the hand and board zones
-            EnemyHand = new CardGroupBox(Game.PlayerTwo.Hand);
+            EnemyHand = new CardGroupBox<BaseCard>(Game.PlayerTwo.Hand);
             Controls.Add(EnemyHand);
-            PlayerHand = new CardGroupBox(Game.PlayerOne.Hand);
+            PlayerHand = new CardGroupBox<BaseCard>(Game.PlayerOne.Hand);
             Controls.Add(PlayerHand);
             // These two are List<MinionCard>s, but they need to be List<BaseCard>s, so cast
-            EnemyBoard = new CardGroupBox(Game.PlayerTwo.Board.Cast<BaseCard>().ToList());
+            EnemyBoard = new CardGroupBox<MinionCard>(Game.PlayerTwo.Board);
             Controls.Add(EnemyBoard);
-            PlayerBoard = new CardGroupBox(Game.PlayerOne.Board.Cast<BaseCard>().ToList());
+            PlayerBoard = new CardGroupBox<MinionCard>(Game.PlayerOne.Board);
             Controls.Add(PlayerBoard);
 
             // Position on the y-coordinate so that:
@@ -114,7 +114,7 @@ namespace Cards
             PlayerHand.Height = BoxHeight;
             PlayerBoard.Height = BoxHeight;
 
-            var TempArr = new CardGroupBox[] { EnemyHand, EnemyBoard, PlayerBoard, PlayerHand };
+            var TempArr = new Control[] { EnemyHand, EnemyBoard, PlayerBoard, PlayerHand };
             for (int i = 0; i < 4; i++)
             {
                 TempArr[i].Top = (i + 1) * CARD_SPACING + i * BoxHeight;
@@ -130,15 +130,15 @@ namespace Cards
             TempArr[3].BackColor = Color.Purple;
             */
 
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]);
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]);
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]);
-            Game.PlayerOne.Hand.Add(Cards.CardDB[1]);
-            Game.PlayerOne.Hand.Add(Cards.CardDB[0]);
-            Game.PlayerTwo.Board.Add(Cards.CardDB[0] as MinionCard);
-            Game.PlayerOne.Board.Add(Cards.CardDB[0] as MinionCard);
-            Game.CurrentPower = Cards.CardDB[1] as PowerCard;
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]());
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]());
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]());
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]());
+            Game.PlayerOne.Hand.Add(Cards.CardDB[1]());
+            Game.PlayerOne.Hand.Add(Cards.CardDB[0]());
+            Game.PlayerTwo.Board.Add(Cards.CardDB[0]() as MinionCard);
+            Game.PlayerOne.Board.Add(Cards.CardDB[0]() as MinionCard);
+            Game.CurrentPower = Cards.CardDB[1]() as PowerCard;
 
             RenderState(Game);
         }
@@ -149,13 +149,7 @@ namespace Cards
             Processor.Clear();
             Game.ProcessMove(Play);
 
-            foreach (CardGroupBox c in new CardGroupBox[] { EnemyBoard, EnemyHand, PlayerBoard, PlayerHand })
-            {
-                
-            }
-
-            Refresh();
-
+            RenderState(Game);
         }
 
         private void ResetButton_Click(object sender, EventArgs e)

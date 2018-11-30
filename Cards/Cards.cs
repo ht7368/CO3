@@ -46,6 +46,7 @@ namespace Cards
             {
                 OnBoard = true;
                 currState.ActivePlayer().Board.Add(this);
+                var a = currState.ActivePlayer().Board;
                 //currState.BroadcastEffect(Effect.CardPlayed);
                 return;
             }
@@ -77,7 +78,7 @@ namespace Cards
 
         public SpellCard(string name, int manaCost, string description) : base(name, manaCost, description)
         {
-            // Nothing here for now
+            // Nothing here for now r
         }
 
         public override void Play(GameState currState)

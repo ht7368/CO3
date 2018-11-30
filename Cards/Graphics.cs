@@ -118,13 +118,13 @@ namespace Cards
         }
     }
 
-    public class CardGroupBox : GroupBox
+    public class CardGroupBox<T> : GroupBox where T: BaseCard
     {
         // A List<BaseCard> (hand or board) is passed in and tracked
         // This is a reference to the same list, so that works fine
-        private List<BaseCard> TrackedCards;
+        private List<T> TrackedCards;
 
-        public CardGroupBox(List<BaseCard> cards)
+        public CardGroupBox(List<T> cards)
         {
             TrackedCards = cards;
 
@@ -148,8 +148,8 @@ namespace Cards
                 // x = mid – (n / 2) * (g + w) + 0.5 * g
                 FirstX = (this.Width / 2) - (Cards.Count / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) + (CardBox.CARD_SPACING / 2);
             else
-                // mid – 0.5 * w – (floor(n / 2) * (g + w)  
-                FirstX = (this.Width / 2) - (Cards.Count / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) - (CardBox.CARD_SPACING / 2);
+                // mid – (n / 2) * (g + w) – 0.5 * w
+                FirstX = (this.Width / 2) - (Cards.Count / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) - (CardBox.CARD_WIDTH / 2);
 
             int NextX = FirstX;
             foreach (CardBox c in Cards)
