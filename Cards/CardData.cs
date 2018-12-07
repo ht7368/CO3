@@ -12,7 +12,7 @@ namespace Cards
         public static List<Func<BaseCard>> CardDB = new List<Func<BaseCard>>
         {
             // Testing Dummy
-            () => new MinionCard(name: "Testing Dummy", manaCost: 1, attack: 0, health: 1, description:
+            () => new MinionCard(name: "Testing Dummy", manaCost: 1, attack: 0, health: 2, description:
                 "Card dies at end of turn.")
             {
                 /*Effects = new EffectData<MinionCard>
@@ -30,7 +30,11 @@ namespace Cards
             () => new SpellCard(name: "Vanquish", manaCost: 5, description:
                 "Destroy a target minion.") 
             {
-                Effect = (s, m) => {  }
+                Effect = (s, m) => 
+                {
+                    var Target = IdGenerator.GetById(m.Targeted) as MinionCard;
+                    Target.Health = 0;
+                }
             },
         };
     }

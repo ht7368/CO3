@@ -40,6 +40,7 @@ namespace Cards
         public const int CARD_WIDTH = 100;
         public const int CARD_HEIGHT = 200;
         public const int CARD_SPACING = 5;
+        public const int CONTROL_SPACING = 10;
 
         private PowerBox PowerRegion;
         private CardGroupBox<BaseCard> EnemyHand;
@@ -47,6 +48,7 @@ namespace Cards
         private CardGroupBox<MinionCard> EnemyBoard;
         private CardGroupBox<MinionCard> PlayerBoard;
         private Button PlayButton;
+        private Button PassButton;
         private Button ResetButton;
         private Button DrawButton;
 
@@ -72,6 +74,7 @@ namespace Cards
         // Initialise the UI by setting out ALL of the objects
         public void InitUI()
         {
+            // Power region - card area where the power is displayed
             PowerRegion = new PowerBox(Game.CurrentPower)
             {
                 Location = new Point(100, 100)
@@ -79,26 +82,48 @@ namespace Cards
             Controls.Add(PowerRegion);
             PowerRegion.BringToFront();
 
+            // Buttons
             PlayButton = new Button()
             {
                 Location = new Point(100, 100),
+                Text = "Play",
             }; 
             PlayButton.Click += PlayButton_Click;
             Controls.Add(PlayButton);
             PlayButton.BringToFront();
 
-            ResetButton = new Button();
+            ResetButton = new Button()
+            {
+                Location = new Point(100, 130),
+                Text = "Reset",
+            };
             ResetButton.Click += ResetButton_Click;
+            Controls.Add(ResetButton);
+            ResetButton.BringToFront();
 
-            DrawButton = new Button();
+            DrawButton = new Button()
+            {
+                Location = new Point(100, 160),
+                Text = "Draw",
+            };
             DrawButton.Click += DrawButton_Click;
+            Controls.Add(DrawButton);
+            DrawButton.BringToFront();
 
+            PassButton = new Button()
+            {
+                Location = new Point(100, 190),
+                Text = "End Turn",
+            };
+            PassButton.Click += PassButton_Click;
+            Controls.Add(PassButton);
+            PassButton.BringToFront();
+        
             // Everything past here sets up the hand and board zones
             EnemyHand = new CardGroupBox<BaseCard>(Game.PlayerTwo.Hand);
             Controls.Add(EnemyHand);
             PlayerHand = new CardGroupBox<BaseCard>(Game.PlayerOne.Hand);
             Controls.Add(PlayerHand);
-            // These two are List<MinionCard>s, but they need to be List<BaseCard>s, so cast
             EnemyBoard = new CardGroupBox<MinionCard>(Game.PlayerTwo.Board);
             Controls.Add(EnemyBoard);
             PlayerBoard = new CardGroupBox<MinionCard>(Game.PlayerOne.Board);
@@ -108,33 +133,37 @@ namespace Cards
             // a. each box has an equal height
             // b. each box has the same spacing between them
             // c. the boxes are spaced evenly throughout the window
-            int BoxHeight = (this.Height - (5 * CARD_SPACING)) / 4; // * 4; // Can replace with BOX_SPACING
+            int BoxHeight = (this.Height - (5 * CARD_SPACING)) / 4; // * 4; 
             EnemyHand.Height = BoxHeight;
             EnemyBoard.Height = BoxHeight;
             PlayerHand.Height = BoxHeight;
             PlayerBoard.Height = BoxHeight;
 
+            // The zone for player targets, buttons and other displayed information...
+            // ... should have width equal to the height of the boxes, because it must
+            // contain two squares (player targets) with that width (plus spacing)
+
             var TempArr = new Control[] { EnemyHand, EnemyBoard, PlayerBoard, PlayerHand };
             for (int i = 0; i < 4; i++)
             {
                 TempArr[i].Top = (i + 1) * CARD_SPACING + i * BoxHeight;
-                TempArr[i].Left = CARD_SPACING;
-                TempArr[i].Width = 1000;
+                TempArr[i].Left = CONTROL_SPACING;
+                TempArr[i].Width = Screen.PrimaryScreen.Bounds.Width - BoxHeight - 3 * CONTROL_SPACING;
                 TempArr[i].Height = BoxHeight;
             }
-            //TempArr[1].Top = BoxHeight;
-            /*
-            TempArr[0].BackColor = Color.Red;
-            TempArr[1].BackColor = Color.Blue;
-            TempArr[2].BackColor = Color.Green;
-            TempArr[3].BackColor = Color.Purple;
-            */
+
+            PowerRegion.Top = EnemyBoard.Top;
+            PowerRegion.Width = BoxHeight / 2;
+            PowerRegion.Height = BoxHeight;
+            PowerRegion.Left = EnemyBoard.Left + EnemyBoard.Width + CONTROL_SPACING;
 
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0]());
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1]());
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0]());
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]());
+            Game.PlayerOne.Hand.Add(Cards.CardDB[0]());
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1]());
-            Game.PlayerOne.Hand.Add(Cards.CardDB[1]());
+            Game.PlayerOne.Hand.Add(Cards.CardDB[2]());
             Game.PlayerOne.Hand.Add(Cards.CardDB[0]());
             Game.PlayerTwo.Board.Add(Cards.CardDB[0]() as MinionCard);
             Game.PlayerOne.Board.Add(Cards.CardDB[0]() as MinionCard);
@@ -160,6 +189,11 @@ namespace Cards
         private void DrawButton_Click(object sender, EventArgs e)
         {
             throw new NotImplementedException();
+        }
+
+        private void PassButton_Click(object sender, EventArgs e)
+        {
+            Game.IsP1Turn = !Game.IsP1Turn;
         }
     }
 }

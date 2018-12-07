@@ -29,7 +29,7 @@ namespace Cards
         public BasePlayer PlayerTwo;
         public PowerCard CurrentPower;
         public Move LastMove;
-        private bool IsP1Turn = true; // Is it player one's turn?
+        public bool IsP1Turn = true; // Is it player one's turn?
 
         public GameState()
         {

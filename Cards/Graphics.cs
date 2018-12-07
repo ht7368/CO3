@@ -20,6 +20,8 @@ namespace Cards
         private PictureBox CardArt;
         private Label CardName;
         private TextBox CardInfo;
+        private Label CardAttack;
+        private Label CardHealth;
 
         public CardBox(BaseCard card) : base()
         {
@@ -73,6 +75,27 @@ namespace Cards
                 {
                     CardClicked();
                 };
+
+            if (card is MinionCard)
+            {
+                CardAttack = new Label()
+                {
+                    Size = new Size(20, 20),
+                    Location = new Point(0, Height - 20)
+                };
+                Controls.Add(CardAttack);
+                CardAttack.BringToFront();
+                CardHealth = new Label()
+                {
+                    Size = new Size(20, 20),
+                    Location = new Point(Width - 20, Height - 20)
+                };
+                Controls.Add(CardHealth);
+                CardHealth.BringToFront();
+
+                CardAttack.Text = (CardReferenced as MinionCard).Attack.ToString();
+                CardHealth.Text = (CardReferenced as MinionCard).Health.ToString();
+            }
         }
 
         public void CardClicked()
