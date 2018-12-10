@@ -31,38 +31,58 @@ namespace Cards
         public Move LastMove;
         public bool IsP1Turn = true; // Is it player one's turn?
 
+        public GameBox Box;
+
         public GameState()
         {
             PlayerOne = new LocalPlayer();
             PlayerTwo = new NetworkPlayer();
         }
 
-        public BasePlayer ActivePlayer()
+        public BasePlayer ActivePlayer
         {
-            if (IsP1Turn)
-                return PlayerOne;
-            else
-                return PlayerTwo;
+            get
+            {
+                if (IsP1Turn)
+                    return PlayerOne;
+                else
+                    return PlayerTwo;
+            }
         }
 
-        public BasePlayer InactivePlayer()
+        public BasePlayer InactivePlayer
         {
-            if (!IsP1Turn)
-                return PlayerOne;
-            else
-                return PlayerTwo;
+            get
+            {
+                if (!IsP1Turn)
+                    return PlayerOne;
+                else
+                    return PlayerTwo;
+            }
+        }
+
+        private IEnumerable<BaseCard> AllCards()
+        {
+            foreach (BaseCard c in PlayerOne.Hand)
+                yield return c;
+            foreach (BaseCard c in PlayerOne.Board)
+                yield return c;
+            foreach (BaseCard c in PlayerTwo.Board)
+                yield return c;
+            foreach (BaseCard c in PlayerTwo.Hand)
+                yield return c;
+            yield break;
         }
 
         public void BroadcastEffect(Effect effect)
         {
             if (CurrentPower.Effects.ContainsKey(effect))
                 CurrentPower.Effects[effect](this);
-            foreach (MinionCard c in ActivePlayer().Board)
-                if (c.Effects.ContainsKey(effect))
-                    c.Effects[effect](this);
-            foreach (MinionCard c in ActivePlayer().Board)
-                if (c.Effects.ContainsKey(effect))
-                    c.Effects[effect](this);
+
+            foreach (var c in AllCards())
+                if (c is MinionCard)
+                    if ((c as MinionCard).Effects.ContainsKey(effect))
+                        (c as MinionCard).Effects[effect](this);
         }
 
         // Process a move generated either over network or locally and resolve it's events
@@ -71,9 +91,26 @@ namespace Cards
             BaseCard Selected = IdGenerator.GetById(nextMove.Selected);
             BaseCard Targeted = IdGenerator.GetById(nextMove.Targeted);
             this.LastMove = nextMove;
-            InactivePlayer().Hand.Remove(Selected);
-            ActivePlayer().Hand.Remove(Selected);
-            Selected.Play(this);
+            InactivePlayer.Hand.Remove(Selected);
+            ActivePlayer.Hand.Remove(Selected);
+            Selected.Play();
+            ResolveActions();
+        }
+
+        public void ResolveActions()
+        {
+            foreach (var c in AllCards())
+                if (c is MinionCard)
+                {
+                    MinionCard m = c as MinionCard;
+                    if (m.Health <= 0)
+                    {
+                        PlayerOne.Board.Remove(m);
+                        PlayerTwo.Board.Remove(m);
+                        break;
+                    }
+                        
+                }
         }
     }
     // This class has to be static - if there was multiple instances of it,

@@ -12,7 +12,7 @@ namespace Cards
 {
     public partial class GameUI : Form
     {
-        GameBox Game = new GameBox();
+        public GameBox Game = new GameBox();
 
         public GameUI()
         {
@@ -47,12 +47,11 @@ namespace Cards
         private CardGroupBox<BaseCard> PlayerHand;
         private CardGroupBox<MinionCard> EnemyBoard;
         private CardGroupBox<MinionCard> PlayerBoard;
-        private Button PlayButton;
         private Button PassButton;
         private Button ResetButton;
         private Button DrawButton;
 
-        private GameState Game;
+        public GameState Game;
         public MoveProcessor Processor; 
 
         public GameBox()
@@ -82,16 +81,7 @@ namespace Cards
             Controls.Add(PowerRegion);
             PowerRegion.BringToFront();
 
-            // Buttons
-            PlayButton = new Button()
-            {
-                Location = new Point(100, 100),
-                Text = "Play",
-            }; 
-            PlayButton.Click += PlayButton_Click;
-            Controls.Add(PlayButton);
-            PlayButton.BringToFront();
-
+            // Buttons;
             ResetButton = new Button()
             {
                 Location = new Point(100, 130),
@@ -172,18 +162,10 @@ namespace Cards
             RenderState(Game);
         }
 
-        private void PlayButton_Click(object sender, EventArgs e)
-        {
-            Move Play = Processor.ProcessMoves();
-            Processor.Clear();
-            Game.ProcessMove(Play);
-
-            RenderState(Game);
-        }
-
         private void ResetButton_Click(object sender, EventArgs e)
         {
             Processor.Clear();
+            RenderState(Game);
         }
 
         private void DrawButton_Click(object sender, EventArgs e)

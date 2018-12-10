@@ -22,6 +22,7 @@ namespace Cards
         private TextBox CardInfo;
         private Label CardAttack;
         private Label CardHealth;
+        private Label CardCost;
 
         public CardBox(BaseCard card) : base()
         {
@@ -64,11 +65,21 @@ namespace Cards
                 Lines = new string[] { card.Description },
                 Enabled = false,
             };
+            CardCost = new Label()
+            {
+                Text = card.ManaCost.ToString(),
+                Size = new Size(20, 20),
+                Top = CARD_SPACING,
+                Left = Width - 20 - CARD_SPACING,
+            };
 
             Controls.Add(CardArt);
             Controls.Add(CardInfo);
             Controls.Add(CardName);
             Controls.Add(CardBase);
+            Controls.Add(CardCost);
+
+            CardCost.BringToFront();
 
             foreach (Control c in Controls)
                 c.Click += (_s, _e) =>
@@ -103,7 +114,13 @@ namespace Cards
             var Processor = (Parent.Parent as GameBox).Processor;
 
             if (Processor.NumberOfMoves() > 1)
+            {
+                Move Play = Processor.ProcessMoves();
+                Processor.Clear();
+                (Parent.Parent as GameBox).Game.ProcessMove(Play);
                 return;
+            }
+                
 
             Processor.AddUserAction(CardReferenced);
             if (Processor.NumberOfMoves() == 1)
@@ -112,6 +129,17 @@ namespace Cards
                 this.BackColor = Color.Red;
         }
     }
+
+    /*
+     * 
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            Move Play = Processor.ProcessMoves();
+            Processor.Clear();
+            Game.ProcessMove(Play);
+
+            RenderState(Game);
+        }*/
 
     public class PowerBox : GroupBox
     {
@@ -183,7 +211,5 @@ namespace Cards
                 Controls.Add(c);
             }
         }
-
-
     }
 }

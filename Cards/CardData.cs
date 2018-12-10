@@ -9,27 +9,36 @@ namespace Cards
 {
     class Cards
     {
-        public static List<Func<BaseCard>> CardDB = new List<Func<BaseCard>>
+        public static List<Func<GameState, BaseCard>> CardDB = new List<Func<GameState, BaseCard>>
         {
             // Testing Dummy
-            () => new MinionCard(name: "Testing Dummy", manaCost: 1, attack: 0, health: 2, description:
-                "Card dies at end of turn.")
+            (GameState g) => new MinionCard(g)
             {
+                Name = "Testing Dummy",
+                ManaCost = 1,
+                Attack = 0,
+                Health = 2,
+                Description = "Card dies at the end of the turn.",
                 /*Effects = new EffectData<MinionCard>
                 {
                     { Effect.TurnEnd, (p) =>  { p.CardPlayed.Health = 0; } },
                 }*/
             },
 
-            () => new PowerCard(name: "Clear Weather", manaCost: 3, description:
-                "No effect.")
+            (GameState g) => new PowerCard(g)
             {
+                Name = "Clear Weather",
+                ManaCost = 3,
+                Description = "This power has no effect.",
                 Effects = new EffectData<PowerCard> { /* None */ }
             },
 
-            () => new SpellCard(name: "Vanquish", manaCost: 5, description:
-                "Destroy a target minion.") 
+            (GameState g) => new SpellCard(g)
             {
+                Name = "Vanquish",
+                ManaCost = 5,
+                Description = "Target a minion. Destroy it.",
+                isTargeted = true,
                 Effect = (s, m) => 
                 {
                     var Target = IdGenerator.GetById(m.Targeted) as MinionCard;

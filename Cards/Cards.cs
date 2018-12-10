@@ -8,21 +8,21 @@ namespace Cards
 {
     public abstract class BaseCard
     {
-        public int ManaCost { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
+        public int ManaCost { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public readonly uint Id;
 
-        public BaseCard(string name, int manaCost, string description)
+        public GameState Game;
+
+        public BaseCard(GameState game)
         {
+            Game = game;
             Id = IdGenerator.NextId(this);
-            ManaCost = manaCost;
-            Name = name;
-            Description = description;
         }
 
         // Differs based on class
-        public abstract void Play(GameState currState);
+        public abstract void Play();
     }
 
     public class MinionCard : BaseCard
@@ -33,20 +33,18 @@ namespace Cards
         public int Health;
         public bool OnBoard = false;
 
-        public MinionCard(string name, int manaCost, int attack, int health, string description) : base(name, manaCost, description)
+        public MinionCard(GameState game) : base(game)
         {
-            Attack = attack;
-            Health = health;
         }
 
         // This method is called from the gamestate and passes in itself
-        public override void Play(GameState currState)
+        public override void Play()
         {
             if (!OnBoard)
             {
                 OnBoard = true;
-                currState.ActivePlayer().Board.Add(this);
-                var a = currState.ActivePlayer().Board;
+                Game.ActivePlayer.Board.Add(this);
+                var a = Game.ActivePlayer.Board;
                 //currState.BroadcastEffect(Effect.CardPlayed);
                 return;
             }
@@ -60,14 +58,14 @@ namespace Cards
     {
         public EffectData<PowerCard> Effects = new EffectData<PowerCard>();
 
-        public PowerCard(string name, int manaCost, string description) : base(name, manaCost, description)
+        public PowerCard(GameState game) : base(game)
         {
             // Nothing here for now
         }
 
-        public override void Play(GameState currState)
+        public override void Play()
         {
-            currState.CurrentPower = this;
+            Game.CurrentPower = this;
         }
     }
 
@@ -76,14 +74,14 @@ namespace Cards
         public bool isTargeted;
         public Action<GameState, Move> Effect;
 
-        public SpellCard(string name, int manaCost, string description) : base(name, manaCost, description)
+        public SpellCard(GameState game) : base(game)
         {
             // Nothing here for now r
         }
 
-        public override void Play(GameState currState)
+        public override void Play()
         {
-            this.Effect(currState, currState.LastMove);
+            this.Effect(Game, Game.LastMove);
         }
     }
 }
