@@ -35,7 +35,7 @@ namespace Cards
         }
     }
 
-    public class GameBox : GroupBox
+    public class GameBox : Panel
     {
         public const int CARD_WIDTH = 100;
         public const int CARD_HEIGHT = 200;
@@ -108,16 +108,32 @@ namespace Cards
             PassButton.Click += PassButton_Click;
             Controls.Add(PassButton);
             PassButton.BringToFront();
-        
+
             // Everything past here sets up the hand and board zones
-            EnemyHand = new CardGroupBox<BaseCard>(Game.PlayerTwo.Hand);
+            EnemyHand = new CardGroupBox<BaseCard>(Game.PlayerTwo.Hand)
+            {
+
+            };
             Controls.Add(EnemyHand);
-            PlayerHand = new CardGroupBox<BaseCard>(Game.PlayerOne.Hand);
+            PlayerHand = new CardGroupBox<BaseCard>(Game.PlayerOne.Hand)
+            {
+
+            };
             Controls.Add(PlayerHand);
-            EnemyBoard = new CardGroupBox<MinionCard>(Game.PlayerTwo.Board);
+            EnemyBoard = new CardGroupBox<MinionCard>(Game.PlayerTwo.Board)
+            {
+                BackgroundImage = Properties.Resources.ScrollBody,
+                BackgroundImageLayout = ImageLayout.Stretch,
+            };
             Controls.Add(EnemyBoard);
-            PlayerBoard = new CardGroupBox<MinionCard>(Game.PlayerOne.Board);
+            PlayerBoard = new CardGroupBox<MinionCard>(Game.PlayerOne.Board)
+            {
+                BackgroundImage = Properties.Resources.ScrollBody,
+            };
             Controls.Add(PlayerBoard);
+
+            BackgroundImage = Properties.Resources.Wood;
+            BackgroundImageLayout = ImageLayout.Tile;
 
             // Position on the y-coordinate so that:
             // a. each box has an equal height
@@ -147,17 +163,17 @@ namespace Cards
             PowerRegion.Height = BoxHeight;
             PowerRegion.Left = EnemyBoard.Left + EnemyBoard.Width + CONTROL_SPACING;
 
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]());
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]());
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]());
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[0]());
-            Game.PlayerOne.Hand.Add(Cards.CardDB[0]());
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[1]());
-            Game.PlayerOne.Hand.Add(Cards.CardDB[2]());
-            Game.PlayerOne.Hand.Add(Cards.CardDB[0]());
-            Game.PlayerTwo.Board.Add(Cards.CardDB[0]() as MinionCard);
-            Game.PlayerOne.Board.Add(Cards.CardDB[0]() as MinionCard);
-            Game.CurrentPower = Cards.CardDB[1]() as PowerCard;
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[1](Game));
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
+            Game.PlayerOne.Hand.Add(Cards.CardDB[0](Game));
+            Game.PlayerTwo.Hand.Add(Cards.CardDB[1](Game));
+            Game.PlayerOne.Hand.Add(Cards.CardDB[2](Game));
+            Game.PlayerOne.Hand.Add(Cards.CardDB[0](Game));
+            Game.PlayerTwo.Board.Add(Cards.CardDB[0](Game) as MinionCard);
+            Game.PlayerOne.Board.Add(Cards.CardDB[0](Game) as MinionCard);
+            Game.CurrentPower = Cards.CardDB[1](Game) as PowerCard;
 
             RenderState(Game);
         }

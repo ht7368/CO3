@@ -107,5 +107,20 @@
   <ItemGroup>
     <None Include="Resources\PlaceholderArt.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\woodtex.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Transparent.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScrollBody.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScrollLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScrollRight.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

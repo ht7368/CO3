@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Cards
 {
-    public class CardBox : GroupBox
+    public class CardBox : Panel
     {
         public const int CARD_WIDTH = 100;
         public const int CARD_HEIGHT = 200;
@@ -28,9 +28,7 @@ namespace Cards
         {
             CardReferenced = card;
 
-            BackColor = Color.Transparent;
             Size = new Size(100, 200);
-            FlatStyle = FlatStyle.Flat;
 
             CardBase = new PictureBox()
             {
@@ -141,7 +139,7 @@ namespace Cards
             RenderState(Game);
         }*/
 
-    public class PowerBox : GroupBox
+    public class PowerBox : Panel
     {
         PowerCard PowerCard;
 
@@ -169,7 +167,7 @@ namespace Cards
         }
     }
 
-    public class CardGroupBox<T> : GroupBox where T: BaseCard
+    public class CardGroupBox<T> : Panel where T: BaseCard
     {
         // A List<BaseCard> (hand or board) is passed in and tracked
         // This is a reference to the same list, so that works fine
@@ -178,8 +176,6 @@ namespace Cards
         public CardGroupBox(List<T> cards)
         {
             TrackedCards = cards;
-
-            this.FlatStyle = FlatStyle.Popup;
         }
 
         public void UpdateCards()
