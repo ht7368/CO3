@@ -39,9 +39,23 @@ namespace Cards
         }
     }
 
+    static class IdExt
+    {
+        public static BaseCard AsCard(this uint u)
+        {
+            return IdGenerator.GetById(u);
+        }
+
+        public static T AsCardT(this uint u) where T: BaseCard
+        {
+            return IdGenerator.GetById(u) as T;
+        }
+    }
+}
+
     // We will pass in cards clicked into this class,
     // It is designed to create moves from this
-    public class MoveProcessor
+    /*public class MoveProcessor
     {
         GameState GameTracked;
         List<BaseCard> Played = new List<BaseCard>();
@@ -102,3 +116,4 @@ namespace Cards
         }
     }
 }
+*/

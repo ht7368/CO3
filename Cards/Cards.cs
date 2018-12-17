@@ -35,20 +35,24 @@ namespace Cards
 
         public MinionCard(GameState game) : base(game)
         {
+
         }
 
         // This method is called from the gamestate and passes in itself
         public override void Play()
         {
-            if (!OnBoard)
+            if (OnBoard)
             {
+                Game.BroadcastEffect(Effect.MinionAttacking);
+                this.Health -= Game.LastMove.Targeted.AsCard() as MinionCard)
+            } else {
                 OnBoard = true;
                 Game.ActivePlayer.Board.Add(this);
                 var a = Game.ActivePlayer.Board;
                 //currState.BroadcastEffect(Effect.CardPlayed);
                 return;
             }
-            
+
             //currState.BroadcastEffect(Effect.MinionAttacking);
 
         }

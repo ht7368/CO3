@@ -30,8 +30,8 @@ namespace Cards
                 Height = Screen.PrimaryScreen.Bounds.Height,
                 //BackColor = Color.LightYellow,
             };
-            Game.InitUI();
             Controls.Add(Game);
+            Game.InitUI();
         }
     }
 
@@ -52,12 +52,11 @@ namespace Cards
         private Button DrawButton;
 
         public GameState Game;
-        public MoveProcessor Processor; 
+        public BaseCard SelectedCard;
 
         public GameBox()
         {
             Game = new GameState();
-            Processor = new MoveProcessor(Game);
         }
 
         // Will update the visuals with the current board state.
@@ -122,13 +121,13 @@ namespace Cards
             Controls.Add(PlayerHand);
             EnemyBoard = new CardGroupBox<MinionCard>(Game.PlayerTwo.Board)
             {
-                BackgroundImage = Properties.Resources.ScrollBody,
+                //BackgroundImage = Properties.Resources.ScrollBody,
                 BackgroundImageLayout = ImageLayout.Stretch,
             };
             Controls.Add(EnemyBoard);
             PlayerBoard = new CardGroupBox<MinionCard>(Game.PlayerOne.Board)
             {
-                BackgroundImage = Properties.Resources.ScrollBody,
+                //BackgroundImage = Properties.Resources.ScrollBody,
             };
             Controls.Add(PlayerBoard);
 
@@ -149,6 +148,8 @@ namespace Cards
             // ... should have width equal to the height of the boxes, because it must
             // contain two squares (player targets) with that width (plus spacing)
 
+            int DesiredHeight = CARD_HEIGHT + 2 * CARD_SPACING;
+
             var TempArr = new Control[] { EnemyHand, EnemyBoard, PlayerBoard, PlayerHand };
             for (int i = 0; i < 4; i++)
             {
@@ -156,7 +157,15 @@ namespace Cards
                 TempArr[i].Left = CONTROL_SPACING;
                 TempArr[i].Width = Screen.PrimaryScreen.Bounds.Width - BoxHeight - 3 * CONTROL_SPACING;
                 TempArr[i].Height = BoxHeight;
+
+                // Now change the height:
+                // If the height of the box is CARD_HEIGHT with a CARD_SPACING on either side,
+                // The new y-coordinate must be old-y - (height(first) - height(second)/2
+
+                TempArr[i].Top = TempArr[i].Top + (BoxHeight - DesiredHeight) / 2;
+                TempArr[i].Height = DesiredHeight;
             }
+            BoxHeight = DesiredHeight;
 
             PowerRegion.Top = EnemyBoard.Top;
             PowerRegion.Width = BoxHeight / 2;
@@ -180,7 +189,7 @@ namespace Cards
 
         private void ResetButton_Click(object sender, EventArgs e)
         {
-            Processor.Clear();
+            SelectedCard = null;
             RenderState(Game);
         }
 

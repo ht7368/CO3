@@ -109,7 +109,21 @@ namespace Cards
 
         public void CardClicked()
         {
-            var Processor = (Parent.Parent as GameBox).Processor;
+            GameBox Game = (Parent.Parent as GameBox);
+            if (Game.SelectedCard == null)
+            {
+                Game.SelectedCard = CardReferenced;
+                this.BackColor = Color.Red;
+                return;
+            }
+            Game.Game.ProcessMove(new Move(Game.SelectedCard.Id, CardReferenced.Id));
+            Game.SelectedCard = null;
+            Game.RenderState(Game.Game);
+        }
+        /*
+        public void CardClicked()
+        {
+            Processor.AddUserAction(CardReferenced);
 
             if (Processor.NumberOfMoves() > 1)
             {
@@ -119,13 +133,36 @@ namespace Cards
                 return;
             }
                 
-
-            Processor.AddUserAction(CardReferenced);
             if (Processor.NumberOfMoves() == 1)
                 this.BackColor = Color.Blue;
             else
                 this.BackColor = Color.Red;
         }
+        
+          // A spell card can be played on a target, a board or "everything"
+            // A minion card can be played onto your board
+            // A placed minion can attack an enemy minion or the enemy's hero
+            // A power can be played in the power slot
+            switch (Played[0])
+            {
+                case PowerCard p:
+                    return new Move(p.Id, 0);
+
+                case MinionCard m:
+                    if (m.OnBoard)
+                        return new Move(m.Id, Played[1].Id);
+                    else
+                        return new Move(m.Id, 0);
+
+                case SpellCard s:
+                    if (s.isTargeted)
+                        return new Move(s.Id, Played[1].Id);
+                    else
+                        return new Move(s.Id, 0);
+
+                default:
+                    throw new Exception();
+        */
     }
 
     /*

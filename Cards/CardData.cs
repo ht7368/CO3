@@ -18,7 +18,7 @@ namespace Cards
                 ManaCost = 1,
                 Attack = 0,
                 Health = 2,
-                Description = "Card dies at the end of the turn.",
+                Description = "Testing Dummy dies at the end of its turn.",
                 /*Effects = new EffectData<MinionCard>
                 {
                     { Effect.TurnEnd, (p) =>  { p.CardPlayed.Health = 0; } },
@@ -29,7 +29,7 @@ namespace Cards
             {
                 Name = "Clear Weather",
                 ManaCost = 3,
-                Description = "This power has no effect.",
+                Description = "No effect.",
                 Effects = new EffectData<PowerCard> { /* None */ }
             },
 
@@ -45,6 +45,19 @@ namespace Cards
                     Target.Health = 0;
                 }
             },
+
+            (GameState g) => new PowerCard(g)
+            {
+                Name = "The Grand Arena",
+                ManaCost = 6,
+                Description = "Before attacking, minions gain +3 attack.",
+                Effects = new EffectData<PowerCard>
+                {
+                    {
+                        Effect.MinionAttacking, (GameState s) => (s.LastMove.Selected.AsCard() as MinionCard).Attack += 3
+                    }
+                }
+            }
         };
     }
 }
