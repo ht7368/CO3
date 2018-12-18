@@ -40,7 +40,7 @@ namespace Cards
                 ManaCost = 5,
                 Description = "Target a minion. Destroy it.",
                 isTargeted = true,
-                Effect = (s, m) => 
+                SpellEffect = (s, m) => 
                 {
                     var Target = IdGenerator.GetById(m.Targeted) as MinionCard;
                     Target.Health = 0;

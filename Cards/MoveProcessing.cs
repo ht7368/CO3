@@ -50,6 +50,11 @@ namespace Cards
         {
             return IdGenerator.GetById(u) as T;
         }
+
+        public static bool IsCardT<T>(this uint u) where T: BaseCard
+        {
+            return IdGenerator.GetById(u) is T;
+        }
     }
 }
 

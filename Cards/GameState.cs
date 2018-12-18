@@ -90,6 +90,8 @@ namespace Cards
         {
             BaseCard Selected = nextMove.Selected.AsCard();
             BaseCard Targeted = nextMove.Selected.AsCard();
+            if (!Selected.IsPlayable(nextMove))
+                return;
             this.LastMove = nextMove;
             InactivePlayer.Hand.Remove(Selected);
             ActivePlayer.Hand.Remove(Selected);

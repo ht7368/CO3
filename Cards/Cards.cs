@@ -23,6 +23,8 @@ namespace Cards
 
         // Differs based on class
         public abstract void Play();
+
+        public abstract bool IsPlayable(Move potentialMove);
     }
 
     public class MinionCard : BaseCard
@@ -32,6 +34,7 @@ namespace Cards
         public int Attack;
         public int Health;
         public bool OnBoard = false;
+        public bool CanAttack = true;
 
         public MinionCard(GameState game) : base(game)
         {
@@ -56,9 +59,19 @@ namespace Cards
                 Game.BroadcastEffect(Effect.CardPlayed);
                 return;
             }
+        }
 
-            //currState.BroadcastEffect(Effect.MinionAttacking);
-
+        public override bool IsPlayable(Move potentialMove)
+        {
+            if (OnBoard)
+                return CanAttack;
+            if (ManaCost > Game.ActivePlayer.Mana)
+                return false;
+            if (potentialMove.Targeted == 0 || !potentialMove.Targeted.IsCardT<MinionCard>())
+                return false;
+            MinionCard CombatTarget = potentialMove.Targeted.AsCardT<MinionCard>();
+            return CombatTarget.OnBoard;
+            
         }
     }
 
@@ -75,12 +88,19 @@ namespace Cards
         {
             Game.CurrentPower = this;
         }
+
+        public override bool IsPlayable(Move potentialMove)
+        {
+            if (ManaCost > Game.ActivePlayer.Mana)
+                return false;
+            return true;
+        }
     }
 
     public class SpellCard : BaseCard
     {
         public bool isTargeted;
-        public Action<GameState, Move> Effect;
+        public Action<GameState, Move> SpellEffect;
 
         public SpellCard(GameState game) : base(game)
         {
@@ -89,7 +109,20 @@ namespace Cards
 
         public override void Play()
         {
-            this.Effect(Game, Game.LastMove);
+            Game.BroadcastEffect(Effect.CardPlayed);
+            this.SpellEffect(Game, Game.LastMove);
+        }
+
+        public override bool IsPlayable(Move potentialMove)
+        {
+            if (ManaCost > Game.ActivePlayer.Mana)
+                return false;
+            if (!isTargeted)
+                return true;
+            if (isTargeted && !potentialMove.Targeted.IsCardT<MinionCard>())
+                return false;
+            MinionCard SpellTarget = potentialMove.Targeted.AsCardT<MinionCard>();
+            return SpellTarget.OnBoard;
         }
     }
 }

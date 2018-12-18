@@ -50,6 +50,8 @@ namespace Cards
         private Button PassButton;
         private Button ResetButton;
         private Button DrawButton;
+        private Label PlayerMana;
+        private Label EnemyMana;
 
         public GameState Game;
         public BaseCard SelectedCard;
@@ -66,12 +68,22 @@ namespace Cards
             EnemyBoard.UpdateCards();
             PlayerHand.UpdateCards();
             PlayerBoard.UpdateCards();
-            PowerRegion.UpdateUI();
+            PowerRegion.UpdateUI(Game.CurrentPower);
+
+            PlayerMana.Text = $"P {Game.PlayerOne.Mana} out of {Game.PlayerOne.MaxMana}";
+            EnemyMana.Text = $"E {Game.PlayerTwo.Mana} out of {Game.PlayerTwo.MaxMana}";
         }
 
         // Initialise the UI by setting out ALL of the objects
         public void InitUI()
         {
+            PlayerMana = new Label();
+            EnemyMana = new Label();
+            Controls.Add(PlayerMana);
+            Controls.Add(EnemyMana);
+            PlayerMana.Top = 100;
+            EnemyMana.Top = 200;
+
             // Power region - card area where the power is displayed
             Game.CurrentPower = Cards.CardDB[3](Game) as PowerCard;
             PowerRegion = new PowerBox(Game.CurrentPower)

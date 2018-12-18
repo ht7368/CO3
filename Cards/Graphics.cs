@@ -134,8 +134,9 @@ namespace Cards
             Update();
         }
 
-        public void UpdateUI()
+        public void UpdateUI(PowerCard p)
         {
+            PowerCard = p;
             if (PowerCard == null)
             {
                 // TODO: RENDER `No Power Played` 
