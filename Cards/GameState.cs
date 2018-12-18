@@ -61,7 +61,7 @@ namespace Cards
             }
         }
 
-        private IEnumerable<BaseCard> AllCards()
+        public IEnumerable<BaseCard> AllCards()
         {
             foreach (BaseCard c in PlayerOne.Hand)
                 yield return c;
@@ -78,7 +78,7 @@ namespace Cards
         {
             if (CurrentPower.Effects.ContainsKey(effect))
                 CurrentPower.Effects[effect](this);
-
+             
             foreach (var c in AllCards())
                 if (c is MinionCard)
                     if ((c as MinionCard).Effects.ContainsKey(effect))
@@ -88,8 +88,8 @@ namespace Cards
         // Process a move generated either over network or locally and resolve it's events
         public void ProcessMove(Move nextMove)
         {
-            BaseCard Selected = IdGenerator.GetById(nextMove.Selected);
-            BaseCard Targeted = IdGenerator.GetById(nextMove.Targeted);
+            BaseCard Selected = nextMove.Selected.AsCard();
+            BaseCard Targeted = nextMove.Selected.AsCard();
             this.LastMove = nextMove;
             InactivePlayer.Hand.Remove(Selected);
             ActivePlayer.Hand.Remove(Selected);

@@ -44,12 +44,16 @@ namespace Cards
             if (OnBoard)
             {
                 Game.BroadcastEffect(Effect.MinionAttacking);
-                this.Health -= Game.LastMove.Targeted.AsCard() as MinionCard)
-            } else {
+                MinionCard Attacker = Game.LastMove.Targeted.AsCardT<MinionCard>();
+                this.Health -= Attacker.Attack;
+                Attacker.Health -= this.Attack;
+            }
+            else
+            {
                 OnBoard = true;
                 Game.ActivePlayer.Board.Add(this);
                 var a = Game.ActivePlayer.Board;
-                //currState.BroadcastEffect(Effect.CardPlayed);
+                Game.BroadcastEffect(Effect.CardPlayed);
                 return;
             }
 

@@ -46,7 +46,7 @@ namespace Cards
             return IdGenerator.GetById(u);
         }
 
-        public static T AsCardT(this uint u) where T: BaseCard
+        public static T AsCardT<T>(this uint u) where T: BaseCard
         {
             return IdGenerator.GetById(u) as T;
         }

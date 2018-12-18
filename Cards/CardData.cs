@@ -17,8 +17,9 @@ namespace Cards
                 Name = "Testing Dummy",
                 ManaCost = 1,
                 Attack = 0,
-                Health = 2,
+                Health = 3,
                 Description = "Testing Dummy dies at the end of its turn.",
+                OnBoard = false,
                 /*Effects = new EffectData<MinionCard>
                 {
                     { Effect.TurnEnd, (p) =>  { p.CardPlayed.Health = 0; } },
@@ -55,6 +56,38 @@ namespace Cards
                 {
                     {
                         Effect.MinionAttacking, (GameState s) => (s.LastMove.Selected.AsCard() as MinionCard).Attack += 3
+                    }
+                }
+            },
+
+            (GameState g) => new MinionCard(g)
+            {
+                Name = "Fighting Dummy",
+                ManaCost = 2,
+                Attack = 1,
+                Health = 4,
+                Description = "",
+                OnBoard = true,
+            },
+
+            (GameState g) => new PowerCard(g)
+            {
+                Name = "Whispers of Power",
+                ManaCost = 4,
+                Description = "Whenever you play a card, give all minions +1/+1",
+                Effects = new EffectData<PowerCard>
+                {
+                    {
+                        Effect.CardPlayed, (GameState s) =>
+                        {
+                            foreach (BaseCard c in s.AllCards())
+                                if (c is MinionCard)
+                                {
+                                    (c as MinionCard).Attack += 1;
+                                    (c as MinionCard).Health += 1;
+                                }
+                                    
+                        }
                     }
                 }
             }

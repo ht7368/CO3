@@ -73,6 +73,7 @@ namespace Cards
         public void InitUI()
         {
             // Power region - card area where the power is displayed
+            Game.CurrentPower = Cards.CardDB[3](Game) as PowerCard;
             PowerRegion = new PowerBox(Game.CurrentPower)
             {
                 Location = new Point(100, 100)
@@ -180,9 +181,9 @@ namespace Cards
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1](Game));
             Game.PlayerOne.Hand.Add(Cards.CardDB[2](Game));
             Game.PlayerOne.Hand.Add(Cards.CardDB[0](Game));
-            Game.PlayerTwo.Board.Add(Cards.CardDB[0](Game) as MinionCard);
-            Game.PlayerOne.Board.Add(Cards.CardDB[0](Game) as MinionCard);
-            Game.CurrentPower = Cards.CardDB[1](Game) as PowerCard;
+            Game.PlayerOne.Hand.Add(Cards.CardDB[5](Game));
+            Game.PlayerTwo.Board.Add(Cards.CardDB[4](Game) as MinionCard);
+            Game.PlayerOne.Board.Add(Cards.CardDB[4](Game) as MinionCard);
 
             RenderState(Game);
         }

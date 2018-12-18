@@ -79,7 +79,7 @@ namespace Cards
 
             CardCost.BringToFront();
 
-            foreach (Control c in Controls)
+            foreach (Control c  in Controls)
                 c.Click += (_s, _e) =>
                 {
                     CardClicked();
@@ -120,65 +120,11 @@ namespace Cards
             Game.SelectedCard = null;
             Game.RenderState(Game.Game);
         }
-        /*
-        public void CardClicked()
-        {
-            Processor.AddUserAction(CardReferenced);
-
-            if (Processor.NumberOfMoves() > 1)
-            {
-                Move Play = Processor.ProcessMoves();
-                Processor.Clear();
-                (Parent.Parent as GameBox).Game.ProcessMove(Play);
-                return;
-            }
-                
-            if (Processor.NumberOfMoves() == 1)
-                this.BackColor = Color.Blue;
-            else
-                this.BackColor = Color.Red;
-        }
-        
-          // A spell card can be played on a target, a board or "everything"
-            // A minion card can be played onto your board
-            // A placed minion can attack an enemy minion or the enemy's hero
-            // A power can be played in the power slot
-            switch (Played[0])
-            {
-                case PowerCard p:
-                    return new Move(p.Id, 0);
-
-                case MinionCard m:
-                    if (m.OnBoard)
-                        return new Move(m.Id, Played[1].Id);
-                    else
-                        return new Move(m.Id, 0);
-
-                case SpellCard s:
-                    if (s.isTargeted)
-                        return new Move(s.Id, Played[1].Id);
-                    else
-                        return new Move(s.Id, 0);
-
-                default:
-                    throw new Exception();
-        */
     }
-
-    /*
-     * 
-        private void PlayButton_Click(object sender, EventArgs e)
-        {
-            Move Play = Processor.ProcessMoves();
-            Processor.Clear();
-            Game.ProcessMove(Play);
-
-            RenderState(Game);
-        }*/
 
     public class PowerBox : Panel
     {
-        PowerCard PowerCard;
+        public PowerCard PowerCard;
 
         public PowerBox(PowerCard power)
         {
