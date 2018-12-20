@@ -9,6 +9,8 @@ namespace Cards
 {
     class Cards
     {
+        // (Subject to change?) A collection of all cards. More specifically,
+        // functions that take a GameState to return a card.
         public static List<Func<GameState, BaseCard>> CardDB = new List<Func<GameState, BaseCard>>
         {
             // Testing Dummy

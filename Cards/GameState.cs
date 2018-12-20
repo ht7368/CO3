@@ -78,7 +78,8 @@ namespace Cards
         {
             if (CurrentPower.Effects.ContainsKey(effect))
                 CurrentPower.Effects[effect](this);
-             
+         
+            // Anything with an effect will have it called
             foreach (var c in AllCards())
                 if (c is MinionCard)
                     if ((c as MinionCard).Effects.ContainsKey(effect))

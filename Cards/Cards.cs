@@ -44,6 +44,8 @@ namespace Cards
         // This method is called from the gamestate and passes in itself
         public override void Play()
         {
+            // A "move" can mean different things for a minion card 
+            // If it's on board, it is attacking another minion
             if (OnBoard)
             {
                 Game.BroadcastEffect(Effect.MinionAttacking);
@@ -51,6 +53,7 @@ namespace Cards
                 this.Health -= Attacker.Attack;
                 Attacker.Health -= this.Attack;
             }
+            // But otherwise, it is being played
             else
             {
                 OnBoard = true;
@@ -67,6 +70,10 @@ namespace Cards
         {
             if (OnBoard)
             {
+                // Move is valid on board if:
+                // Attack target exists,
+                // the target is a minion that has been played
+                // And the card is capable of attacking
                 if (potentialMove.Targeted == 0)
                     return false;
                 if (!potentialMove.Targeted.IsCardT<MinionCard>())
@@ -76,6 +83,7 @@ namespace Cards
             }
             else
             {
+                // Move is valid in hand if it is in the correct hand and has mana
                 if (!Game.ActivePlayer.Hand.Contains(this))
                     return false;
                 return ManaCost <= Game.ActivePlayer.Mana;
@@ -85,6 +93,7 @@ namespace Cards
 
     public class PowerCard : BaseCard
     {
+        // Dictionary of effect: thing to call when it happens
         public EffectData<PowerCard> Effects = new EffectData<PowerCard>();
 
         public PowerCard(GameState game) : base(game)
@@ -113,11 +122,12 @@ namespace Cards
     public class SpellCard : BaseCard
     {
         public bool isTargeted;
+        // Will be called when the spell is played
         public Action<GameState, Move> SpellEffect;
 
         public SpellCard(GameState game) : base(game)
         {
-            // Nothing here for now r
+            // Nothing here for now
         }
 
         public override void Play()
