@@ -92,9 +92,11 @@ namespace Cards
             BaseCard Targeted = nextMove.Selected.AsCard();
             if (!Selected.IsPlayable(nextMove))
                 return;
+
             this.LastMove = nextMove;
             InactivePlayer.Hand.Remove(Selected);
             ActivePlayer.Hand.Remove(Selected);
+
             Selected.Play();
             ResolveActions();
         }
@@ -113,6 +115,15 @@ namespace Cards
                     }
                         
                 }
+        }
+
+        public void SwitchTurns()
+        {
+            ActivePlayer.ManaTurn += 1;
+            ActivePlayer.Mana += ActivePlayer.ManaTurn < 6 ? ActivePlayer.ManaTurn : 6;
+            if (ActivePlayer.Mana > ActivePlayer.MaxMana)
+                ActivePlayer.Mana = ActivePlayer.MaxMana;
+            IsP1Turn = !IsP1Turn;
         }
     }
     // This class has to be static - if there was multiple instances of it,

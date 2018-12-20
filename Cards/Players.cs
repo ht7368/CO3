@@ -10,8 +10,9 @@ namespace Cards
     // In the network case, functions to get some information will end up sending network requests.
     public abstract class BasePlayer
     {
-        public int MaxMana = 1;
+        public int MaxMana = 13;
         public int Mana = 1;
+        public int ManaTurn = 1;
         public int Health = 25;
         public List<BaseCard> Deck = new List<BaseCard>();
         public List<BaseCard> Hand = new List<BaseCard>();

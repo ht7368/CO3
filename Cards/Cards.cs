@@ -57,21 +57,29 @@ namespace Cards
                 Game.ActivePlayer.Board.Add(this);
                 var a = Game.ActivePlayer.Board;
                 Game.BroadcastEffect(Effect.CardPlayed);
-                return;
+                Game.ActivePlayer.Mana -= this.ManaCost;
+                if (Game.ActivePlayer.Mana < 0)
+                    Game.ActivePlayer.Mana = 0;
             }
         }
 
         public override bool IsPlayable(Move potentialMove)
         {
             if (OnBoard)
-                return CanAttack;
-            if (ManaCost > Game.ActivePlayer.Mana)
-                return false;
-            if (potentialMove.Targeted == 0 || !potentialMove.Targeted.IsCardT<MinionCard>())
-                return false;
-            MinionCard CombatTarget = potentialMove.Targeted.AsCardT<MinionCard>();
-            return CombatTarget.OnBoard;
-            
+            {
+                if (potentialMove.Targeted == 0)
+                    return false;
+                if (!potentialMove.Targeted.IsCardT<MinionCard>())
+                    return false;
+                MinionCard CombatTarget = potentialMove.Targeted.AsCardT<MinionCard>();
+                return CanAttack && CombatTarget.OnBoard && Game.ActivePlayer.Board.Contains(this);
+            }
+            else
+            {
+                if (!Game.ActivePlayer.Hand.Contains(this))
+                    return false;
+                return ManaCost <= Game.ActivePlayer.Mana;
+            }
         }
     }
 
@@ -87,10 +95,15 @@ namespace Cards
         public override void Play()
         {
             Game.CurrentPower = this;
+            Game.ActivePlayer.Mana -= this.ManaCost;
+            if (Game.ActivePlayer.Mana < 0)
+                Game.ActivePlayer.Mana = 0;
         }
 
         public override bool IsPlayable(Move potentialMove)
         {
+            if (!Game.ActivePlayer.Hand.Contains(this))
+                return false;
             if (ManaCost > Game.ActivePlayer.Mana)
                 return false;
             return true;
@@ -111,10 +124,15 @@ namespace Cards
         {
             Game.BroadcastEffect(Effect.CardPlayed);
             this.SpellEffect(Game, Game.LastMove);
+            Game.ActivePlayer.Mana -= this.ManaCost;
+            if (Game.ActivePlayer.Mana < 0)
+                Game.ActivePlayer.Mana = 0;
         }
 
         public override bool IsPlayable(Move potentialMove)
         {
+            if (!Game.ActivePlayer.Hand.Contains(this))
+                return false;
             if (ManaCost > Game.ActivePlayer.Mana)
                 return false;
             if (!isTargeted)

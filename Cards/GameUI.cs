@@ -213,7 +213,9 @@ namespace Cards
 
         private void PassButton_Click(object sender, EventArgs e)
         {
-            Game.IsP1Turn = !Game.IsP1Turn;
+            Game.SwitchTurns();
+            PlayerMana.Text = $"P {Game.PlayerOne.Mana} out of {Game.PlayerOne.MaxMana}";
+            EnemyMana.Text = $"E {Game.PlayerTwo.Mana} out of {Game.PlayerTwo.MaxMana}";
         }
     }
 }
