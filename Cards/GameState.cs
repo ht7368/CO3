@@ -33,12 +33,27 @@ namespace Cards
 
         public GameBox Box;
 
+
         public GameState()
         {
             PlayerOne = new LocalPlayer();
             PlayerTwo = new NetworkPlayer();
+
+            PlayerOne.PlayerCard = new BaseCard(this)
+            {
+                Description = "",
+                Name = "",
+                ManaCost = 0,
+            };
+            PlayerTwo.PlayerCard = new BaseCard(this)
+            {
+                Description = "",
+                Name = "",
+                ManaCost = 0,
+            };
         }
 
+        // Helper functions
         public BasePlayer ActivePlayer
         {
             get
@@ -87,6 +102,7 @@ namespace Cards
         }
 
         // Process a move generated either over network or locally and resolve it's events
+        // This function will not perform anything if the move is invalid
         public void ProcessMove(Move nextMove)
         {
             BaseCard Selected = nextMove.Selected.AsCard();
@@ -102,6 +118,8 @@ namespace Cards
             ResolveActions();
         }
 
+        // Resolving an action involves:
+        // Removing minions that have no health
         public void ResolveActions()
         {
             foreach (var c in AllCards())
@@ -114,7 +132,6 @@ namespace Cards
                         PlayerTwo.Board.Remove(m);
                         break;
                     }
-                        
                 }
         }
 
@@ -125,6 +142,10 @@ namespace Cards
             if (ActivePlayer.Mana > ActivePlayer.MaxMana)
                 ActivePlayer.Mana = ActivePlayer.MaxMana;
             IsP1Turn = !IsP1Turn;
+
+            foreach (BaseCard c in AllCards())
+                if (c is MinionCard)
+                    (c as MinionCard).CanAttack = true;
         }
     }
     // This class has to be static - if there was multiple instances of it,

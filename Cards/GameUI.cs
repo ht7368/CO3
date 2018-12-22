@@ -52,6 +52,8 @@ namespace Cards
         private Button DrawButton;
         private Label PlayerMana;
         private Label EnemyMana;
+        private PlayerBox EnemyHero;
+        private PlayerBox PlayerHero;
 
         public GameState Game;
         public BaseCard SelectedCard;
@@ -84,8 +86,17 @@ namespace Cards
             PlayerMana.Top = 100;
             EnemyMana.Top = 200;
 
+            // Will initialize the player regions
+            EnemyHero = new PlayerBox(Game.PlayerTwo.PlayerCard);
+            PlayerHero = new PlayerBox(Game.PlayerOne.PlayerCard);
+            Controls.Add(EnemyHero);
+            Controls.Add(PlayerHero);
+            EnemyHero.Left = 1600;
+            PlayerHero.Left = 1600;
+            PlayerHero.Top = 1000;
+
             // Power region - card area where the power is displayed
-            Game.CurrentPower = Cards.CardDB[3](Game) as PowerCard;
+            Game.CurrentPower = Cards.CardDB[1](Game) as PowerCard;
             PowerRegion = new PowerBox(Game.CurrentPower)
             {
                 Location = new Point(100, 100)
@@ -160,7 +171,6 @@ namespace Cards
             // The zone for player targets, buttons and other displayed information...
             // ... should have width equal to the height of the boxes, because it must
             // contain two squares (player targets) with that width (plus spacing)
-
             int DesiredHeight = CARD_HEIGHT + 2 * CARD_SPACING;
 
             var TempArr = new Control[] { EnemyHand, EnemyBoard, PlayerBoard, PlayerHand };

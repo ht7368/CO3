@@ -39,6 +39,7 @@ namespace Cards
         }
     }
 
+    // Helper functions to transform an Id into its thing
     static class IdExt
     {
         public static BaseCard AsCard(this uint u)

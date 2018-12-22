@@ -18,6 +18,8 @@ namespace Cards
         public List<BaseCard> Hand = new List<BaseCard>();
         public List<MinionCard> Board = new List<MinionCard>();
 
+        public BaseCard PlayerCard;
+
         //protected static Network Net = new Network();
 
         //public abstract Move NextMove();

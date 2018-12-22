@@ -10,12 +10,14 @@ namespace Cards
 {
     public class CardBox : Panel
     {
+
         public const int CARD_WIDTH = 100;
         public const int CARD_HEIGHT = 200;
         public const int CARD_SPACING = 5;
 
-        private BaseCard CardReferenced;
+        protected BaseCard CardReferenced;
 
+        // Visual control elements
         private PictureBox CardBase;
         private PictureBox CardArt;
         private Label CardName;
@@ -30,6 +32,7 @@ namespace Cards
 
             Size = new Size(100, 200);
 
+            // Initializes all of these controls and adds them
             CardBase = new PictureBox()
             {
                 Height = Height - 6,
@@ -79,12 +82,14 @@ namespace Cards
 
             CardCost.BringToFront();
 
+            // Ensures clicking anywhere on the card counts as a click
             foreach (Control c  in Controls)
                 c.Click += (_s, _e) =>
                 {
                     CardClicked();
                 };
 
+            // Different visual effects for minion cards
             if (card is MinionCard)
             {
                 CardAttack = new Label()
@@ -107,21 +112,26 @@ namespace Cards
             }
         }
 
+        // onClick for card elements
         public void CardClicked()
         {
+            // Get the game from the top-level gamebox
             GameBox Game = (Parent.Parent as GameBox);
+            // If nothing is selected yet, we set the selected card
             if (Game.SelectedCard == null)
             {
                 Game.SelectedCard = CardReferenced;
                 this.BackColor = Color.Red;
                 return;
             }
+            // Otherwise the move is completed and processed
             Game.Game.ProcessMove(new Move(Game.SelectedCard.Id, CardReferenced.Id));
             Game.SelectedCard = null;
             Game.RenderState(Game.Game);
         }
     }
 
+    // Bespoke box for the power
     public class PowerBox : Panel
     {
         public PowerCard PowerCard;
@@ -190,6 +200,25 @@ namespace Cards
                 NextX += (CardBox.CARD_WIDTH + CardBox.CARD_SPACING);
                 Controls.Add(c);
             }
+        }
+    }
+
+    // A special box type for player heroes
+    public class PlayerBox : CardBox
+    {
+        public PlayerBox(BaseCard card) : base(card)
+        {
+            Height = Width;
+            Controls.Clear();
+            Click += (_s, _e) =>
+            {
+                GameBox Box = (Parent as GameBox);
+                if (Box.SelectedCard == null)
+                    return;
+                Box.Game.ProcessMove(new Move(Box.SelectedCard.Id, CardReferenced.Id));
+                Box.SelectedCard = null;
+                Box.RenderState(Box.Game);
+            };
         }
     }
 }

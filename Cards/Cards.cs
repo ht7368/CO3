@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cards
 {
-    public abstract class BaseCard
+    public class BaseCard
     {
         public int ManaCost { get; set; }
         public string Name { get; set; }
@@ -22,9 +22,15 @@ namespace Cards
         }
 
         // Differs based on class
-        public abstract void Play();
+        public void Play()
+        {
 
-        public abstract bool IsPlayable(Move potentialMove);
+        }
+
+        public virtual bool IsPlayable(Move potentialMove)
+        {
+            return false;
+        }
     }
 
     public class MinionCard : BaseCard
@@ -34,7 +40,7 @@ namespace Cards
         public int Attack;
         public int Health;
         public bool OnBoard = false;
-        public bool CanAttack = true;
+        public bool CanAttack = false;
 
         public MinionCard(GameState game) : base(game)
         {
@@ -42,12 +48,16 @@ namespace Cards
         }
 
         // This method is called from the gamestate and passes in itself
-        public override void Play()
+        public new void Play()
         {
             // A "move" can mean different things for a minion card 
             // If it's on board, it is attacking another minion
             if (OnBoard)
             {
+                if (Game.LastMove.Targeted.IsCardT<BaseCard>())
+                {
+                    Game.InactivePlayer.Health -= this.Attack;
+                }
                 Game.BroadcastEffect(Effect.MinionAttacking);
                 MinionCard Attacker = Game.LastMove.Targeted.AsCardT<MinionCard>();
                 this.Health -= Attacker.Attack;
@@ -64,6 +74,7 @@ namespace Cards
                 if (Game.ActivePlayer.Mana < 0)
                     Game.ActivePlayer.Mana = 0;
             }
+            CanAttack = false;
         }
 
         public override bool IsPlayable(Move potentialMove)
@@ -76,6 +87,8 @@ namespace Cards
                 // And the card is capable of attacking
                 if (potentialMove.Targeted == 0)
                     return false;
+                if (Game.InactivePlayer.PlayerCard == potentialMove.Targeted.AsCard())
+                    return CanAttack;
                 if (!potentialMove.Targeted.IsCardT<MinionCard>())
                     return false;
                 MinionCard CombatTarget = potentialMove.Targeted.AsCardT<MinionCard>();
@@ -101,7 +114,7 @@ namespace Cards
             // Nothing here for now
         }
 
-        public override void Play()
+        public new void Play()
         {
             Game.CurrentPower = this;
             Game.ActivePlayer.Mana -= this.ManaCost;
@@ -109,7 +122,7 @@ namespace Cards
                 Game.ActivePlayer.Mana = 0;
         }
 
-        public override bool IsPlayable(Move potentialMove)
+        public new bool IsPlayable(Move potentialMove)
         {
             if (!Game.ActivePlayer.Hand.Contains(this))
                 return false;
@@ -130,7 +143,7 @@ namespace Cards
             // Nothing here for now
         }
 
-        public override void Play()
+        public new void Play()
         {
             Game.BroadcastEffect(Effect.CardPlayed);
             this.SpellEffect(Game, Game.LastMove);
@@ -139,7 +152,7 @@ namespace Cards
                 Game.ActivePlayer.Mana = 0;
         }
 
-        public override bool IsPlayable(Move potentialMove)
+        public new bool IsPlayable(Move potentialMove)
         {
             if (!Game.ActivePlayer.Hand.Contains(this))
                 return false;
