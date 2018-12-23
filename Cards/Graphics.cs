@@ -206,6 +206,8 @@ namespace Cards
     // A special box type for player heroes
     public class PlayerBox : CardBox
     {
+        private Label HealthLabel;
+
         public PlayerBox(BaseCard card) : base(card)
         {
             Height = Width;
@@ -219,6 +221,19 @@ namespace Cards
                 Box.SelectedCard = null;
                 Box.RenderState(Box.Game);
             };
+
+            HealthLabel = new Label();
+            Controls.Add(HealthLabel);
+            this.UpdateUI();
+            HealthLabel.Anchor = AnchorStyles.Right;
+        }
+
+        public void UpdateUI()
+        {
+            if (CardReferenced.Game.PlayerOne.PlayerCard == CardReferenced)
+                HealthLabel.Text = CardReferenced.Game.PlayerOne.Health.ToString();
+            else
+                HealthLabel.Text = CardReferenced.Game.PlayerTwo.Health.ToString();
         }
     }
 }

@@ -39,13 +39,13 @@ namespace Cards
             PlayerOne = new LocalPlayer();
             PlayerTwo = new NetworkPlayer();
 
-            PlayerOne.PlayerCard = new BaseCard(this)
+            PlayerOne.PlayerCard = new HeroCard(this)
             {
                 Description = "",
                 Name = "",
                 ManaCost = 0,
             };
-            PlayerTwo.PlayerCard = new BaseCard(this)
+            PlayerTwo.PlayerCard = new HeroCard(this)
             {
                 Description = "",
                 Name = "",

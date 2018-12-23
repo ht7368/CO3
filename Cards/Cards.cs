@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Cards
 {
-    public class BaseCard
+    public abstract class BaseCard
     {
         public int ManaCost { get; set; }
         public string Name { get; set; }
@@ -22,7 +22,7 @@ namespace Cards
         }
 
         // Differs based on class
-        public void Play()
+        public virtual void Play()
         {
 
         }
@@ -48,17 +48,18 @@ namespace Cards
         }
 
         // This method is called from the gamestate and passes in itself
-        public new void Play()
+        public override void Play()
         {
             // A "move" can mean different things for a minion card 
             // If it's on board, it is attacking another minion
             if (OnBoard)
             {
-                if (Game.LastMove.Targeted.IsCardT<BaseCard>())
+                Game.BroadcastEffect(Effect.MinionAttacking);
+                if (Game.LastMove.Targeted.IsCardT<HeroCard>())
                 {
                     Game.InactivePlayer.Health -= this.Attack;
+                    return;
                 }
-                Game.BroadcastEffect(Effect.MinionAttacking);
                 MinionCard Attacker = Game.LastMove.Targeted.AsCardT<MinionCard>();
                 this.Health -= Attacker.Attack;
                 Attacker.Health -= this.Attack;
@@ -114,7 +115,7 @@ namespace Cards
             // Nothing here for now
         }
 
-        public new void Play()
+        public override void Play()
         {
             Game.CurrentPower = this;
             Game.ActivePlayer.Mana -= this.ManaCost;
@@ -122,7 +123,7 @@ namespace Cards
                 Game.ActivePlayer.Mana = 0;
         }
 
-        public new bool IsPlayable(Move potentialMove)
+        public override bool IsPlayable(Move potentialMove)
         {
             if (!Game.ActivePlayer.Hand.Contains(this))
                 return false;
@@ -143,7 +144,7 @@ namespace Cards
             // Nothing here for now
         }
 
-        public new void Play()
+        public override void Play()
         {
             Game.BroadcastEffect(Effect.CardPlayed);
             this.SpellEffect(Game, Game.LastMove);
@@ -152,7 +153,7 @@ namespace Cards
                 Game.ActivePlayer.Mana = 0;
         }
 
-        public new bool IsPlayable(Move potentialMove)
+        public override bool IsPlayable(Move potentialMove)
         {
             if (!Game.ActivePlayer.Hand.Contains(this))
                 return false;
@@ -164,6 +165,14 @@ namespace Cards
                 return false;
             MinionCard SpellTarget = potentialMove.Targeted.AsCardT<MinionCard>();
             return SpellTarget.OnBoard;
+        }
+    }
+
+    public class HeroCard : BaseCard
+    {
+        public HeroCard(GameState game) : base(game)
+        {
+
         }
     }
 }

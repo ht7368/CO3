@@ -71,6 +71,8 @@ namespace Cards
             PlayerHand.UpdateCards();
             PlayerBoard.UpdateCards();
             PowerRegion.UpdateUI(Game.CurrentPower);
+            EnemyHero.UpdateUI();
+            PlayerHero.UpdateUI();
 
             PlayerMana.Text = $"P {Game.PlayerOne.Mana} out of {Game.PlayerOne.MaxMana}";
             EnemyMana.Text = $"E {Game.PlayerTwo.Mana} out of {Game.PlayerTwo.MaxMana}";
@@ -91,8 +93,8 @@ namespace Cards
             PlayerHero = new PlayerBox(Game.PlayerOne.PlayerCard);
             Controls.Add(EnemyHero);
             Controls.Add(PlayerHero);
-            EnemyHero.Left = 1600;
-            PlayerHero.Left = 1600;
+            EnemyHero.Left = 1700;
+            PlayerHero.Left = 1700;
             PlayerHero.Top = 1000;
 
             // Power region - card area where the power is displayed

@@ -49,7 +49,7 @@ namespace Cards
 
         public static T AsCardT<T>(this uint u) where T: BaseCard
         {
-            return IdGenerator.GetById(u) as T;
+            return (T)IdGenerator.GetById(u);
         }
 
         public static bool IsCardT<T>(this uint u) where T: BaseCard
