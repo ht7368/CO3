@@ -209,6 +209,12 @@ namespace Cards
             Game.PlayerTwo.Board.Add(Cards.CardDB[4](Game) as MinionCard);
             Game.PlayerOne.Board.Add(Cards.CardDB[4](Game) as MinionCard);
 
+            Random Rand = new Random();
+            for (int i = 0; i < 25; i++)
+                Game.PlayerOne.Deck.Add(Cards.CardDB[Rand.Next(0, Cards.CardDB.Count)](Game));
+            for (int i = 0; i < 25; i++)
+                Game.PlayerTwo.Deck.Add(Cards.CardDB[Rand.Next(0, Cards.CardDB.Count)](Game));
+
             RenderState(Game);
         }
 
@@ -220,7 +226,8 @@ namespace Cards
 
         private void DrawButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            Game.ProcessMove(new Move(GameState.CARD_DRAW, 0));
+            RenderState(Game);
         }
 
         private void PassButton_Click(object sender, EventArgs e)

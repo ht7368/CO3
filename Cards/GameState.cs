@@ -25,6 +25,8 @@ namespace Cards
     // Notably, the rendering code will only see this, rendering elements seperate from logic.
     public class GameState
     {
+        public const int NUM_RESERVED_CODES = 3;
+
         public BasePlayer PlayerOne;
         public BasePlayer PlayerTwo;
         public PowerCard CurrentPower;
@@ -101,10 +103,36 @@ namespace Cards
                         (c as MinionCard).Effects[effect](this);
         }
 
+        // SPECIAL CODES FOR MOVE PROCESSING
+        // 0 Opponent left - concede button
+        // 1 Turn passed - pass button
+        // 2 Card drawn - draw button
+
+        public const int OPP_CONCEDE = 0;
+        public const int TURN_PASS = 1;
+        public const int CARD_DRAW = 2;
+
         // Process a move generated either over network or locally and resolve it's events
         // This function will not perform anything if the move is invalid
         public void ProcessMove(Move nextMove)
         {
+            // TODO: if 0
+            if (nextMove.Selected == OPP_CONCEDE)
+            {
+                return;
+            }
+            else if (nextMove.Selected == TURN_PASS)
+            {
+                SwitchTurns();
+                return;
+            }
+            else if (nextMove.Selected == CARD_DRAW)
+            {
+                // TODO: Force loss if deck is empty
+                ActivePlayer.DrawCard();
+                return;
+            }
+
             BaseCard Selected = nextMove.Selected.AsCard();
             BaseCard Targeted = nextMove.Selected.AsCard();
             if (!Selected.IsPlayable(nextMove))
@@ -137,46 +165,23 @@ namespace Cards
 
         public void SwitchTurns()
         {
+            // Switch turn flag
+            IsP1Turn = !IsP1Turn;
+
+            // Process end-of-turn mana changes
             ActivePlayer.ManaTurn += 1;
             ActivePlayer.Mana += ActivePlayer.ManaTurn < 6 ? ActivePlayer.ManaTurn : 6;
             if (ActivePlayer.Mana > ActivePlayer.MaxMana)
                 ActivePlayer.Mana = ActivePlayer.MaxMana;
-            IsP1Turn = !IsP1Turn;
 
+            // Allow minions to attack again
             foreach (BaseCard c in AllCards())
                 if (c is MinionCard)
                     (c as MinionCard).CanAttack = true;
+
+            // Allow players to draw again
+            PlayerOne.CanDraw = true;
+            PlayerTwo.CanDraw = true;
         }
     }
-    // This class has to be static - if there was multiple instances of it,
-    // The IDs couldn't be synchronised, and there may exist duplicates.
-    // It wouldn't make sense to have multiple ID generators, anyway.
-    // Furthermore, this makes it accessible everywhere - pretty handy.
-    public static class IdGenerator
-    {
-        // This is a list of all cards registered with an ID to the game.
-        private static List<BaseCard> AllCards = new List<BaseCard>();
-        // Has to start at 1, 0 is used to represent no target (null value).
-        private static uint CurrMaxId = 1;
-        // Gives a card am ID and adds it to the list of registered cards.
-        public static uint NextId(BaseCard newCard)
-        {
-            if (CurrMaxId == uint.MaxValue)
-                throw new OverflowException();
-            AllCards.Add(newCard);
-            CurrMaxId += 1;
-            return CurrMaxId - 1;
-        }
-        
-        // Fetches a card from the global list of cards by ID
-        public static BaseCard GetById(uint id)
-        {
-            if (id == 0)
-                return null;
-            foreach (BaseCard c in AllCards)
-                if (c.Id == id)
-                    return c;
-            return null;
-        }
-    }   
 }

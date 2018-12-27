@@ -8,7 +8,7 @@ namespace Cards
 {
     // A player could be either local or over the network; this will cover both cases.
     // In the network case, functions to get some information will end up sending network requests.
-    public abstract class BasePlayer
+    public class BasePlayer
     {
         public int MaxMana = 13;
         public int Mana = 1;
@@ -17,6 +17,7 @@ namespace Cards
         public List<BaseCard> Deck = new List<BaseCard>();
         public List<BaseCard> Hand = new List<BaseCard>();
         public List<MinionCard> Board = new List<MinionCard>();
+        public bool CanDraw = true;
 
         public BaseCard PlayerCard;
 
@@ -24,6 +25,17 @@ namespace Cards
 
         //public abstract Move NextMove();
         //public abstract bool HasNextMove();
+
+        public virtual void DrawCard()
+        {
+            if (!CanDraw || Mana == 0)
+                return;
+            CanDraw = false;
+            Mana -= 1;
+            // TODO: If empty, concede
+            Hand.Add(Deck[0]);
+            Deck.RemoveAt(0);
+        }
     }
 
     public class LocalPlayer : BasePlayer

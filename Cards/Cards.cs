@@ -80,6 +80,9 @@ namespace Cards
 
         public override bool IsPlayable(Move potentialMove)
         {
+            // Initial codes are reserved for special actions
+            if (potentialMove.Selected < GameState.NUM_RESERVED_CODES)
+                return false;
             if (OnBoard)
             {
                 // Move is valid on board if:
@@ -125,6 +128,8 @@ namespace Cards
 
         public override bool IsPlayable(Move potentialMove)
         {
+            if (potentialMove.Selected < GameState.NUM_RESERVED_CODES)
+                return false;
             if (!Game.ActivePlayer.Hand.Contains(this))
                 return false;
             if (ManaCost > Game.ActivePlayer.Mana)
@@ -155,6 +160,8 @@ namespace Cards
 
         public override bool IsPlayable(Move potentialMove)
         {
+            if (potentialMove.Selected < GameState.NUM_RESERVED_CODES)
+                return false;
             if (!Game.ActivePlayer.Hand.Contains(this))
                 return false;
             if (ManaCost > Game.ActivePlayer.Mana)
