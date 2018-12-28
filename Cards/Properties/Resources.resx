@@ -121,8 +121,86 @@
   <data name="ArtPlaceholder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PlaceholderArt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BackArea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BackArea.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CardArea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CARDAREABODY.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="CardbackPlaceholder" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Placeholder.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CardBody" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CardBody.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HealthOrb9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HealthOrb9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem11.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem12.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem13" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem13.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGem9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGem9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ManaGemBase" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ManaGemBase.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ScrollBody" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ScrollBody.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -132,6 +210,9 @@
   </data>
   <data name="ScrollRight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ScrollRight.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SelectedCardBody" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SelectedCardBody.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Transparent" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Transparent.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

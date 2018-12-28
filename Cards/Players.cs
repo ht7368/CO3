@@ -28,7 +28,7 @@ namespace Cards
 
         public virtual void DrawCard()
         {
-            if (!CanDraw || Mana == 0)
+            if (!CanDraw || Mana == 0 || Hand.Count >= 10)
                 return;
             CanDraw = false;
             Mana -= 1;

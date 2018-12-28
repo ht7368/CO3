@@ -123,5 +123,95 @@
   <ItemGroup>
     <None Include="Resources\ScrollRight.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CARDAREABODY.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BackArea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CardBodyBeta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CardBody.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectedCardBody.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem2x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGem13.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaGemBase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb7.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthOrb10.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

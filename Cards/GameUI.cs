@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Cards
@@ -39,8 +33,8 @@ namespace Cards
     {
         public const int CARD_WIDTH = 100;
         public const int CARD_HEIGHT = 200;
-        public const int CARD_SPACING = 5;
-        public const int CONTROL_SPACING = 10;
+        public const int CARD_SPACING = 10;
+        public const int CONTROL_SPACING = 50;
 
         private PowerBox PowerRegion;
         private CardGroupBox<BaseCard> EnemyHand;
@@ -50,8 +44,8 @@ namespace Cards
         private Button PassButton;
         private Button ResetButton;
         private Button DrawButton;
-        private Label PlayerMana;
-        private Label EnemyMana;
+        private Label PlayerMana = new Label();
+        private Label EnemyMana = new Label();
         private PlayerBox EnemyHero;
         private PlayerBox PlayerHero;
 
@@ -81,8 +75,8 @@ namespace Cards
         // Initialise the UI by setting out ALL of the objects
         public void InitUI()
         {
-            PlayerMana = new Label();
-            EnemyMana = new Label();
+            BackgroundImage = Properties.Resources.BackArea;
+
             Controls.Add(PlayerMana);
             Controls.Add(EnemyMana);
             PlayerMana.Top = 100;
@@ -137,34 +131,34 @@ namespace Cards
             // Everything past here sets up the hand and board zones
             EnemyHand = new CardGroupBox<BaseCard>(Game.PlayerTwo.Hand)
             {
-
-            };
+                BackgroundImage = Properties.Resources.CardArea,
+                BackgroundImageLayout = ImageLayout.Stretch,
+            }; 
             Controls.Add(EnemyHand);
             PlayerHand = new CardGroupBox<BaseCard>(Game.PlayerOne.Hand)
             {
-
+                BackgroundImage = Properties.Resources.CardArea,
+                BackgroundImageLayout = ImageLayout.Stretch,
             };
             Controls.Add(PlayerHand);
             EnemyBoard = new CardGroupBox<MinionCard>(Game.PlayerTwo.Board)
             {
-                //BackgroundImage = Properties.Resources.ScrollBody,
+                BackgroundImage = Properties.Resources.CardArea,
                 BackgroundImageLayout = ImageLayout.Stretch,
             };
             Controls.Add(EnemyBoard);
             PlayerBoard = new CardGroupBox<MinionCard>(Game.PlayerOne.Board)
             {
-                //BackgroundImage = Properties.Resources.ScrollBody,
+                BackgroundImage = Properties.Resources.CardArea,
+                BackgroundImageLayout = ImageLayout.Stretch,
             };
             Controls.Add(PlayerBoard);
-
-            BackgroundImage = Properties.Resources.Wood;
-            BackgroundImageLayout = ImageLayout.Tile;
 
             // Position on the y-coordinate so that:
             // a. each box has an equal height
             // b. each box has the same spacing between them
             // c. the boxes are spaced evenly throughout the window
-            int BoxHeight = (this.Height - (5 * CARD_SPACING)) / 4; // * 4; 
+            int BoxHeight = (this.Height - (5 * CONTROL_SPACING )) / 4; // * 4; 
             EnemyHand.Height = BoxHeight;
             EnemyBoard.Height = BoxHeight;
             PlayerHand.Height = BoxHeight;
@@ -178,9 +172,9 @@ namespace Cards
             var TempArr = new Control[] { EnemyHand, EnemyBoard, PlayerBoard, PlayerHand };
             for (int i = 0; i < 4; i++)
             {
-                TempArr[i].Top = (i + 1) * CARD_SPACING + i * BoxHeight;
+                TempArr[i].Top = (i + 1) * CONTROL_SPACING + i * BoxHeight;
                 TempArr[i].Left = CONTROL_SPACING;
-                TempArr[i].Width = Screen.PrimaryScreen.Bounds.Width - BoxHeight - 3 * CONTROL_SPACING;
+                TempArr[i].Width = Screen.PrimaryScreen.Bounds.Width - DesiredHeight - 3 * CONTROL_SPACING;
                 TempArr[i].Height = BoxHeight;
 
                 // Now change the height:
@@ -192,11 +186,25 @@ namespace Cards
             }
             BoxHeight = DesiredHeight;
 
+            // Positioned relative to hand and board zones
+            EnemyHero.Top = EnemyHand.Top;
+            EnemyHero.Left = EnemyHand.Left + EnemyHand.Width + CONTROL_SPACING;
+            PlayerHero.Top = PlayerHand.Top;
+            PlayerHero.Left = PlayerHand.Left + PlayerHand.Width + CONTROL_SPACING;
+
+            // Resize the hero boxes with the new height
+            EnemyHero.Width = BoxHeight;
+            PlayerHero.Width = BoxHeight;
+            EnemyHero.Height = BoxHeight;
+            PlayerHero.Height = BoxHeight;
+
+            // Power region is also positioned relative to the new hand and board zones
             PowerRegion.Top = EnemyBoard.Top;
             PowerRegion.Width = BoxHeight / 2;
             PowerRegion.Height = BoxHeight;
             PowerRegion.Left = EnemyBoard.Left + EnemyBoard.Width + CONTROL_SPACING;
 
+            // TESTING add cards to hand initially
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1](Game));
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));

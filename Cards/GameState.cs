@@ -156,8 +156,8 @@ namespace Cards
                     MinionCard m = c as MinionCard;
                     if (m.Health <= 0)
                     {
-                        PlayerOne.Board.Remove(m);
-                        PlayerTwo.Board.Remove(m);
+                        ActivePlayer.Board.Remove(m);
+                        InactivePlayer.Board.Remove(m);
                         break;
                     }
                 }
@@ -165,9 +165,6 @@ namespace Cards
 
         public void SwitchTurns()
         {
-            // Switch turn flag
-            IsP1Turn = !IsP1Turn;
-
             // Process end-of-turn mana changes
             ActivePlayer.ManaTurn += 1;
             ActivePlayer.Mana += ActivePlayer.ManaTurn < 6 ? ActivePlayer.ManaTurn : 6;
@@ -182,6 +179,9 @@ namespace Cards
             // Allow players to draw again
             PlayerOne.CanDraw = true;
             PlayerTwo.CanDraw = true;
+
+            // Switch turn flag
+            IsP1Turn = !IsP1Turn;
         }
     }
 }

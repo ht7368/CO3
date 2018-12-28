@@ -13,41 +13,31 @@ namespace Cards
 
         public const int CARD_WIDTH = 100;
         public const int CARD_HEIGHT = 200;
-        public const int CARD_SPACING = 5;
+        public const int CARD_SPACING = 8;
+
+        public Color CARD_COLOR = Color.FromArgb(255, 107, 71, 71);
 
         protected BaseCard CardReferenced;
 
         // Visual control elements
-        private PictureBox CardBase;
         private PictureBox CardArt;
         private Label CardName;
         private TextBox CardInfo;
         private Label CardAttack;
-        private Label CardHealth;
-        private Label CardCost;
+        private PictureBox CardHealth;
+        private PictureBox CardCost;
 
         public CardBox(BaseCard card) : base()
         {
             CardReferenced = card;
+            Size = new Size(CARD_WIDTH, CARD_HEIGHT);
+            BackgroundImage = Properties.Resources.CardBody;
 
-            Size = new Size(100, 200);
-
-            // Initializes all of these controls and adds them
-            CardBase = new PictureBox()
-            {
-                Height = Height - 6,
-                Width = Width - 6,
-                Location = new Point(3, 3),
-                // Image = ...,
-                SizeMode = PictureBoxSizeMode.StretchImage,
-                BackColor = Color.Gray,
-            };
             CardArt = new PictureBox()
             {
                 Size = new Size(90, 90),
                 Location = new Point(5, 5),
                 Image = Properties.Resources.ArtPlaceholder,
-                BackColor = Color.Transparent,
             };
             CardName = new Label()
             {
@@ -55,39 +45,37 @@ namespace Cards
                 Location = new Point(5, 100),
                 Size = new Size(90, 25),
                 TextAlign = ContentAlignment.MiddleCenter,
-                BackColor = Color.LightGray,
+                BackColor = CARD_COLOR,
+                ForeColor = Color.White,
             };
             CardInfo = new TextBox()
             {
                 TextAlign = HorizontalAlignment.Center,
                 Multiline = true,
+                ReadOnly = true,
                 Location = new Point(5, 130),
                 Size = new Size(90, 65),
                 Lines = new string[] { card.Description },
-                Enabled = false,
+                BackColor = CARD_COLOR,
+                BorderStyle = BorderStyle.None,
+                ForeColor = Color.Red,
+                Cursor = Cursors.Arrow,
             };
-            CardCost = new Label()
+            CardCost = new PictureBox()
             {
-                Text = card.ManaCost.ToString(),
-                Size = new Size(20, 20),
-                Top = CARD_SPACING,
-                Left = Width - 20 - CARD_SPACING,
+                Size = new Size(30, 30),
+                Top = CARD_HEIGHT - 30 - 3,
+                Left = 3,
+                AutoSize = false,
+                Image = ManaGemFor(CardReferenced.ManaCost),
             };
 
             Controls.Add(CardArt);
             Controls.Add(CardInfo);
             Controls.Add(CardName);
-            Controls.Add(CardBase);
             Controls.Add(CardCost);
 
             CardCost.BringToFront();
-
-            // Ensures clicking anywhere on the card counts as a click
-            foreach (Control c  in Controls)
-                c.Click += (_s, _e) =>
-                {
-                    CardClicked();
-                };
 
             // Different visual effects for minion cards
             if (card is MinionCard)
@@ -95,21 +83,29 @@ namespace Cards
                 CardAttack = new Label()
                 {
                     Size = new Size(20, 20),
-                    Location = new Point(0, Height - 20)
+                    Location = new Point(0, Height - 20),
+                    TextAlign = ContentAlignment.MiddleCenter,
                 };
                 Controls.Add(CardAttack);
                 CardAttack.BringToFront();
-                CardHealth = new Label()
+                CardHealth = new PictureBox()
                 {
-                    Size = new Size(20, 20),
-                    Location = new Point(Width - 20, Height - 20)
+                    Size = new Size(30, 30),
+                    Location = new Point(Width - 33, Height - 33),
+                    Image = HealthOrbFor((card as MinionCard).Health),
                 };
                 Controls.Add(CardHealth);
                 CardHealth.BringToFront();
 
-                CardAttack.Text = (CardReferenced as MinionCard).Attack.ToString();
-                CardHealth.Text = (CardReferenced as MinionCard).Health.ToString();
+                //CardAttack.Text = (CardReferenced as MinionCard).Attack.ToString();
             }
+
+            // Ensures clicking anywhere on the card counts as a click
+            foreach (Control c in Controls)
+                c.Click += (_s, _e) =>
+                {
+                    CardClicked();
+                };
         }
 
         // onClick for card elements
@@ -121,13 +117,26 @@ namespace Cards
             if (Game.SelectedCard == null)
             {
                 Game.SelectedCard = CardReferenced;
-                this.BackColor = Color.Red;
+                BackgroundImage = Properties.Resources.SelectedCardBody;
                 return;
             }
             // Otherwise the move is completed and processed
             Game.Game.ProcessMove(new Move(Game.SelectedCard.Id, CardReferenced.Id));
             Game.SelectedCard = null;
             Game.RenderState(Game.Game);
+        }
+
+        public static Image ManaGemFor(int m)
+        {
+            return Properties.Resources.ResourceManager.GetObject($"ManaGem{m}") as Image;
+        }
+
+        public static Image HealthOrbFor(int h)
+        {
+            if (h < 10)
+                return Properties.Resources.ResourceManager.GetObject($"HealthOrb{h}") as Image;
+            else
+                throw new Exception();
         }
     }
 
