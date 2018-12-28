@@ -52,6 +52,8 @@ namespace Cards
         public GameState Game;
         public BaseCard SelectedCard;
 
+        public static CustomFont CFont = new CustomFont();
+
         public GameBox()
         {
             Game = new GameState();

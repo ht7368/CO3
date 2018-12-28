@@ -16,12 +16,13 @@ namespace Cards
             // Testing Dummy
             (GameState g) => new MinionCard(g)
             {
-                Name = "Testing Dummy",
+                Name = "TESTING DUMMY",
                 ManaCost = 1,
                 Attack = 0,
                 Health = 3,
-                Description = "Testing Dummy dies at the end of its turn.",
+                Description = "DIES ON TURN END",
                 OnBoard = false,
+                Art = Properties.Resources.TargetDummy,
                 /*Effects = new EffectData<MinionCard>
                 {
                     { Effect.TurnEnd, (p) =>  { p.CardPlayed.Health = 0; } },
@@ -30,17 +31,18 @@ namespace Cards
 
             (GameState g) => new PowerCard(g)
             {
-                Name = "Clear Weather",
-                ManaCost = 3,
-                Description = "No effect.",
+                Name = "CLEAR WEATHER",
+                ManaCost = 5,
+                Description = "NO EFFECT",
+                Art = Properties.Resources.ClearSky,
                 Effects = new EffectData<PowerCard> { /* None */ }
             },
 
             (GameState g) => new SpellCard(g)
             {
-                Name = "Vanquish",
+                Name = "VANQUISH",
                 ManaCost = 5,
-                Description = "Target a minion. Destroy it.",
+                Description = "DESTROY A MINION",
                 isTargeted = true,
                 SpellEffect = (s, m) => 
                 {
@@ -51,9 +53,9 @@ namespace Cards
 
             (GameState g) => new PowerCard(g)
             {
-                Name = "The Grand Arena",
+                Name = "GRAND ARENA",
                 ManaCost = 6,
-                Description = "Before attacking, minions gain +3 attack.",
+                Description = "MINIONS GAIN +3 ATK BEFORE ATTACKING",
                 Effects = new EffectData<PowerCard>
                 {
                     {
@@ -64,7 +66,7 @@ namespace Cards
 
             (GameState g) => new MinionCard(g)
             {
-                Name = "Fighting Dummy",
+                Name = "FIGHTING DUMMY",
                 ManaCost = 2,
                 Attack = 1,
                 Health = 4,
@@ -74,9 +76,9 @@ namespace Cards
 
             (GameState g) => new PowerCard(g)
             {
-                Name = "Whispers of Power",
+                Name = "WHISPERS OF POWER",
                 ManaCost = 4,
-                Description = "Whenever you play a card, give all minions +1/+1",
+                Description = "ALL MINIONS +1/+1 WHEN CARD PLAYED",
                 Effects = new EffectData<PowerCard>
                 {
                     {

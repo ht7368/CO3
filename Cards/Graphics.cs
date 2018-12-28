@@ -24,8 +24,9 @@ namespace Cards
         private Label CardName;
         private TextBox CardInfo;
         private Label CardAttack;
-        private PictureBox CardHealth;
-        private PictureBox CardCost;
+        private Label CardHealth;
+        private Label CardCost;
+        private PictureBox CardMinionIndicator;
 
         public CardBox(BaseCard card) : base()
         {
@@ -35,39 +36,45 @@ namespace Cards
 
             CardArt = new PictureBox()
             {
-                Size = new Size(90, 90),
-                Location = new Point(5, 5),
-                Image = Properties.Resources.ArtPlaceholder,
+                Size = new Size(74, 74),
+                Location = new Point(13, 13),
             };
+            if (CardReferenced.Art != null)
+                CardArt.Image = CardReferenced.Art;
             CardName = new Label()
             {
                 Text = card.Name,
-                Location = new Point(5, 100),
+                Location = new Point(5, 13 + 74 + 13),
                 Size = new Size(90, 25),
                 TextAlign = ContentAlignment.MiddleCenter,
                 BackColor = CARD_COLOR,
                 ForeColor = Color.White,
+                Font = GameBox.CFont.GetFont(12),
             };
             CardInfo = new TextBox()
             {
                 TextAlign = HorizontalAlignment.Center,
                 Multiline = true,
                 ReadOnly = true,
-                Location = new Point(5, 130),
+                Location = new Point(5, 13 + 74 + 13 + 25 + 7),
                 Size = new Size(90, 65),
                 Lines = new string[] { card.Description },
                 BackColor = CARD_COLOR,
                 BorderStyle = BorderStyle.None,
-                ForeColor = Color.Red,
+                ForeColor = Color.White,
                 Cursor = Cursors.Arrow,
+                Font = GameBox.CFont.GetFont(12),
             };
-            CardCost = new PictureBox()
+            CardCost = new Label()
             {
-                Size = new Size(30, 30),
-                Top = CARD_HEIGHT - 30 - 3,
-                Left = 3,
-                AutoSize = false,
-                Image = ManaGemFor(CardReferenced.ManaCost),
+                Text = CardReferenced.ManaCost.ToString(),
+                Size = new Size(22, 22),
+                Top = CARD_HEIGHT - 22 - 4,
+                Left = 4,
+                Font = GameBox.CFont.GetFont(13),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Image = Properties.Resources.ManaBox,
             };
 
             Controls.Add(CardArt);
@@ -80,22 +87,45 @@ namespace Cards
             // Different visual effects for minion cards
             if (card is MinionCard)
             {
+                MinionCard minion = card as MinionCard;
                 CardAttack = new Label()
                 {
-                    Size = new Size(20, 20),
-                    Location = new Point(0, Height - 20),
+                    Text = minion.Attack.ToString(),
+                    Size = new Size(22, 22),
+                    Top = CARD_HEIGHT - 22 - 4,
+                    Left = CARD_WIDTH - 4 - 22 - 22,
+                    Font = GameBox.CFont.GetFont(13),
+                    ForeColor = Color.White,
                     TextAlign = ContentAlignment.MiddleCenter,
+                    Image = Properties.Resources.AttackBox,
                 };
                 Controls.Add(CardAttack);
                 CardAttack.BringToFront();
-                CardHealth = new PictureBox()
+                CardHealth = new Label()
                 {
-                    Size = new Size(30, 30),
-                    Location = new Point(Width - 33, Height - 33),
-                    Image = HealthOrbFor((card as MinionCard).Health),
+                    Text = CardReferenced.ManaCost.ToString(),
+                    Size = new Size(22, 22),
+                    Top = CARD_HEIGHT - 22 - 4,
+                    Left = CARD_WIDTH - 4 - 22,
+                    Font = GameBox.CFont.GetFont(13),
+                    ForeColor = Color.White,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Image = Properties.Resources.HealthBox,
                 };
                 Controls.Add(CardHealth);
                 CardHealth.BringToFront();
+                CardMinionIndicator = new PictureBox()
+                {
+                    Size = new Size(22, 22),
+                    Top = CARD_HEIGHT - 22 - 4,
+                    // Centred between CardCost and CardHealth
+                    Left = (((CardCost.Left + 22) + CardHealth.Left) / 2) - 22,
+                    Font = GameBox.CFont.GetFont(13),
+                    ForeColor = Color.White,
+                    Image = minion.CanAttack ? Properties.Resources.GreenBox : Properties.Resources.RedBox,
+                };
+                Controls.Add(CardMinionIndicator);
+                CardMinionIndicator.BringToFront();
 
                 //CardAttack.Text = (CardReferenced as MinionCard).Attack.ToString();
             }

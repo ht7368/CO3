@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="CardData.cs" />
     <Compile Include="Cards.cs" />
+    <Compile Include="CustomFont.cs" />
     <Compile Include="GameUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -212,6 +213,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\HealthOrb10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ClearSky.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TargetDummy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AttackBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HealthBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CrossBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SwordBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SwordBoxBloody.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedBox.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

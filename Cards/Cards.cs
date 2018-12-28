@@ -11,6 +11,9 @@ namespace Cards
         public int ManaCost { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public System.Drawing.Image Art { get; set; }
+
         public readonly uint Id;
 
         public GameState Game;
