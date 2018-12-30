@@ -101,6 +101,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\BitFont.ttf" />
     <None Include="Resources\CardbackPlaceholder.png" />
   </ItemGroup>
   <ItemGroup>
@@ -243,6 +244,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RedBox.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HeroFrameEnemy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HeroFramePlayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ButtonBase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaDisplay.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ManaDisplayAlt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PowerAreaBody.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

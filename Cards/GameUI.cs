@@ -35,6 +35,7 @@ namespace Cards
         public const int CARD_HEIGHT = 200;
         public const int CARD_SPACING = 10;
         public const int CONTROL_SPACING = 50;
+        public Color BACK_COLOR = Color.FromArgb(114, 76, 61);
 
         private PowerBox PowerRegion;
         private CardGroupBox<BaseCard> EnemyHand;
@@ -44,8 +45,8 @@ namespace Cards
         private Button PassButton;
         private Button ResetButton;
         private Button DrawButton;
-        private Label PlayerMana = new Label();
-        private Label EnemyMana = new Label();
+        private Label PlayerMana;
+        private Label EnemyMana;
         private PlayerBox EnemyHero;
         private PlayerBox PlayerHero;
 
@@ -70,19 +71,14 @@ namespace Cards
             EnemyHero.UpdateUI();
             PlayerHero.UpdateUI();
 
-            PlayerMana.Text = $"P {Game.PlayerOne.Mana} out of {Game.PlayerOne.MaxMana}";
-            EnemyMana.Text = $"E {Game.PlayerTwo.Mana} out of {Game.PlayerTwo.MaxMana}";
+            PlayerMana.Text = $"{Game.PlayerOne.Mana} / {Game.PlayerOne.MaxMana}";
+            EnemyMana.Text = $"{Game.PlayerTwo.Mana} / {Game.PlayerTwo.MaxMana}";
         }
 
         // Initialise the UI by setting out ALL of the objects
         public void InitUI()
         {
             BackgroundImage = Properties.Resources.BackArea;
-
-            Controls.Add(PlayerMana);
-            Controls.Add(EnemyMana);
-            PlayerMana.Top = 100;
-            EnemyMana.Top = 200;
 
             // Will initialize the player regions
             EnemyHero = new PlayerBox(Game.PlayerTwo.PlayerCard);
@@ -101,34 +97,6 @@ namespace Cards
             };
             Controls.Add(PowerRegion);
             PowerRegion.BringToFront();
-
-            // Buttons;
-            ResetButton = new Button()
-            {
-                Location = new Point(100, 130),
-                Text = "Reset",
-            };
-            ResetButton.Click += ResetButton_Click;
-            Controls.Add(ResetButton);
-            ResetButton.BringToFront();
-
-            DrawButton = new Button()
-            {
-                Location = new Point(100, 160),
-                Text = "Draw",
-            };
-            DrawButton.Click += DrawButton_Click;
-            Controls.Add(DrawButton);
-            DrawButton.BringToFront();
-
-            PassButton = new Button()
-            {
-                Location = new Point(100, 190),
-                Text = "End Turn",
-            };
-            PassButton.Click += PassButton_Click;
-            Controls.Add(PassButton);
-            PassButton.BringToFront();
 
             // Everything past here sets up the hand and board zones
             EnemyHand = new CardGroupBox<BaseCard>(Game.PlayerTwo.Hand)
@@ -200,11 +168,104 @@ namespace Cards
             EnemyHero.Height = BoxHeight;
             PlayerHero.Height = BoxHeight;
 
+            PlayerHero.InitUI();
+            EnemyHero.InitUI();
+
             // Power region is also positioned relative to the new hand and board zones
             PowerRegion.Top = EnemyBoard.Top;
             PowerRegion.Width = BoxHeight / 2;
             PowerRegion.Height = BoxHeight;
             PowerRegion.Left = EnemyBoard.Left + EnemyBoard.Width + CONTROL_SPACING;
+
+            // Buttons;
+            ResetButton = new Button()
+            {
+                Left = PlayerBoard.Left + PlayerBoard.Width + CONTROL_SPACING,
+                Top = PlayerBoard.Top,
+                Width = DesiredHeight,
+                Text = "RESET SELECTION",
+                Image = Properties.Resources.ButtonBase,
+                Font = CFont.GetFont(12),
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
+            };
+            ResetButton.FlatAppearance.BorderSize = 1;
+            ResetButton.FlatAppearance.BorderColor = BACK_COLOR;
+            ResetButton.Click += ResetButton_Click;
+            Controls.Add(ResetButton);
+            ResetButton.BringToFront();
+
+            DrawButton = new Button()
+            {
+                Left = PlayerBoard.Left + PlayerBoard.Width + CONTROL_SPACING,
+                Top = PlayerBoard.Top,
+                Width = DesiredHeight,
+                Text = "DRAW A CARD",
+                Image = Properties.Resources.ButtonBase,
+                Font = CFont.GetFont(12),
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
+            };
+            DrawButton.FlatAppearance.BorderSize = 1;
+            DrawButton.FlatAppearance.BorderColor = BACK_COLOR;
+            DrawButton.Click += DrawButton_Click;
+            Controls.Add(DrawButton);
+            DrawButton.BringToFront();
+
+            PassButton = new Button()
+            {
+                Left = PlayerBoard.Left + PlayerBoard.Width + CONTROL_SPACING,
+                Top = PlayerBoard.Top,
+                Width = DesiredHeight,
+                Text = "END YOUR TURN",
+                Image = Properties.Resources.ButtonBase,
+                Font = CFont.GetFont(12),
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
+                ImageAlign = ContentAlignment.MiddleCenter,
+            };
+            PassButton.FlatAppearance.BorderSize = 1;
+            PassButton.FlatAppearance.BorderColor = BACK_COLOR;
+            PassButton.Click += PassButton_Click;
+            Controls.Add(PassButton);
+            PassButton.BringToFront();
+
+            // Calculating the heights for all of the buttons
+            int REDUCED_SPACING = CONTROL_SPACING / 3; // Different spacing for better aesthetic effect
+            int ButtonHeight = (DesiredHeight - 2 * REDUCED_SPACING) / 3;
+            DrawButton.Height = ButtonHeight;
+            PassButton.Height = ButtonHeight;
+            ResetButton.Height = ButtonHeight;
+            PassButton.Top += ButtonHeight + REDUCED_SPACING;
+            ResetButton.Top = PassButton.Top + ButtonHeight + REDUCED_SPACING;
+
+            // Mana Labels
+            int LabelWidth = (DesiredHeight - CONTROL_SPACING) / 2;
+            PlayerMana = new Label()
+            {
+                Top = EnemyBoard.Top,
+                Left = EnemyBoard.Left + EnemyBoard.Width + 2 * CONTROL_SPACING + LabelWidth,
+                Width = LabelWidth,
+                Height = LabelWidth,
+                Image = Properties.Resources.ManaDisplay,
+                Font = CFont.GetFont(15),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter,
+            };
+            EnemyMana = new Label()
+            {
+                Top = EnemyBoard.Top,
+                Left = EnemyBoard.Left + EnemyBoard.Width + 2 * CONTROL_SPACING + LabelWidth,
+                Width = LabelWidth,
+                Height = LabelWidth,
+                Image = Properties.Resources.ManaDisplayAlt,
+                Font = CFont.GetFont(15),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter,
+            };
+            PlayerMana.Top += CONTROL_SPACING + LabelWidth;
+            Controls.Add(PlayerMana);
+            Controls.Add(EnemyMana);
 
             // TESTING add cards to hand initially
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
@@ -243,8 +304,8 @@ namespace Cards
         private void PassButton_Click(object sender, EventArgs e)
         {
             Game.SwitchTurns();
-            PlayerMana.Text = $"P {Game.PlayerOne.Mana} out of {Game.PlayerOne.MaxMana}";
-            EnemyMana.Text = $"E {Game.PlayerTwo.Mana} out of {Game.PlayerTwo.MaxMana}";
+            PlayerMana.Text = $"{Game.PlayerOne.Mana } / {Game.PlayerOne.MaxMana}";
+            EnemyMana.Text = $"{Game.PlayerTwo.Mana} / {Game.PlayerTwo.MaxMana}";
         }
     }
 }

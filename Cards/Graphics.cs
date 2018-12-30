@@ -10,11 +10,6 @@ namespace Cards
 {
     public class CardBox : Panel
     {
-
-        public const int CARD_WIDTH = 100;
-        public const int CARD_HEIGHT = 200;
-        public const int CARD_SPACING = 8;
-
         public Color CARD_COLOR = Color.FromArgb(255, 107, 71, 71);
 
         protected BaseCard CardReferenced;
@@ -31,7 +26,7 @@ namespace Cards
         public CardBox(BaseCard card) : base()
         {
             CardReferenced = card;
-            Size = new Size(CARD_WIDTH, CARD_HEIGHT);
+            Size = new Size(GameBox.CARD_WIDTH, GameBox.CARD_HEIGHT);
             BackgroundImage = Properties.Resources.CardBody;
 
             CardArt = new PictureBox()
@@ -69,7 +64,7 @@ namespace Cards
             {
                 Text = CardReferenced.ManaCost.ToString(),
                 Size = new Size(22, 22),
-                Top = CARD_HEIGHT - 22 - 4,
+                Top = GameBox.CARD_HEIGHT - 22 - 4,
                 Left = 4,
                 Font = GameBox.CFont.GetFont(13),
                 ForeColor = Color.White,
@@ -92,8 +87,8 @@ namespace Cards
                 {
                     Text = minion.Attack.ToString(),
                     Size = new Size(22, 22),
-                    Top = CARD_HEIGHT - 22 - 4,
-                    Left = CARD_WIDTH - 4 - 22 - 22,
+                    Top = GameBox.CARD_HEIGHT - 22 - 4,
+                    Left = GameBox.CARD_WIDTH - 4 - 22 - 22,
                     Font = GameBox.CFont.GetFont(13),
                     ForeColor = Color.White,
                     TextAlign = ContentAlignment.MiddleCenter,
@@ -105,8 +100,8 @@ namespace Cards
                 {
                     Text = CardReferenced.ManaCost.ToString(),
                     Size = new Size(22, 22),
-                    Top = CARD_HEIGHT - 22 - 4,
-                    Left = CARD_WIDTH - 4 - 22,
+                    Top = GameBox.CARD_HEIGHT - 22 - 4,
+                    Left = GameBox.CARD_WIDTH - 4 - 22,
                     Font = GameBox.CFont.GetFont(13),
                     ForeColor = Color.White,
                     TextAlign = ContentAlignment.MiddleCenter,
@@ -117,7 +112,7 @@ namespace Cards
                 CardMinionIndicator = new PictureBox()
                 {
                     Size = new Size(22, 22),
-                    Top = CARD_HEIGHT - 22 - 4,
+                    Top = GameBox.CARD_HEIGHT - 22 - 4,
                     // Centred between CardCost and CardHealth
                     Left = (((CardCost.Left + 22) + CardHealth.Left) / 2) - 22,
                     Font = GameBox.CFont.GetFont(13),
@@ -155,31 +150,30 @@ namespace Cards
             Game.SelectedCard = null;
             Game.RenderState(Game.Game);
         }
-
-        public static Image ManaGemFor(int m)
-        {
-            return Properties.Resources.ResourceManager.GetObject($"ManaGem{m}") as Image;
-        }
-
-        public static Image HealthOrbFor(int h)
-        {
-            if (h < 10)
-                return Properties.Resources.ResourceManager.GetObject($"HealthOrb{h}") as Image;
-            else
-                throw new Exception();
-        }
     }
 
     // Bespoke box for the power
     public class PowerBox : Panel
     {
         public PowerCard PowerCard;
+        private Label PowerLabel;
 
         public PowerBox(PowerCard power)
         {
+            PowerLabel = new Label
+            {
+                Left = 2, // Aesthetic tweak - Nudge towards right
+                BackColor = Color.FromArgb(114, 76, 61),
+                Text = "CURRENT POWER",
+                Font = GameBox.CFont.GetFont(12),
+                Height = 10,
+                Width = 150,
+                ForeColor = Color.White,
+            };
+            BackColor = Color.FromArgb(114, 76, 61);
             PowerCard = power;
-            Height = CardBox.CARD_HEIGHT;
-            Width = CardBox.CARD_WIDTH;
+            Height = GameBox.CARD_HEIGHT;
+            Width = GameBox.CARD_WIDTH;
             Update();
         }
 
@@ -192,11 +186,17 @@ namespace Cards
                 return;
             }
             Controls.Clear();
+
+            Controls.Add(PowerLabel);
+            PowerLabel.BringToFront();
             CardBox Visual = new CardBox(PowerCard as BaseCard)
             {
                 Location = new Point(0, 0),
             };
             Controls.Add(Visual);
+
+            Visual.Top = Height - GameBox.CARD_HEIGHT;
+            Visual.Left = (this.Width - GameBox.CARD_WIDTH) / 2;
         }
     }
 
@@ -219,24 +219,24 @@ namespace Cards
             //this.Height = 2 * CardBox.CARD_SPACING + CardBox.CARD_HEIGHT;
 
             // The y-coordinate of a card is set up so that it is centred
-            int CoordY = this.Height / 2 - CardBox.CARD_HEIGHT / 2;
+            int CoordY = this.Height / 2 - GameBox.CARD_HEIGHT / 2;
 
             this.Controls.Clear();
             // Can be refactored, mathematically
             int FirstX;
             if (Cards.Count % 2 == 0)
                 // x = mid – (n / 2) * (g + w) + 0.5 * g
-                FirstX = (this.Width / 2) - (Cards.Count / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) + (CardBox.CARD_SPACING / 2);
+                FirstX = (this.Width / 2) - (Cards.Count / 2) * (GameBox.CARD_WIDTH + GameBox.CARD_SPACING) + (GameBox.CARD_SPACING / 2);
             else
                 // mid – (n / 2) * (g + w) – 0.5 * w
-                FirstX = (this.Width / 2) - (Cards.Count / 2) * (CardBox.CARD_WIDTH + CardBox.CARD_SPACING) - (CardBox.CARD_WIDTH / 2);
+                FirstX = (this.Width / 2) - (Cards.Count / 2) * (GameBox.CARD_WIDTH + GameBox.CARD_SPACING) - (GameBox.CARD_WIDTH / 2);
 
             int NextX = FirstX;
             foreach (CardBox c in Cards)
             {
                 c.Left = NextX;
                 c.Top = CoordY;
-                NextX += (CardBox.CARD_WIDTH + CardBox.CARD_SPACING);
+                NextX += (GameBox.CARD_WIDTH + GameBox.CARD_SPACING);
                 Controls.Add(c);
             }
         }
@@ -263,8 +263,29 @@ namespace Cards
 
             HealthLabel = new Label();
             Controls.Add(HealthLabel);
-            this.UpdateUI();
-            HealthLabel.Anchor = AnchorStyles.Right;
+        }
+
+        public void InitUI()
+        {
+            HealthLabel.Size = new Size(42, 22);
+            HealthLabel.ForeColor = Color.White;
+            HealthLabel.Font = GameBox.CFont.GetFont(24);
+            HealthLabel.BringToFront();
+            if (CardReferenced.Game.PlayerOne.PlayerCard == CardReferenced)
+            {
+                BackgroundImage = Properties.Resources.HeroFramePlayer;
+                HealthLabel.BackColor = Color.FromArgb(68, 197, 91);
+                HealthLabel.Left = 7;
+                HealthLabel.Top = Height - 22 - 9;
+            }
+            else
+            {
+                BackgroundImage = Properties.Resources.HeroFrameEnemy;
+                HealthLabel.BackColor = Color.FromArgb(81, 81, 81);
+                HealthLabel.Left = Width - 42 - 5;
+                HealthLabel.Top = Height - 22 - 7;
+            }
+            UpdateUI();
         }
 
         public void UpdateUI()
