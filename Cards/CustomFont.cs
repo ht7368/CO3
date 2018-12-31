@@ -14,8 +14,10 @@ namespace Cards
 
         public CustomFont()
         {
-            if (File.Exists("5x3.ttf"))
-                Fonts.AddFontFile("5x3.ttf");
+            // Create the font file if it does not exist - it is in the resources
+            if (!File.Exists("5x3.ttf"))
+                File.WriteAllBytes("5x3.ttf", Properties.Resources.BitFont);
+            Fonts.AddFontFile("5x3.ttf");
         }
 
         public System.Drawing.Font GetFont(float fontSize)

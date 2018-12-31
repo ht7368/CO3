@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Cards
 {
@@ -17,6 +19,7 @@ namespace Cards
         {
             FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
+
             Game = new GameBox
             {
                 Location = new Point(0, 0),
@@ -24,8 +27,11 @@ namespace Cards
                 Height = Screen.PrimaryScreen.Bounds.Height,
                 //BackColor = Color.LightYellow,
             };
-            Controls.Add(Game);
+            Game.Visible = false;
+            Game.SendToBack();
             Game.InitUI();
+            Controls.Add(Game);
+            Game.Visible = true;
         }
     }
 
@@ -49,6 +55,7 @@ namespace Cards
         private Label EnemyMana;
         private PlayerBox EnemyHero;
         private PlayerBox PlayerHero;
+        private Label NotificationLabel;
 
         public GameState Game;
         public BaseCard SelectedCard;
@@ -63,16 +70,18 @@ namespace Cards
         // Will update the visuals with the current board state.
         public void RenderState(GameState state)
         {
-            EnemyHand.UpdateCards();
-            EnemyBoard.UpdateCards();
-            PlayerHand.UpdateCards();
-            PlayerBoard.UpdateCards();
+            EnemyHand.UpdateUI();
+            EnemyBoard.UpdateUI();
+            PlayerHand.UpdateUI();
+            PlayerBoard.UpdateUI();
             PowerRegion.UpdateUI(Game.CurrentPower);
-            EnemyHero.UpdateUI();
-            PlayerHero.UpdateUI();
+            EnemyHero.UpdatePlayerUI();
+            PlayerHero.UpdatePlayerUI();
 
             PlayerMana.Text = $"{Game.PlayerOne.Mana} / {Game.PlayerOne.MaxMana}";
             EnemyMana.Text = $"{Game.PlayerTwo.Mana} / {Game.PlayerTwo.MaxMana}";
+
+            NotificationLabel.Visible = false;
         }
 
         // Initialise the UI by setting out ALL of the objects
@@ -123,6 +132,11 @@ namespace Cards
                 BackgroundImageLayout = ImageLayout.Stretch,
             };
             Controls.Add(PlayerBoard);
+
+            EnemyBoard.InitUI();
+            EnemyHand.InitUI();
+            PlayerBoard.InitUI();
+            PlayerHand.InitUI();
 
             // Position on the y-coordinate so that:
             // a. each box has an equal height
@@ -267,6 +281,21 @@ namespace Cards
             Controls.Add(PlayerMana);
             Controls.Add(EnemyMana);
 
+            // Notification label
+            NotificationLabel = new Label()
+            {
+                Text = "",
+                TextAlign = ContentAlignment.MiddleCenter,
+                Visible = true,
+                Width = this.Width,
+                Height = 22,
+                Left = 0,
+                BackColor = Color.Black,
+                ForeColor = Color.White,
+                Font = CFont.GetFont(12),
+            };
+            Controls.Add(NotificationLabel);
+
             // TESTING add cards to hand initially
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1](Game));
@@ -289,6 +318,13 @@ namespace Cards
             RenderState(Game);
         }
 
+        private void DisplayNotification(string messageText)
+        {
+            NotificationLabel.Text = messageText;
+            NotificationLabel.Visible = true;
+            NotificationLabel.BringToFront();
+        }
+
         private void ResetButton_Click(object sender, EventArgs e)
         {
             SelectedCard = null;
@@ -304,8 +340,7 @@ namespace Cards
         private void PassButton_Click(object sender, EventArgs e)
         {
             Game.SwitchTurns();
-            PlayerMana.Text = $"{Game.PlayerOne.Mana } / {Game.PlayerOne.MaxMana}";
-            EnemyMana.Text = $"{Game.PlayerTwo.Mana} / {Game.PlayerTwo.MaxMana}";
+            RenderState(Game);
         }
     }
 }

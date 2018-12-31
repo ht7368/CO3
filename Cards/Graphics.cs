@@ -12,7 +12,7 @@ namespace Cards
     {
         public Color CARD_COLOR = Color.FromArgb(255, 107, 71, 71);
 
-        protected BaseCard CardReferenced;
+        public BaseCard CardReferenced;
 
         // Visual control elements
         private PictureBox CardArt;
@@ -98,7 +98,7 @@ namespace Cards
                 CardAttack.BringToFront();
                 CardHealth = new Label()
                 {
-                    Text = CardReferenced.ManaCost.ToString(),
+                    Text = minion.Health.ToString(),
                     Size = new Size(22, 22),
                     Top = GameBox.CARD_HEIGHT - 22 - 4,
                     Left = GameBox.CARD_WIDTH - 4 - 22,
@@ -133,6 +133,18 @@ namespace Cards
                 };
         }
 
+        public void UpdateUI()
+        {
+            BackgroundImage = Properties.Resources.CardBody;
+            if (CardReferenced is MinionCard)
+            {
+                MinionCard Minion = CardReferenced as MinionCard;
+                CardMinionIndicator.Image = Minion.CanAttack ? Properties.Resources.GreenBox : Properties.Resources.RedBox;
+                CardAttack.Text = Minion.Attack.ToString();
+                CardHealth.Text = Minion.Health.ToString();
+            }
+        }
+
         // onClick for card elements
         public void CardClicked()
         {
@@ -156,7 +168,10 @@ namespace Cards
     public class PowerBox : Panel
     {
         public PowerCard PowerCard;
+        public uint LastPowerId;
         private Label PowerLabel;
+        private CardBox Visual;
+        private PictureBox NoPowerImage;
 
         public PowerBox(PowerCard power)
         {
@@ -170,33 +185,43 @@ namespace Cards
                 Width = 150,
                 ForeColor = Color.White,
             };
+            NoPowerImage = new PictureBox()
+            {
+                Size = new Size(GameBox.CARD_WIDTH, GameBox.CARD_HEIGHT),
+                Image = Properties.Resources.NoCardGraphic,
+                Top = Height - GameBox.CARD_HEIGHT,
+                Left = (this.Width - GameBox.CARD_WIDTH) / 2,
+            };
+            //Controls.Add(NoPowerImage);
+            Controls.Add(PowerLabel);
+            PowerLabel.BringToFront();
             BackColor = Color.FromArgb(114, 76, 61);
-            PowerCard = power;
-            Height = GameBox.CARD_HEIGHT;
-            Width = GameBox.CARD_WIDTH;
-            Update();
+            UpdateUI(PowerCard);
         }
 
         public void UpdateUI(PowerCard p)
         {
             PowerCard = p;
+            bool AddFlag = false;
             if (PowerCard == null)
             {
-                // TODO: RENDER `No Power Played` 
+                NoPowerImage.Image = Properties.Resources.NoCardGraphic;
+                NoPowerImage.BringToFront();
                 return;
             }
-            Controls.Clear();
-
-            Controls.Add(PowerLabel);
-            PowerLabel.BringToFront();
-            CardBox Visual = new CardBox(PowerCard as BaseCard)
+            else if (Visual == null)
             {
-                Location = new Point(0, 0),
+                AddFlag = true;
+            }
+            NoPowerImage.SendToBack();
+            Controls.Remove(Visual);
+            Visual = new CardBox(PowerCard as BaseCard)
+            {
+                Top = Height - GameBox.CARD_HEIGHT,
+                Left = (this.Width - GameBox.CARD_WIDTH) / 2
             };
+            Controls.Remove(Visual);
             Controls.Add(Visual);
-
-            Visual.Top = Height - GameBox.CARD_HEIGHT;
-            Visual.Left = (this.Width - GameBox.CARD_WIDTH) / 2;
         }
     }
 
@@ -205,40 +230,86 @@ namespace Cards
         // A List<BaseCard> (hand or board) is passed in and tracked
         // This is a reference to the same list, so that works fine
         private List<T> TrackedCards;
+        private List<CardBox> DisplayedCards;
 
         public CardGroupBox(List<T> cards)
         {
             TrackedCards = cards;
         }
 
-        public void UpdateCards()
+        public void InitUI()
         {
             // Firstly, create new CardBox -s from the tracked cards.
-            List<CardBox> Cards = TrackedCards.Select(c => new CardBox(c)).ToList();
+            DisplayedCards = TrackedCards.Select(c => new CardBox(c)).ToList();
+        }
 
-            //this.Height = 2 * CardBox.CARD_SPACING + CardBox.CARD_HEIGHT;
+        public void UpdateUI()
+        {
 
-            // The y-coordinate of a card is set up so that it is centred
-            int CoordY = this.Height / 2 - GameBox.CARD_HEIGHT / 2;
+            SuspendLayout();
+            // To update, we have to: 
+            // UPDATE existing boxes with card info (they track their cards)
+            // If their card no longer is in this zone, DELETE the box
+            // CREATE new boxes for cards that aren't displayed
+            // Whilst keeping order
 
-            this.Controls.Clear();
-            // Can be refactored, mathematically
+            // Optimization trick:
+            // track which cards aren't new by keeping track of their indexes
+            // Defaults to false - true if the card will be rendered
+            bool[] RenderedFlag = new bool[TrackedCards.Count];
+            List<CardBox> PendingRemove = new List<CardBox>();
+
+            foreach (CardBox box in DisplayedCards)
+            {
+                int Ind = TrackedCards.IndexOf(box.CardReferenced as T);
+                if (Ind == -1)
+                {
+                    PendingRemove.Add(box);
+                    Controls.Remove(box);
+                }
+                else
+                {
+                    box.UpdateUI();
+                    RenderedFlag[Ind] = true;
+                }
+            }
+
+            foreach (CardBox box in PendingRemove)
+                DisplayedCards.Remove(box);
+            
+            for (int i = 0; i < RenderedFlag.Length; i++)
+            {
+                if (!RenderedFlag[i])
+                {
+                    CardBox Box = new CardBox(TrackedCards[i])
+                    {
+                        // Make it temporarily invisible
+                        Top = 2000,
+                    };
+                    DisplayedCards.Add(Box);
+                    Controls.Add(Box);
+                }
+            }
+
+            // Now reposition
+            int CoordY = (Height - GameBox.CARD_HEIGHT) / 2;
             int FirstX;
-            if (Cards.Count % 2 == 0)
+            if (DisplayedCards.Count % 2 == 0)
                 // x = mid – (n / 2) * (g + w) + 0.5 * g
-                FirstX = (this.Width / 2) - (Cards.Count / 2) * (GameBox.CARD_WIDTH + GameBox.CARD_SPACING) + (GameBox.CARD_SPACING / 2);
+                FirstX = (this.Width / 2) - (DisplayedCards.Count / 2) * (GameBox.CARD_WIDTH + GameBox.CARD_SPACING) + (GameBox.CARD_SPACING / 2);
             else
                 // mid – (n / 2) * (g + w) – 0.5 * w
-                FirstX = (this.Width / 2) - (Cards.Count / 2) * (GameBox.CARD_WIDTH + GameBox.CARD_SPACING) - (GameBox.CARD_WIDTH / 2);
+                FirstX = (this.Width / 2) - (DisplayedCards.Count / 2) * (GameBox.CARD_WIDTH + GameBox.CARD_SPACING) - (GameBox.CARD_WIDTH / 2);
 
             int NextX = FirstX;
-            foreach (CardBox c in Cards)
+            foreach (CardBox c in DisplayedCards)
             {
                 c.Left = NextX;
                 c.Top = CoordY;
                 NextX += (GameBox.CARD_WIDTH + GameBox.CARD_SPACING);
-                Controls.Add(c);
             }
+
+            ResumeLayout();
         }
     }
 
@@ -285,10 +356,10 @@ namespace Cards
                 HealthLabel.Left = Width - 42 - 5;
                 HealthLabel.Top = Height - 22 - 7;
             }
-            UpdateUI();
+            UpdatePlayerUI();
         }
 
-        public void UpdateUI()
+        public void UpdatePlayerUI()
         {
             if (CardReferenced.Game.PlayerOne.PlayerCard == CardReferenced)
                 HealthLabel.Text = CardReferenced.Game.PlayerOne.Health.ToString();

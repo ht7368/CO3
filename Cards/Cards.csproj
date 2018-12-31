@@ -219,9 +219,6 @@
     <None Include="Resources\ClearSky.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\TargetDummy.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ManaBox.png" />
   </ItemGroup>
   <ItemGroup>
@@ -249,9 +246,6 @@
     <None Include="Resources\HeroFrameEnemy.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\HeroFramePlayer.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\ButtonBase.png" />
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +256,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\PowerAreaBody.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HeroFramePlayer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TargetDummy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CardFlipped.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NoCardGraphic.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

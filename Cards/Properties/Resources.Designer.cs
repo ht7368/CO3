@@ -123,6 +123,16 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CardFlipped {
+            get {
+                object obj = ResourceManager.GetObject("CardFlipped", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ClearSky {
             get {
                 object obj = ResourceManager.GetObject("ClearSky", resourceCulture);
@@ -206,6 +216,16 @@ namespace Cards.Properties {
         internal static System.Drawing.Bitmap ManaDisplayAlt {
             get {
                 object obj = ResourceManager.GetObject("ManaDisplayAlt", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NoCardGraphic {
+            get {
+                object obj = ResourceManager.GetObject("NoCardGraphic", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
