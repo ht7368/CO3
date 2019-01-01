@@ -99,7 +99,7 @@ namespace Cards
                 if (!potentialMove.Targeted.IsCardT<MinionCard>())
                     return false;
                 MinionCard CombatTarget = potentialMove.Targeted.AsCardT<MinionCard>();
-                return CanAttack && CombatTarget.OnBoard && Game.ActivePlayer.Board.Contains(this);
+                return CanAttack && CombatTarget.OnBoard && Game.ActivePlayer.Board.Contains(this) && CombatTarget != this;
             }
             else
             {

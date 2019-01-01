@@ -68,7 +68,7 @@ namespace Cards
             {
                 Name = "FIGHTING DUMMY",
                 ManaCost = 2,
-                Attack = 1,
+                Attack = 2,
                 Health = 4,
                 Description = "",
                 OnBoard = true,
@@ -79,6 +79,7 @@ namespace Cards
                 Name = "WHISPERS OF POWER",
                 ManaCost = 4,
                 Description = "ALL MINIONS +1/+1 WHEN CARD PLAYED",
+                Art = Properties.Resources.WhispersMadness,
                 Effects = new EffectData<PowerCard>
                 {
                     {

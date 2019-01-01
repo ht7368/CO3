@@ -202,16 +202,11 @@ namespace Cards
         public void UpdateUI(PowerCard p)
         {
             PowerCard = p;
-            bool AddFlag = false;
             if (PowerCard == null)
             {
                 NoPowerImage.Image = Properties.Resources.NoCardGraphic;
                 NoPowerImage.BringToFront();
                 return;
-            }
-            else if (Visual == null)
-            {
-                AddFlag = true;
             }
             NoPowerImage.SendToBack();
             Controls.Remove(Visual);

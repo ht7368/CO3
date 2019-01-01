@@ -35,7 +35,6 @@ namespace Cards
 
         public GameBox Box;
 
-
         public GameState()
         {
             PlayerOne = new LocalPlayer();
@@ -80,13 +79,13 @@ namespace Cards
 
         public IEnumerable<BaseCard> AllCards()
         {
-            foreach (BaseCard c in PlayerOne.Hand)
+            foreach (var c in PlayerOne.Hand)
                 yield return c;
-            foreach (BaseCard c in PlayerOne.Board)
+            foreach (var c in PlayerOne.Board)
                 yield return c;
-            foreach (BaseCard c in PlayerTwo.Board)
+            foreach (var c in PlayerTwo.Board)
                 yield return c;
-            foreach (BaseCard c in PlayerTwo.Hand)
+            foreach (var c in PlayerTwo.Hand)
                 yield return c;
             yield break;
         }
@@ -150,17 +149,16 @@ namespace Cards
         // Removing minions that have no health
         public void ResolveActions()
         {
+            List<MinionCard> PendingRemove = new List<MinionCard>();
             foreach (var c in AllCards())
-                if (c is MinionCard)
-                {
-                    MinionCard m = c as MinionCard;
+                if (c is MinionCard m)
                     if (m.Health <= 0)
-                    {
-                        ActivePlayer.Board.Remove(m);
-                        InactivePlayer.Board.Remove(m);
-                        break;
-                    }
-                }
+                        PendingRemove.Add(m);
+            foreach (MinionCard m in PendingRemove)
+            {
+                PlayerOne.Board.Remove(m);
+                PlayerTwo.Board.Remove(m);
+            }
         }
 
         public void SwitchTurns()
