@@ -64,7 +64,7 @@ namespace Cards
 
         public GameBox()
         {
-            Game = new GameState();
+            Game = new GameState(this);
         }
 
         // Will update the visuals with the current board state.
@@ -80,8 +80,6 @@ namespace Cards
 
             PlayerMana.Text = $"{Game.PlayerOne.Mana} / {Game.PlayerOne.MaxMana}";
             EnemyMana.Text = $"{Game.PlayerTwo.Mana} / {Game.PlayerTwo.MaxMana}";
-
-            NotificationLabel.Visible = false;
         }
 
         // Initialise the UI by setting out ALL of the objects
@@ -286,7 +284,7 @@ namespace Cards
             {
                 Text = "",
                 TextAlign = ContentAlignment.MiddleCenter,
-                Visible = true,
+                Visible = false,
                 Width = this.Width,
                 Height = 22,
                 Left = 0,
@@ -307,7 +305,9 @@ namespace Cards
             Game.PlayerOne.Hand.Add(Cards.CardDB[0](Game));
             Game.PlayerOne.Hand.Add(Cards.CardDB[5](Game));
             Game.PlayerTwo.Board.Add(Cards.CardDB[4](Game) as MinionCard);
+            Game.PlayerTwo.Board[0].OnBoard = true;
             Game.PlayerOne.Board.Add(Cards.CardDB[4](Game) as MinionCard);
+            Game.PlayerOne.Board[0].OnBoard = true;
 
             Random Rand = new Random();
             for (int i = 0; i < 25; i++)
@@ -318,7 +318,12 @@ namespace Cards
             RenderState(Game);
         }
 
-        private void DisplayNotification(string messageText)
+        public void HideNotif()
+        {
+            NotificationLabel.Visible = false;
+        }
+
+        public void DisplayNotification(string messageText)
         {
             NotificationLabel.Text = messageText;
             NotificationLabel.Visible = true;
@@ -339,6 +344,7 @@ namespace Cards
 
         private void PassButton_Click(object sender, EventArgs e)
         {
+            SelectedCard = null;
             Game.SwitchTurns();
             RenderState(Game);
         }

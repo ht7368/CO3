@@ -35,8 +35,10 @@ namespace Cards
 
         public GameBox Box;
 
-        public GameState()
+        public GameState(GameBox box)
         {
+            Box = box;
+
             PlayerOne = new LocalPlayer();
             PlayerTwo = new NetworkPlayer();
 
@@ -133,9 +135,12 @@ namespace Cards
             }
 
             BaseCard Selected = nextMove.Selected.AsCard();
-            BaseCard Targeted = nextMove.Selected.AsCard();
+            BaseCard Targeted = nextMove.Targeted.AsCard();
             if (!Selected.IsPlayable(nextMove))
+            {
+                Box.DisplayNotification("YOU CANNOT MAKE THAT MOVE.");
                 return;
+            }
 
             this.LastMove = nextMove;
             InactivePlayer.Hand.Remove(Selected);
@@ -180,6 +185,10 @@ namespace Cards
 
             // Switch turn flag
             IsP1Turn = !IsP1Turn;
+
+            Box.RenderState(this);
+            if (ActivePlayer == PlayerOne)
+                Box.DisplayNotification("IT IS YOUR TURN!");
         }
     }
 }

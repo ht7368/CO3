@@ -71,7 +71,7 @@ namespace Cards
                 Attack = 2,
                 Health = 4,
                 Description = "",
-                OnBoard = true,
+                OnBoard = false,
             },
 
             (GameState g) => new PowerCard(g)
@@ -91,7 +91,6 @@ namespace Cards
                                     (c as MinionCard).Attack += 1;
                                     (c as MinionCard).Health += 1;
                                 }
-                                    
                         }
                     }
                 }

@@ -11,6 +11,8 @@ namespace Cards
     public class CardBox : Panel
     {
         public Color CARD_COLOR = Color.FromArgb(255, 107, 71, 71);
+        public Color GREEN_IND = Color.FromArgb(255, 68, 197, 91);
+        public Color RED_IND = Color.FromArgb(255, 231, 89, 82);
 
         public BaseCard CardReferenced;
 
@@ -21,7 +23,7 @@ namespace Cards
         private Label CardAttack;
         private Label CardHealth;
         private Label CardCost;
-        private PictureBox CardMinionIndicator;
+        private Control CardPlayableIndicator;
 
         public CardBox(BaseCard card) : base()
         {
@@ -71,6 +73,20 @@ namespace Cards
                 TextAlign = ContentAlignment.MiddleCenter,
                 Image = Properties.Resources.ManaBox,
             };
+            CardPlayableIndicator = new Control()
+            {
+                Size = new Size(6, 6),
+                Top = GameBox.CARD_HEIGHT - 6 - 12,
+                // Centred between CardCost and CardHealth
+                Left = 36,
+                ForeColor = Color.White,
+                BackColor = card.ManaCost <= card.Game.PlayerOne.Mana ? GREEN_IND : RED_IND,
+                // Can be optimized when enemy cards in hand are hidden:- we don't need to check cards in the hand, they are hidden
+                //Image = Properties.Resources.RedBox,
+                Visible = card.Game.PlayerTwo.Board.Contains(CardReferenced) || card.Game.PlayerTwo.Hand.Contains(CardReferenced) ? false : true,
+            };
+            Controls.Add(CardPlayableIndicator);
+            CardPlayableIndicator.BringToFront();
 
             Controls.Add(CardArt);
             Controls.Add(CardInfo);
@@ -80,9 +96,8 @@ namespace Cards
             CardCost.BringToFront();
 
             // Different visual effects for minion cards
-            if (card is MinionCard)
+            if (card is MinionCard minion)
             {
-                MinionCard minion = card as MinionCard;
                 CardAttack = new Label()
                 {
                     Text = minion.Attack.ToString(),
@@ -109,19 +124,8 @@ namespace Cards
                 };
                 Controls.Add(CardHealth);
                 CardHealth.BringToFront();
-                CardMinionIndicator = new PictureBox()
-                {
-                    Size = new Size(22, 22),
-                    Top = GameBox.CARD_HEIGHT - 22 - 4,
-                    // Centred between CardCost and CardHealth
-                    Left = (((CardCost.Left + 22) + CardHealth.Left) / 2) - 22,
-                    Font = GameBox.CFont.GetFont(13),
-                    ForeColor = Color.White,
-                    Image = minion.CanAttack ? Properties.Resources.GreenBox : Properties.Resources.RedBox,
-                };
-                Controls.Add(CardMinionIndicator);
-                CardMinionIndicator.BringToFront();
-
+                if (minion.OnBoard)
+                    CardPlayableIndicator.BackColor = minion.CanAttack ? GREEN_IND : RED_IND;
                 //CardAttack.Text = (CardReferenced as MinionCard).Attack.ToString();
             }
 
@@ -129,38 +133,64 @@ namespace Cards
             foreach (Control c in Controls)
                 c.Click += (_s, _e) =>
                 {
-                    CardClicked();
+                    CardClicked(this);
                 };
+            this.Click += (_s, _e) =>
+            {
+                CardClicked(this);
+            };
         }
 
-        public void UpdateUI()
+        public void SetVisibility(bool b)
         {
-            BackgroundImage = Properties.Resources.CardBody;
-            if (CardReferenced is MinionCard)
-            {
-                MinionCard Minion = CardReferenced as MinionCard;
-                CardMinionIndicator.Image = Minion.CanAttack ? Properties.Resources.GreenBox : Properties.Resources.RedBox;
-                CardAttack.Text = Minion.Attack.ToString();
-                CardHealth.Text = Minion.Health.ToString();
-            }
+            CardPlayableIndicator.Visible = b;
         }
 
         // onClick for card elements
-        public void CardClicked()
+        public void CardClicked(CardBox card)
         {
+            GameState Game = card.CardReferenced.Game;
             // Get the game from the top-level gamebox
-            GameBox Game = (Parent.Parent as GameBox);
+            GameBox GameUI = card.CardReferenced.Game.Box;
+            GameUI.HideNotif();
+
+            // We can look at this again when we think more about multiplayer modes (do we want local MP? - probably)
+            if (GameUI.SelectedCard == null && (!card.CardPlayableIndicator.Visible || card.CardPlayableIndicator.BackColor == card.RED_IND))
+                return;
+
             // If nothing is selected yet, we set the selected card
-            if (Game.SelectedCard == null)
+            if (GameUI.SelectedCard == null)
             {
-                Game.SelectedCard = CardReferenced;
+                GameUI.SelectedCard = CardReferenced;
                 BackgroundImage = Properties.Resources.SelectedCardBody;
                 return;
             }
             // Otherwise the move is completed and processed
-            Game.Game.ProcessMove(new Move(Game.SelectedCard.Id, CardReferenced.Id));
-            Game.SelectedCard = null;
-            Game.RenderState(Game.Game);
+            GameUI.Game.ProcessMove(new Move(GameUI.SelectedCard.Id, CardReferenced.Id));
+            GameUI.SelectedCard = null;
+            GameUI.RenderState(GameUI.Game);
+        }
+
+        public void UpdateUI()
+        {
+            // Reset the background image, in case it is highlighted
+            BackgroundImage = Properties.Resources.CardBody;
+            if (CardReferenced is MinionCard minion)
+            {
+                if (minion.OnBoard)
+                    CardPlayableIndicator.BackColor = minion.CanAttack ? GREEN_IND : RED_IND;
+                else
+                    CardPlayableIndicator.BackColor = CardReferenced.ManaCost <= CardReferenced.Game.PlayerOne.Mana ? GREEN_IND : RED_IND;
+                CardAttack.Text = minion.Attack.ToString();
+                CardHealth.Text = minion.Health.ToString();
+            }
+            else
+            {
+                CardPlayableIndicator.BackColor = CardReferenced.ManaCost <= CardReferenced.Game.PlayerOne.Mana ? GREEN_IND : RED_IND;
+            }
+            // If it's not player one's turn (P2 has hidden indicators so we don't care what happens to them)
+            if (CardReferenced.Game.InactivePlayer == CardReferenced.Game.PlayerOne)
+                CardPlayableIndicator.BackColor = RED_IND;
         }
     }
 
@@ -215,6 +245,7 @@ namespace Cards
                 Top = Height - GameBox.CARD_HEIGHT,
                 Left = (this.Width - GameBox.CARD_WIDTH) / 2
             };
+            Visual.SetVisibility(false);
             Controls.Remove(Visual);
             Controls.Add(Visual);
         }

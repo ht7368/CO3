@@ -27,6 +27,7 @@ namespace Cards
         }
 
         // Fetches a card from the global list of cards by ID
+        // This should almost certainly be converted to a hashmap at some point
         public static BaseCard GetById(uint id)
         {
             if (id < GameState.NUM_RESERVED_CODES)

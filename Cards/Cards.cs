@@ -57,6 +57,7 @@ namespace Cards
             // If it's on board, it is attacking another minion
             if (OnBoard)
             {
+                CanAttack = false;
                 Game.BroadcastEffect(Effect.MinionAttacking);
                 if (Game.LastMove.Targeted.IsCardT<HeroCard>())
                 {
