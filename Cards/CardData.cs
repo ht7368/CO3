@@ -22,7 +22,7 @@ namespace Cards
                 Health = 3,
                 Description = "DIES ON TURN END",
                 OnBoard = false,
-                Art = Properties.Resources.TargetDummy,
+                Art = Properties.Resources.DeadRising,
                 /*Effects = new EffectData<MinionCard>
                 {
                     { Effect.TurnEnd, (p) =>  { p.CardPlayed.Health = 0; } },
@@ -44,6 +44,7 @@ namespace Cards
                 ManaCost = 5,
                 Description = "DESTROY A MINION",
                 isTargeted = true,
+                Art = Properties.Resources.Vanquish,
                 SpellEffect = (s, m) => 
                 {
                     var Target = IdGenerator.GetById(m.Targeted) as MinionCard;
@@ -56,6 +57,7 @@ namespace Cards
                 Name = "GRAND ARENA",
                 ManaCost = 6,
                 Description = "MINIONS GAIN +3 ATK BEFORE ATTACKING",
+                Art = Properties.Resources.GrandArena,
                 Effects = new EffectData<PowerCard>
                 {
                     {

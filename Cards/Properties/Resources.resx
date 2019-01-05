@@ -145,17 +145,11 @@
   <data name="CrossBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CrossBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="GreenBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\GreenBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="HealthBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\HealthBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ManaBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ManaBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RedBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RedBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="SwordBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SwordBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -192,5 +186,14 @@
   </data>
   <data name="WhispersMadness" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\WhispersMadness.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GrandArena" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GrandArena.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Vanquish" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Vanquish.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DeadRising" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DeadRising.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

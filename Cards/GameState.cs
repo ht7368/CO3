@@ -11,13 +11,18 @@ namespace Cards
     // This effect takes the form of an Action<GameState>, that is, a procedure taking GameState and modifying it.
     public enum Effect
     {
-        GameStart,
+        // Before the turns starts
         TurnStart,
+        // Before the turn passes
         TurnEnd,
+        // Before play resolution
         CardPlayed,
+        // After death
         MinionKilled,
         // About to attack
         MinionAttacking, 
+        // After bering placed in hand
+        CardDrawn,
     }
 
     // Contains the entirety of the game's logical state.
@@ -79,15 +84,16 @@ namespace Cards
             }
         }
 
+        // Using ActivePlayer as it is the same for both clients
         public IEnumerable<BaseCard> AllCards()
         {
-            foreach (var c in PlayerOne.Hand)
+            foreach (var c in ActivePlayer.Hand)
                 yield return c;
-            foreach (var c in PlayerOne.Board)
+            foreach (var c in ActivePlayer.Board)
                 yield return c;
-            foreach (var c in PlayerTwo.Board)
+            foreach (var c in InactivePlayer.Board)
                 yield return c;
-            foreach (var c in PlayerTwo.Hand)
+            foreach (var c in InactivePlayer.Hand)
                 yield return c;
             yield break;
         }

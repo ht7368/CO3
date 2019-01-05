@@ -272,5 +272,14 @@
   <ItemGroup>
     <None Include="Resources\WhispersMadness.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vanquish.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeadRising.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GrandArena.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -300,6 +300,7 @@ namespace Cards
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
             Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
             Game.PlayerOne.Hand.Add(Cards.CardDB[0](Game));
+            Game.PlayerOne.Hand.Add(Cards.CardDB[3](Game));
             Game.PlayerTwo.Hand.Add(Cards.CardDB[1](Game));
             Game.PlayerOne.Hand.Add(Cards.CardDB[2](Game));
             Game.PlayerOne.Hand.Add(Cards.CardDB[0](Game));

@@ -153,9 +153,19 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap GreenBox {
+        internal static System.Drawing.Bitmap DeadRising {
             get {
-                object obj = ResourceManager.GetObject("GreenBox", resourceCulture);
+                object obj = ResourceManager.GetObject("DeadRising", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GrandArena {
+            get {
+                object obj = ResourceManager.GetObject("GrandArena", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -243,16 +253,6 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap RedBox {
-            get {
-                object obj = ResourceManager.GetObject("RedBox", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap SelectedCardBody {
             get {
                 object obj = ResourceManager.GetObject("SelectedCardBody", resourceCulture);
@@ -296,6 +296,16 @@ namespace Cards.Properties {
         internal static System.Drawing.Bitmap Transparent {
             get {
                 object obj = ResourceManager.GetObject("Transparent", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Vanquish {
+            get {
+                object obj = ResourceManager.GetObject("Vanquish", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
