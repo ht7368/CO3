@@ -38,12 +38,10 @@ namespace Cards
         public Move LastMove;
         public bool IsP1Turn = true; // Is it player one's turn?
 
-        public GameBox Box;
+        //public GameBox Box;
 
-        public GameState(GameBox box)
+        public GameState()
         {
-            Box = box;
-
             PlayerOne = new LocalPlayer();
             PlayerTwo = new NetworkPlayer();
 
@@ -121,31 +119,30 @@ namespace Cards
 
         // Process a move generated either over network or locally and resolve it's events
         // This function will not perform anything if the move is invalid
-        public void ProcessMove(Move nextMove)
+        public string ProcessMove(Move nextMove)
         {
             // TODO: if 0
             if (nextMove.Selected == OPP_CONCEDE)
             {
-                return;
+                return null;
             }
             else if (nextMove.Selected == TURN_PASS)
             {
                 SwitchTurns();
-                return;
+                return null;
             }
             else if (nextMove.Selected == CARD_DRAW)
             {
                 // TODO: Force loss if deck is empty
                 ActivePlayer.DrawCard();
-                return;
+                return null;
             }
 
             BaseCard Selected = nextMove.Selected.AsCard();
             BaseCard Targeted = nextMove.Targeted.AsCard();
             if (!Selected.IsPlayable(nextMove))
             {
-                Box.DisplayNotification("YOU CANNOT MAKE THAT MOVE.");
-                return;
+                return "YOU CANNOT MAKE THAT MOVE.";
             }
 
             this.LastMove = nextMove;
@@ -154,6 +151,7 @@ namespace Cards
 
             Selected.Play();
             ResolveActions();
+            return null;
         }
 
         // Resolving an action involves:
@@ -191,10 +189,6 @@ namespace Cards
 
             // Switch turn flag
             IsP1Turn = !IsP1Turn;
-
-            Box.RenderState(this);
-            if (ActivePlayer == PlayerOne)
-                Box.DisplayNotification("IT IS YOUR TURN!");
         }
     }
 }

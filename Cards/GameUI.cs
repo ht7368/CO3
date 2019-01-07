@@ -64,7 +64,7 @@ namespace Cards
 
         public GameBox()
         {
-            Game = new GameState(this);
+            Game = new GameState();
         }
 
         // Will update the visuals with the current board state.
@@ -348,6 +348,8 @@ namespace Cards
             SelectedCard = null;
             Game.SwitchTurns();
             RenderState(Game);
+            if (Game.ActivePlayer == Game.PlayerOne)
+                DisplayNotification("IT IS YOUR TURN!");
         }
     }
 }

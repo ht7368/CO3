@@ -14,8 +14,14 @@ namespace Cards.Tests
         [TestMethod()]
         public void GetByIdTest()
         {
+            GameState G = new GameState();
             // Create a card and check that getting a card by its Id is the same card
-            SpellCard First = new SpellCard("First Test", 1, "");
+            SpellCard First = new SpellCard(G)
+            {
+                Name = "First Test",
+                ManaCost = 1,
+                Description = "",
+            };
             Assert.AreSame(First, IdGenerator.GetById(First.Id));
         }
     }

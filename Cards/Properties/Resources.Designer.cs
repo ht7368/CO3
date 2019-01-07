@@ -263,39 +263,9 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap SwordBox {
-            get {
-                object obj = ResourceManager.GetObject("SwordBox", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap SwordBoxBloody {
-            get {
-                object obj = ResourceManager.GetObject("SwordBoxBloody", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap TargetDummy {
             get {
                 object obj = ResourceManager.GetObject("TargetDummy", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Transparent {
-            get {
-                object obj = ResourceManager.GetObject("Transparent", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

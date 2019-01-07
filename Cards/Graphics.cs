@@ -150,8 +150,12 @@ namespace Cards
         public void CardClicked(CardBox card)
         {
             GameState Game = card.CardReferenced.Game;
-            // Get the game from the top-level gamebox
-            GameBox GameUI = card.CardReferenced.Game.Box;
+            // Get the game from the top-level gamebox by traversing up until we find the gamebox
+            Control GameB = this;
+            while (!(GameB is GameBox))
+                GameB = GameB.Parent;
+            GameBox GameUI = GameB as GameBox;
+
             GameUI.HideNotif();
 
             // We can look at this again when we think more about multiplayer modes (do we want local MP? - probably)
