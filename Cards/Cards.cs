@@ -71,10 +71,10 @@ namespace Cards
             // But otherwise, it is being played
             else
             {
+                Game.BroadcastEffect(Effect.CardPlayed);
                 OnBoard = true;
                 Game.ActivePlayer.Board.Add(this);
                 var a = Game.ActivePlayer.Board;
-                Game.BroadcastEffect(Effect.CardPlayed);
                 Game.ActivePlayer.Mana -= this.ManaCost;
                 if (Game.ActivePlayer.Mana < 0)
                     Game.ActivePlayer.Mana = 0;
@@ -124,6 +124,7 @@ namespace Cards
 
         public override void Play()
         {
+            Game.BroadcastEffect(Effect.CardPlayed);
             Game.CurrentPower = this;
             Game.ActivePlayer.Mana -= this.ManaCost;
             if (Game.ActivePlayer.Mana < 0)

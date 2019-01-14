@@ -173,6 +173,16 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Gust {
+            get {
+                object obj = ResourceManager.GetObject("Gust", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap HealthBox {
             get {
                 object obj = ResourceManager.GetObject("HealthBox", resourceCulture);

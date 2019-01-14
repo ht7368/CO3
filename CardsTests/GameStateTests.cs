@@ -12,7 +12,7 @@ namespace Cards.Tests
     public class GameStateTests
     {
         [TestMethod()]
-        public void SwitchTurnsTest()
+        public void SwitchTurnsTestMana()
         {
             GameState Game = new GameState();
             Assert.IsTrue(Game.IsP1Turn);
@@ -27,6 +27,39 @@ namespace Cards.Tests
                 Game.SwitchTurns();
                 Assert.AreEqual(Game.PlayerOne.Mana, i);
             }
+        }
+
+        [TestMethod()]
+        public void SwitchTurnsTest()
+        {
+            GameState G = new GameState();
+            for (int i = 0; i < 5; i++)
+            {
+                BasePlayer CorrectPlayer = i % 2 == 0 ? G.PlayerOne : G.PlayerTwo;
+                Assert.ReferenceEquals(G.ActivePlayer, CorrectPlayer);
+            }
+        }
+
+        [TestMethod()]
+        public void BroadcastEffectTest()
+        {
+            GameState G = new GameState();
+            PowerCard TestCard = new PowerCard(G)
+            {
+                ManaCost = 0,
+                Effects = new EffectData<PowerCard>()
+                {
+                    { Effect.TurnEnd, (g) => { g.CurrentPower.ManaCost = 1; } },
+                    { Effect.CardDrawn, (g) => { g.CurrentPower.ManaCost = 2; } },
+                }
+            };
+            G.PlayerTwo.Deck.Add(new SpellCard(G));
+            G.CurrentPower = TestCard;
+            Assert.AreEqual(0, G.CurrentPower.ManaCost);
+            G.SwitchTurns();
+            Assert.AreEqual(1, G.CurrentPower.ManaCost);
+            G.ProcessMove(new Move(GameState.CARD_DRAW, 0));
+            Assert.AreEqual(2, G.CurrentPower.ManaCost);
         }
     }
 }
