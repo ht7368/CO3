@@ -7,8 +7,244 @@ using System.Threading.Tasks;
 
 namespace Cards
 {
+    public class CardBuilder
+    {
+        public enum CardType
+        {
+            Minion,
+            Spell,
+            Power
+        }
+
+        // ID used to determine card put in deck;
+        public int DeckID;
+        public CardType TypeID;
+
+        public int ManaCostData;
+        public string NameData;
+        public string DescriptionData;
+        public System.Drawing.Image ArtData;
+
+        public int? AttackData;
+        public int? HealthData;
+        public bool? TargetedData;
+        public bool? SpellTargetedData;
+        public EffectData<MinionCard> MinionEffectData;
+        public EffectData<PowerCard> PowerEffectData;
+        public Action<GameState, Move> SpellEffectData;
+
+        public BaseCard Build(GameState g) 
+        {
+            Action<GameState, Move> EmptyFunc = (_g, _s) => { return; };
+            if (TypeID == CardType.Minion)
+                return new MinionCard(g)
+                {
+                    ManaCost = ManaCostData,
+                    Name = NameData,
+                    Description = DescriptionData,
+                    Art = ArtData,
+                    Attack = AttackData.Value,
+                    Health = HealthData.Value,
+                    Effects = MinionEffectData ?? new EffectData<MinionCard>(),
+                    OnBoard = false,
+                    CanAttack = false,
+                };
+            else if (TypeID == CardType.Spell)
+                return new SpellCard(g)
+                {
+                    ManaCost = ManaCostData,
+                    Name = NameData,
+                    Description = DescriptionData,
+                    Art = ArtData,
+                    SpellEffect = SpellEffectData ?? EmptyFunc,
+                    IsTargeted = SpellTargetedData.Value,
+                };
+            else if (TypeID == CardType.Power)
+                return new PowerCard(g)
+                {
+                    ManaCost = ManaCostData,
+                    Name = NameData,
+                    Description = DescriptionData,
+                    Art = ArtData,
+                    Effects = PowerEffectData ?? new EffectData<PowerCard>(),
+                };
+            // Can never happen
+            return null;
+        }
+    }
+
     class Cards
     {
+        public static List<CardBuilder> Collection = new List<CardBuilder>()
+        {
+            new CardBuilder()
+            {
+                DeckID = 0,
+                TypeID = CardBuilder.CardType.Minion,
+
+                NameData = "TESTING DUMMY",
+                ManaCostData = 1,
+                AttackData = 0,
+                HealthData = 3,
+                DescriptionData = "DIES ON TURN END",
+                ArtData = Properties.Resources.DeadRising,
+            },
+            new CardBuilder()
+            {
+                DeckID = 1,
+                TypeID = CardBuilder.CardType.Power,
+
+                ManaCostData = 5,
+                DescriptionData = "NO EFFECT",
+                ArtData = Properties.Resources.ClearSky,
+            },
+            new CardBuilder()
+            {
+                DeckID = 2,
+                TypeID = CardBuilder.CardType.Spell,
+
+                NameData = "CLEAN SHOT",
+                ManaCostData = 5,
+                DescriptionData = "REMOVE A MINION",
+                TargetedData = true,
+                ArtData = Properties.Resources.Vanquish,
+                SpellEffectData = (s, m) =>
+                {
+                    var Target = IdGenerator.GetById(m.Targeted) as MinionCard;
+                    Target.Health = 0;
+                },
+            },
+            new CardBuilder()
+            {
+                DeckID = 3,
+                TypeID = CardBuilder.CardType.Spell,
+
+                NameData = "ARENA",
+                ManaCostData = 6,
+                DescriptionData = "MINIONS GAIN +3 ATK ATTACKING",
+                ArtData = Properties.Resources.GrandArena,
+                PowerEffectData = new EffectData<PowerCard>
+                {{
+                        Effect.MinionAttacking, (GameState s) => (s.LastMove.Selected.AsCard() as MinionCard).Attack += 3
+                }},
+            },
+
+            new CardBuilder()
+            {
+                DeckID = 4,
+                TypeID = CardBuilder.CardType.Minion,
+
+                ManaCostData = 2,
+                AttackData = 2,
+                HealthData = 4,
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 5,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "DARK CAVE",
+                ManaCostData = 4,
+                DescriptionData = "ALL MINIONS +1/+1 WHEN CARD PLAYED",
+                ArtData = Properties.Resources.WhispersMadness,
+                PowerEffectData = new EffectData<PowerCard>
+                {{
+                        Effect.CardPlayed, (GameState s) =>
+                        {
+                            foreach (BaseCard c in s.AllCards())
+                                if (c is MinionCard)
+                                {
+                                    (c as MinionCard).Attack += 1;
+                                    (c as MinionCard).Health += 1;
+                                }
+                        }
+                }},
+            },
+            new CardBuilder()
+            {
+                DeckID = 6,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 7,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 8,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            }
+            ,
+            new CardBuilder()
+            {
+                DeckID = 9,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 10,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 11,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 12,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 13,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 14,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+            new CardBuilder()
+            {
+                DeckID = 15,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "PLACEHOLDER",
+                DescriptionData = "",
+            },
+        };
+
+
         // (Subject to change?) A collection of all cards. More specifically,
         // functions that take a GameState to return a card.
         public static List<Func<GameState, BaseCard>> CardDB = new List<Func<GameState, BaseCard>>
@@ -43,7 +279,7 @@ namespace Cards
                 Name = "VANQUISH",
                 ManaCost = 5,
                 Description = "DESTROY A MINION",
-                isTargeted = true,
+                IsTargeted = true,
                 Art = Properties.Resources.Vanquish,
                 SpellEffect = (s, m) => 
                 {

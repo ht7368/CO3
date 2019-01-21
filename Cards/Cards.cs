@@ -145,7 +145,7 @@ namespace Cards
 
     public class SpellCard : BaseCard
     {
-        public bool isTargeted;
+        public bool IsTargeted;
         // Will be called when the spell is played
         public Action<GameState, Move> SpellEffect;
 
@@ -171,9 +171,9 @@ namespace Cards
                 return false;
             if (ManaCost > Game.ActivePlayer.Mana)
                 return false;
-            if (!isTargeted)
+            if (!IsTargeted)
                 return true;
-            if (isTargeted && !potentialMove.Targeted.IsCardT<MinionCard>())
+            if (IsTargeted && !potentialMove.Targeted.IsCardT<MinionCard>())
                 return false;
             MinionCard SpellTarget = potentialMove.Targeted.AsCardT<MinionCard>();
             return SpellTarget.OnBoard;

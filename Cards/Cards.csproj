@@ -49,6 +49,13 @@
     <Compile Include="CardData.cs" />
     <Compile Include="Cards.cs" />
     <Compile Include="CustomFont.cs" />
+    <Compile Include="DeckSerialize.cs" />
+    <Compile Include="DeckUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeckUI.Designer.cs">
+      <DependentUpon>DeckUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -56,11 +63,11 @@
       <DependentUpon>GameUI.cs</DependentUpon>
     </Compile>
     <Compile Include="GameState.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="MenuUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MenuUI.Designer.cs">
+      <DependentUpon>MenuUI.cs</DependentUpon>
     </Compile>
     <Compile Include="Graphics.cs">
       <SubType>Component</SubType>
@@ -71,8 +78,11 @@
     <Compile Include="Players.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="DeckUI.resx">
+      <DependentUpon>DeckUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuUI.resx">
+      <DependentUpon>MenuUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GameUI.resx">
       <DependentUpon>GameUI.cs</DependentUpon>
