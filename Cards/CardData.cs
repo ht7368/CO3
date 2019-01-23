@@ -94,6 +94,7 @@ namespace Cards
                 DeckID = 1,
                 TypeID = CardBuilder.CardType.Power,
 
+                NameData = "CLEAR SKY",
                 ManaCostData = 5,
                 DescriptionData = "NO EFFECT",
                 ArtData = Properties.Resources.ClearSky,
@@ -134,10 +135,12 @@ namespace Cards
                 DeckID = 4,
                 TypeID = CardBuilder.CardType.Minion,
 
+                NameData = "DUO DEMON",
                 ManaCostData = 2,
                 AttackData = 2,
                 HealthData = 4,
                 DescriptionData = "",
+                ArtData = Properties.Resources.DuoDemon,
             },
             new CardBuilder()
             {
@@ -166,7 +169,7 @@ namespace Cards
                 DeckID = 6,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
             new CardBuilder()
@@ -174,7 +177,7 @@ namespace Cards
                 DeckID = 7,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
             new CardBuilder()
@@ -182,7 +185,7 @@ namespace Cards
                 DeckID = 8,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             }
             ,
@@ -191,7 +194,7 @@ namespace Cards
                 DeckID = 9,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
             new CardBuilder()
@@ -199,7 +202,7 @@ namespace Cards
                 DeckID = 10,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
             new CardBuilder()
@@ -207,7 +210,7 @@ namespace Cards
                 DeckID = 11,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
             new CardBuilder()
@@ -215,7 +218,7 @@ namespace Cards
                 DeckID = 12,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
             new CardBuilder()
@@ -223,7 +226,7 @@ namespace Cards
                 DeckID = 13,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
             new CardBuilder()
@@ -231,7 +234,7 @@ namespace Cards
                 DeckID = 14,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
             new CardBuilder()
@@ -239,7 +242,7 @@ namespace Cards
                 DeckID = 15,
                 TypeID = CardBuilder.CardType.Power,
 
-                NameData = "PLACEHOLDER",
+                NameData = "PLACE HOLDER",
                 DescriptionData = "",
             },
         };
@@ -307,7 +310,7 @@ namespace Cards
                 Name = "FIGHTING DUMMY",
                 ManaCost = 2,
                 Attack = 2,
-                Health = 4,
+                Health = 2,
                 Description = "",
                 OnBoard = false,
             },

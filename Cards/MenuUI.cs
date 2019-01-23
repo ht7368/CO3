@@ -20,8 +20,7 @@ namespace Cards
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            var Game = new GameUI();
-            Game.Show();
+
         }
 
         private void buttonDeck_Click(object sender, EventArgs e)
@@ -32,7 +31,8 @@ namespace Cards
 
         private void buttonHost_Click(object sender, EventArgs e)
         {
-
+            var Game = new GameUI();
+            Game.Show();
         }
 
         private void buttonConn_Click(object sender, EventArgs e)

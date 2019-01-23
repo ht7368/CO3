@@ -43,7 +43,7 @@ namespace Cards.Tests
             var First = new SpellCard(G)
             {
                 ManaCost = 0,
-                isTargeted = true,
+                IsTargeted = true,
             };
             var Second = new MinionCard(G)
             {

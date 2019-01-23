@@ -286,13 +286,25 @@
     <None Include="Resources\Vanquish.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DeadRising.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\GrandArena.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Gust.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeadRising.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeckArea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DuoDemon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ArrowRight.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
