@@ -71,6 +71,11 @@ namespace Cards
             // Can never happen
             return null;
         }
+
+        public override string ToString()
+        {
+            return NameData;
+        }
     }
 
     class Cards
@@ -87,7 +92,7 @@ namespace Cards
                 AttackData = 0,
                 HealthData = 3,
                 DescriptionData = "DIES ON TURN END",
-                ArtData = Properties.Resources.DeadRising,
+                ArtData = Properties.Resources.TargetDummy,
             },
             new CardBuilder()
             {
@@ -138,7 +143,7 @@ namespace Cards
                 NameData = "DUO DEMON",
                 ManaCostData = 2,
                 AttackData = 2,
-                HealthData = 4,
+                HealthData = 2,
                 DescriptionData = "",
                 ArtData = Properties.Resources.DuoDemon,
             },

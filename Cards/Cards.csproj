@@ -46,7 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CardBuilderGraphics.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CardData.cs" />
+    <Compile Include="CardGraphics.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Cards.cs" />
     <Compile Include="CustomFont.cs" />
     <Compile Include="DeckSerialize.cs" />
@@ -69,7 +75,7 @@
     <Compile Include="MenuUI.Designer.cs">
       <DependentUpon>MenuUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Graphics.cs">
+    <Compile Include="BoxGraphics.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="IdGenerator.cs" />
@@ -305,6 +311,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ArrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectionAreaBody.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

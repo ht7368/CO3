@@ -40,9 +40,13 @@ namespace Cards
 
     public class DeckBox : Panel
     {
-        private ListBox CardsPicked;
+        const int ITEM_WIDTH = 150;
+        const int ITEM_HEIGHT = 40;
+        const int ITEM_SPACING = 5;
+
         private int CurrentPage = 0;
-        public CardBuilderBox[] Boxes;
+        private CardBuilderBox[] Boxes;
+        private List<Label> SelectedCards;
         private Button ScrollLeft;
         private Button ScrollRight;
 
@@ -53,27 +57,18 @@ namespace Cards
 
         public void InitUI()
         {
+            SelectedCards = new List<Label>();
             BackgroundImage = Properties.Resources.DeckArea;
-
-            CardsPicked = new ListBox()
-            {
-                Width = GameBox.CARD_WIDTH,
-                Height = Height - 2 * GameBox.CARD_SPACING,
-            };
-            CardsPicked.Left = Width - CardsPicked.Width - GameBox.CARD_SPACING;
-            CardsPicked.Top = GameBox.CARD_SPACING;
-            Controls.Add(CardsPicked);
-
             // We'll set up 8 CardBox-s that will be updated every time we scroll a page
             Boxes = new CardBuilderBox[8];
             // When laying out these, we need to calculate some values
             int VertSpacing = (Height - 2 * GameBox.CARD_HEIGHT - 50) / 4;
             int TopRowHeight = VertSpacing;
             int BotRowHeight = 2 * VertSpacing + GameBox.CARD_HEIGHT;
-            int HorizSpacing = (Width - CardsPicked.Width - 4 * GameBox.CARD_WIDTH) / 5;
+            int HorizSpacing = (Width - 5 * GameBox.CARD_WIDTH) / 5;
             for (int i = 0; i < 8; i++)
             {
-                Boxes[i] = new CardBuilderBox();
+                Boxes[i] = new CardBuilderBox(this);
                 var Box = Boxes[i];
                 Box.Top = i < 4 ? TopRowHeight : BotRowHeight;
                 int j = i % 4;
@@ -87,6 +82,8 @@ namespace Cards
                 Size = new Size(20, 20),
                 Top = (BotRowHeight + GameBox.CARD_HEIGHT + TopRowHeight) / 2 - 10,
                 Left = HorizSpacing - GameBox.CONTROL_SPACING - 20,
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
             };
             ScrollRight = new Button()
             {
@@ -94,6 +91,8 @@ namespace Cards
                 Size = new Size(20, 20),
                 Top = (BotRowHeight + GameBox.CARD_HEIGHT + TopRowHeight) / 2 - 10,
                 Left = Boxes[3].Left + GameBox.CARD_WIDTH + GameBox.CONTROL_SPACING,
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
             };
             ScrollLeft.Click += (_s, _e) =>
             {
@@ -116,6 +115,7 @@ namespace Cards
 
             RenderPage();
         }
+
         public void RenderPage()
         {
             int StartInd = 8 * CurrentPage;
@@ -131,6 +131,38 @@ namespace Cards
                 Boxes[i].Visible = true;
                 Boxes[i].RenderCard(Box);
             }
+        }
+
+        public void AddSelected(CardBuilder form)
+        {
+            int VertPosition;
+            if (SelectedCards.Count == 0)
+                VertPosition = GameBox.CONTROL_SPACING;
+            else
+                VertPosition = SelectedCards[SelectedCards.Count - 1].Bottom + ITEM_SPACING;
+
+            var Temp = new Label()
+            {
+                Top = VertPosition,
+                Left = Width - GameBox.CONTROL_SPACING - ITEM_WIDTH,
+                Text = form.NameData,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Height = ITEM_HEIGHT,
+                Width = ITEM_WIDTH,
+            };
+            SelectedCards.Add(Temp);
+            Controls.Add(Temp);
+
+            Temp.Click += (_s, _e) =>
+            {
+                // Need to shift cards downward that are above this one to avoid gaps
+                int Ind = SelectedCards.IndexOf(Temp);
+                // We can do i+1 since we don't need to modify what we are removing
+                for (int i = Ind + 1; i < SelectedCards.Count; i++)
+                    SelectedCards[i].Top -= ITEM_HEIGHT + ITEM_SPACING;
+                SelectedCards.Remove(Temp);
+                Controls.Remove(Temp);
+            };
         }
     }
 }

@@ -26,13 +26,13 @@ namespace Cards
         private void buttonDeck_Click(object sender, EventArgs e)
         {
             var Deck = new DeckUI();
-            Deck.Show();
+            Deck.ShowDialog();
         }
 
         private void buttonHost_Click(object sender, EventArgs e)
         {
             var Game = new GameUI();
-            Game.Show();
+            Game.ShowDialog();
         }
 
         private void buttonConn_Click(object sender, EventArgs e)
