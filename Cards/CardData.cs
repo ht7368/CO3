@@ -123,7 +123,7 @@ namespace Cards
             new CardBuilder()
             {
                 DeckID = 3,
-                TypeID = CardBuilder.CardType.Spell,
+                TypeID = CardBuilder.CardType.Power,
 
                 NameData = "ARENA",
                 ManaCostData = 6,
@@ -197,10 +197,14 @@ namespace Cards
             new CardBuilder()
             {
                 DeckID = 9,
-                TypeID = CardBuilder.CardType.Power,
+                TypeID = CardBuilder.CardType.Minion,
 
-                NameData = "PLACE HOLDER",
+                NameData = "TRIO TREANT",
+                ManaCostData = 3,
+                AttackData = 3,
+                HealthData = 3,
                 DescriptionData = "",
+                ArtData = Properties.Resources.Treant,
             },
             new CardBuilder()
             {

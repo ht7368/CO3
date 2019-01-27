@@ -57,7 +57,7 @@
     <Compile Include="CustomFont.cs" />
     <Compile Include="DeckSerialize.cs" />
     <Compile Include="DeckUI.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DeckUI.Designer.cs">
       <DependentUpon>DeckUI.cs</DependentUpon>
@@ -301,9 +301,6 @@
     <None Include="Resources\DeadRising.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\DeckArea.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\DuoDemon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -314,6 +311,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\SelectionAreaBody.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CardSelectedBody.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeckArea.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeckButton.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectionBase.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectionMinion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectionPower.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectionSpell.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Treant.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

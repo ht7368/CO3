@@ -10,6 +10,11 @@ using System.Windows.Forms;
 
 namespace Cards
 {
+    public class CardLabel : Label
+    {
+        public CardBuilder Card;
+    }
+
     public partial class DeckUI : Form
     {
         public DeckBox Builder;
@@ -21,8 +26,8 @@ namespace Cards
 
         private void DeckUI_Load(object sender, EventArgs e)
         {
-            //FormBorderStyle = FormBorderStyle.FixedSingle;
-            Height = 600;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            Height = 700;
             Width = 1000;
             Builder = new DeckBox()
             {
@@ -40,15 +45,23 @@ namespace Cards
 
     public class DeckBox : Panel
     {
-        const int ITEM_WIDTH = 150;
-        const int ITEM_HEIGHT = 40;
-        const int ITEM_SPACING = 5;
+        public const int ITEM_WIDTH = 150;
+        public const int ITEM_HEIGHT = 23;
+        public const int ITEM_SPACING = 0;
+        public const int BUTTON_HEIGHT = 50;
+        public Color EMPTY_COLOR = Color.FromArgb(65, 44, 34);
+        public Color BACK_COLOR = Color.FromArgb(114, 78, 61);
+        public Color FORE_COLOR = Color.FromArgb(107, 71, 71);
 
         private int CurrentPage = 0;
         private CardBuilderBox[] Boxes;
-        private List<Label> SelectedCards;
+        private CardLabel[] SelectionBoxes;
         private Button ScrollLeft;
         private Button ScrollRight;
+        private Button LoadDeck;
+        private Button SaveDeck;
+        private Button ClearDeck;
+        private Button OtherDeck;
 
         public DeckBox() : base()
         {
@@ -57,15 +70,17 @@ namespace Cards
 
         public void InitUI()
         {
-            SelectedCards = new List<Label>();
+            SelectionBoxes = new CardLabel[25];
             BackgroundImage = Properties.Resources.DeckArea;
             // We'll set up 8 CardBox-s that will be updated every time we scroll a page
             Boxes = new CardBuilderBox[8];
             // When laying out these, we need to calculate some values
-            int VertSpacing = (Height - 2 * GameBox.CARD_HEIGHT - 50) / 4;
+            
+            int VertSpacing = (Height - 2 * GameBox.CARD_HEIGHT - BUTTON_HEIGHT) / 4;
             int TopRowHeight = VertSpacing;
             int BotRowHeight = 2 * VertSpacing + GameBox.CARD_HEIGHT;
-            int HorizSpacing = (Width - 5 * GameBox.CARD_WIDTH) / 5;
+            int HorizSpacing = (Width - 4 * GameBox.CARD_WIDTH - ITEM_WIDTH) / 6;
+
             for (int i = 0; i < 8; i++)
             {
                 Boxes[i] = new CardBuilderBox(this);
@@ -76,6 +91,35 @@ namespace Cards
                 Controls.Add(Box);
             }
 
+            for (int i = 0; i < 25; i++)
+            {
+                var Temp = new CardLabel()
+                {
+                    BackColor = EMPTY_COLOR,
+                    Image = Properties.Resources.SelectionBase,
+                    Height = ITEM_HEIGHT,
+                    Width = ITEM_WIDTH,
+                    Top = VertSpacing + i * (ITEM_HEIGHT + ITEM_SPACING),
+                    Left = Width - ITEM_WIDTH - HorizSpacing,
+                    Font = GameBox.CFont.GetFont(12),
+                    ForeColor = Color.White,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    Text = "",
+                };
+                SelectionBoxes[i] = Temp;
+                Temp.Click += (_s, _e) =>
+                {
+                if (Temp.Card != null)
+                    {
+                        Temp.BackColor = EMPTY_COLOR;
+                        Temp.Image = Properties.Resources.SelectionBase;
+                        Temp.Card = null;
+                        Temp.Text = "";
+                    }
+                };
+                Controls.Add(Temp);
+            }
+
             ScrollLeft = new Button()
             {
                 Image = Properties.Resources.ArrowLeft,
@@ -84,15 +128,7 @@ namespace Cards
                 Left = HorizSpacing - GameBox.CONTROL_SPACING - 20,
                 TabStop = false,
                 FlatStyle = FlatStyle.Flat,
-            };
-            ScrollRight = new Button()
-            {
-                Image = Properties.Resources.ArrowRight,
-                Size = new Size(20, 20),
-                Top = (BotRowHeight + GameBox.CARD_HEIGHT + TopRowHeight) / 2 - 10,
-                Left = Boxes[3].Left + GameBox.CARD_WIDTH + GameBox.CONTROL_SPACING,
-                TabStop = false,
-                FlatStyle = FlatStyle.Flat,
+                BackColor = BACK_COLOR,
             };
             ScrollLeft.Click += (_s, _e) =>
             {
@@ -102,6 +138,19 @@ namespace Cards
                     RenderPage();
                 }
             };
+            ScrollLeft.FlatAppearance.BorderSize = 0;
+            ScrollLeft.FlatAppearance.BorderColor = BACK_COLOR;
+            Controls.Add(ScrollLeft);
+            ScrollRight = new Button()
+            {
+                Image = Properties.Resources.ArrowRight,
+                Size = new Size(20, 20),
+                Top = (BotRowHeight + GameBox.CARD_HEIGHT + TopRowHeight) / 2 - 10,
+                Left = Boxes[3].Left + GameBox.CARD_WIDTH + GameBox.CONTROL_SPACING,
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = BACK_COLOR,
+            };
             ScrollRight.Click += (_s, _e) =>
             {
                 if ((CurrentPage + 1) * 8 < Cards.Collection.Count)
@@ -110,8 +159,103 @@ namespace Cards
                     RenderPage();
                 }
             };
-            Controls.Add(ScrollLeft);
+            ScrollRight.FlatAppearance.BorderSize = 0;
+            ScrollRight.FlatAppearance.BorderColor = BACK_COLOR;
             Controls.Add(ScrollRight);
+            LoadDeck = new Button()
+            {
+                Height = BUTTON_HEIGHT,
+                Width = GameBox.CARD_WIDTH,
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = Color.White,
+                Font = GameBox.CFont.GetFont(12),
+                Image = Properties.Resources.DeckButton,
+                Top = 3 * VertSpacing + 2 * GameBox.CARD_HEIGHT,
+                Left = HorizSpacing,
+                Text = "LOAD DECK",
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = BACK_COLOR,
+            };
+            LoadDeck.FlatAppearance.BorderSize = 0;
+            LoadDeck.FlatAppearance.BorderColor = BACK_COLOR;
+            LoadDeck.Click += (_s, _e) =>
+            {
+
+            };
+            Controls.Add(LoadDeck);
+            SaveDeck = new Button()
+            {
+                Height = BUTTON_HEIGHT,
+                Width = GameBox.CARD_WIDTH,
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = Color.White,
+                Font = GameBox.CFont.GetFont(12),
+                Image = Properties.Resources.DeckButton,
+                Top = 3 * VertSpacing + 2 * GameBox.CARD_HEIGHT,
+                Left = 2 * HorizSpacing + GameBox.CARD_WIDTH,
+                Text = "SAVE DECK",
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = BACK_COLOR,
+            };
+            SaveDeck.FlatAppearance.BorderSize = 0;
+            SaveDeck.FlatAppearance.BorderColor = BACK_COLOR;
+            SaveDeck.Click += (_s, _e) =>
+            {
+
+            };
+            Controls.Add(SaveDeck);
+            OtherDeck = new Button()
+            {
+                Height = BUTTON_HEIGHT,
+                Width = GameBox.CARD_WIDTH,
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = Color.White,
+                Font = GameBox.CFont.GetFont(12),
+                Image = Properties.Resources.DeckButton,
+                Top = 3 * VertSpacing + 2 * GameBox.CARD_HEIGHT,
+                Left = 3 * HorizSpacing + 2 * GameBox.CARD_WIDTH,
+                Text = "???",
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = BACK_COLOR,
+            };
+            OtherDeck.FlatAppearance.BorderSize = 0;
+            OtherDeck.FlatAppearance.BorderColor = BACK_COLOR;
+            OtherDeck.Click += (_s, _e) =>
+            {
+
+            };
+            Controls.Add(OtherDeck);
+            ClearDeck = new Button()
+            {
+                Height = BUTTON_HEIGHT,
+                Width = GameBox.CARD_WIDTH,
+                TextAlign = ContentAlignment.MiddleCenter,
+                ForeColor = Color.White,
+                Font = GameBox.CFont.GetFont(12),
+                Image = Properties.Resources.DeckButton,
+                Top = 3 * VertSpacing + 2 * GameBox.CARD_HEIGHT,
+                Left = 4 * HorizSpacing + 3 * GameBox.CARD_WIDTH,
+                Text = "CLEAR DECK",
+                TabStop = false,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = BACK_COLOR,
+            };
+            ClearDeck.FlatAppearance.BorderSize = 0;
+            ClearDeck.FlatAppearance.BorderColor = BACK_COLOR;
+            ClearDeck.Click += (_s, _e) =>
+            {
+                foreach (CardLabel l in SelectionBoxes)
+                {
+                    l.BackColor = EMPTY_COLOR;
+                    l.Image = Properties.Resources.SelectionBase;
+                    l.Card = null;
+                    l.Text = "";
+                }
+            };
+            Controls.Add(ClearDeck);
 
             RenderPage();
         }
@@ -133,36 +277,26 @@ namespace Cards
             }
         }
 
-        public void AddSelected(CardBuilder form)
+        public void AddSelected(CardBuilder card)
         {
-            int VertPosition;
-            if (SelectedCards.Count == 0)
-                VertPosition = GameBox.CONTROL_SPACING;
-            else
-                VertPosition = SelectedCards[SelectedCards.Count - 1].Bottom + ITEM_SPACING;
-
-            var Temp = new Label()
+            // We want to add from the bottom-up
+            // So we find the first empty space
+            foreach (CardLabel l in SelectionBoxes)
             {
-                Top = VertPosition,
-                Left = Width - GameBox.CONTROL_SPACING - ITEM_WIDTH,
-                Text = form.NameData,
-                TextAlign = ContentAlignment.MiddleCenter,
-                Height = ITEM_HEIGHT,
-                Width = ITEM_WIDTH,
-            };
-            SelectedCards.Add(Temp);
-            Controls.Add(Temp);
-
-            Temp.Click += (_s, _e) =>
-            {
-                // Need to shift cards downward that are above this one to avoid gaps
-                int Ind = SelectedCards.IndexOf(Temp);
-                // We can do i+1 since we don't need to modify what we are removing
-                for (int i = Ind + 1; i < SelectedCards.Count; i++)
-                    SelectedCards[i].Top -= ITEM_HEIGHT + ITEM_SPACING;
-                SelectedCards.Remove(Temp);
-                Controls.Remove(Temp);
-            };
+                if (l.Card == null)
+                {
+                    l.Text = card.NameData;
+                    l.BackColor = Color.FromArgb(231, 89, 82);
+                    l.Card = card;
+                    if (card.TypeID == CardBuilder.CardType.Minion)
+                        l.Image = Properties.Resources.SelectionMinion;
+                    else if (card.TypeID == CardBuilder.CardType.Power)
+                        l.Image = Properties.Resources.SelectionPower;
+                    else if (card.TypeID == CardBuilder.CardType.Spell)
+                        l.Image = Properties.Resources.SelectionSpell;
+                    break;
+                }
+            }
         }
     }
 }

@@ -200,8 +200,9 @@ namespace Cards
                 Font = CFont.GetFont(12),
                 TabStop = false,
                 FlatStyle = FlatStyle.Flat,
+                BackColor = BACK_COLOR,
             };
-            ResetButton.FlatAppearance.BorderSize = 1;
+            ResetButton.FlatAppearance.BorderSize = 0;
             ResetButton.FlatAppearance.BorderColor = BACK_COLOR;
             ResetButton.Click += ResetButton_Click;
             Controls.Add(ResetButton);
@@ -217,8 +218,9 @@ namespace Cards
                 Font = CFont.GetFont(12),
                 TabStop = false,
                 FlatStyle = FlatStyle.Flat,
+                BackColor = BACK_COLOR,
             };
-            DrawButton.FlatAppearance.BorderSize = 1;
+            DrawButton.FlatAppearance.BorderSize = 0;
             DrawButton.FlatAppearance.BorderColor = BACK_COLOR;
             DrawButton.Click += DrawButton_Click;
             Controls.Add(DrawButton);
@@ -235,8 +237,9 @@ namespace Cards
                 TabStop = false,
                 FlatStyle = FlatStyle.Flat,
                 ImageAlign = ContentAlignment.MiddleCenter,
+                BackColor = BACK_COLOR,
             };
-            PassButton.FlatAppearance.BorderSize = 1;
+            PassButton.FlatAppearance.BorderSize = 0;
             PassButton.FlatAppearance.BorderColor = BACK_COLOR;
             PassButton.Click += PassButton_Click;
             Controls.Add(PassButton);
