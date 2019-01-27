@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Cards
 {
@@ -26,6 +27,10 @@ namespace Cards
 
         private void DeckUI_Load(object sender, EventArgs e)
         {
+            // Initialize the directory for deck files
+            if (!Directory.Exists("deckfiles"))
+                Directory.CreateDirectory("deckfiles");
+
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Height = 700;
             Width = 1000;
@@ -181,7 +186,40 @@ namespace Cards
             LoadDeck.FlatAppearance.BorderColor = BACK_COLOR;
             LoadDeck.Click += (_s, _e) =>
             {
+                var Picker = new OpenFileDialog()
+                {
+                    Filter = "Deck Files|*.deck|All Files|*.*",
+                    InitialDirectory = $"{Environment.CurrentDirectory}\\deckfiles",
+                };
+                if (Picker.ShowDialog() != DialogResult.OK)
+                    return;
+                byte[] Bytes = File.ReadAllBytes(Picker.FileName);
+                for (int i = 0; i < SelectionBoxes.Length; i++)
+                {
+                    var Card = Cards.CardFromID(Bytes[i]);
+                    SelectionBoxes[i].Card = Card;
+                    SelectionBoxes[i].Text = Card.NameData;
+                    if (Card.TypeID == CardBuilder.CardType.Minion)
+                        SelectionBoxes[i].Image = Properties.Resources.SelectionMinion;
+                    else if (Card.TypeID == CardBuilder.CardType.Power)
+                        SelectionBoxes[i].Image = Properties.Resources.SelectionPower;
+                    else if (Card.TypeID == CardBuilder.CardType.Spell)
+                        SelectionBoxes[i].Image = Properties.Resources.SelectionSpell;
+                }
 
+                if (!Cards.ValidateDeck(SelectionBoxes, out string why))
+                {
+                    MessageBox.Show(caption: "Deck Error!", text: why);
+                    // Clear
+                    foreach (CardLabel l in SelectionBoxes)
+                    {
+                        l.BackColor = EMPTY_COLOR;
+                        l.Image = Properties.Resources.SelectionBase;
+                        l.Card = null;
+                        l.Text = "";
+                    }
+                    return;
+                }
             };
             Controls.Add(LoadDeck);
             SaveDeck = new Button()
@@ -203,7 +241,31 @@ namespace Cards
             SaveDeck.FlatAppearance.BorderColor = BACK_COLOR;
             SaveDeck.Click += (_s, _e) =>
             {
-
+                if (!Cards.ValidateDeck(SelectionBoxes, out string why))
+                {
+                    MessageBox.Show(caption: "Deck Error!", text: why);
+                    return;
+                }
+                byte[] Bytes = new byte[25];
+                for (int i = 0; i < 25; i++)
+                {
+                    var Card = SelectionBoxes[i];
+                    if (Card.Card == null)
+                    {
+                        MessageBox.Show(text: "The deck is too small and must contain 25 cards.", caption: "Deck Error!");
+                        return;
+                    }
+                    Bytes[i] = (byte) Card.Card.DeckID;
+                }
+                var Picker = new SaveFileDialog()
+                {
+                    Filter = "Deck Files|*.deck|All Files|*.*",
+                    InitialDirectory = $"{Environment.CurrentDirectory}\\deckfiles",
+                };
+                Picker.ShowDialog();
+                if (Picker.FileName == "")
+                    return;
+                File.WriteAllBytes(Picker.FileName, Bytes);
             };
             Controls.Add(SaveDeck);
             OtherDeck = new Button()
@@ -216,7 +278,7 @@ namespace Cards
                 Image = Properties.Resources.DeckButton,
                 Top = 3 * VertSpacing + 2 * GameBox.CARD_HEIGHT,
                 Left = 3 * HorizSpacing + 2 * GameBox.CARD_WIDTH,
-                Text = "???",
+                Text = "EXIT WINDOW",
                 TabStop = false,
                 FlatStyle = FlatStyle.Flat,
                 BackColor = BACK_COLOR,
@@ -225,7 +287,7 @@ namespace Cards
             OtherDeck.FlatAppearance.BorderColor = BACK_COLOR;
             OtherDeck.Click += (_s, _e) =>
             {
-
+                (Parent as Form).Close();
             };
             Controls.Add(OtherDeck);
             ClearDeck = new Button()

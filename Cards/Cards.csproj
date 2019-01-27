@@ -55,7 +55,6 @@
     </Compile>
     <Compile Include="Cards.cs" />
     <Compile Include="CustomFont.cs" />
-    <Compile Include="DeckSerialize.cs" />
     <Compile Include="DeckUI.cs">
       <SubType>Component</SubType>
     </Compile>

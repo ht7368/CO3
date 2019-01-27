@@ -78,8 +78,45 @@ namespace Cards
         }
     }
 
-    class Cards
+    public static class Cards
     {
+        public static CardBuilder CardFromID(byte ID)
+        {
+            foreach (CardBuilder c in Collection)
+                if (c.DeckID == ID)
+                    return c;
+            return null;
+        }
+
+        public static bool ValidateDeck(CardLabel[] cards, out string why)
+        {
+            // Check for too many duplicates
+            var Dict = new Dictionary<int, int>();
+            foreach (CardBuilder c in cards.Select(x => x.Card))
+                if (c == null)
+                {
+                    why = "One or more card slots is unassigned.";
+                    return false;
+                }
+                else if (Dict.ContainsKey(c.DeckID))
+                    Dict[c.DeckID] += 1;
+                else
+                    Dict.Add(c.DeckID, 1);
+            foreach (var v in Dict.Values)
+                if (v > 2)
+                {
+                    why = "Too many copies of one card. (maximum: 2)";
+                    return false;
+                }
+            if (cards.Length != 25)
+            {
+                why = "Incorrect number of cards. (must have: 25)";
+                return false;
+            }
+            why = "";
+            return true;
+        }
+
         public static List<CardBuilder> Collection = new List<CardBuilder>()
         {
             new CardBuilder()
