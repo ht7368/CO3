@@ -10,21 +10,25 @@ namespace Cards
     // In the network case, functions to get some information will end up sending network requests.
     public class BasePlayer
     {
+        protected static Network Net;
+
         public int MaxMana = 13;
         public int Mana = 1;
         public int ManaTurn = 1;
         public int Health = 25;
+        public bool CanDraw = true;
         public List<BaseCard> Deck = new List<BaseCard>();
         public List<BaseCard> Hand = new List<BaseCard>();
         public List<MinionCard> Board = new List<MinionCard>();
-        public bool CanDraw = true;
-
         public BaseCard PlayerCard;
-
-        //protected static Network Net = new Network();
-
+        
         //public abstract Move NextMove();
         //public abstract bool HasNextMove();
+
+        public BasePlayer()
+        {
+            Net = new Network();
+        }
 
         public virtual void DrawCard()
         {
@@ -42,27 +46,11 @@ namespace Cards
 
     public class LocalPlayer : BasePlayer
     {
-        public bool HasNextMove()
-        {
-            return false;
-        }
 
-        public Move NextMove()
-        {
-            return null;
-        }
     }
 
     public class NetworkPlayer : BasePlayer
     {
-        public bool HasNextMove()
-        {
-            return false;
-        }
 
-        public Move NextMove()
-        {
-            return null;
-        }
     }
 }

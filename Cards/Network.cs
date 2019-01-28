@@ -12,7 +12,7 @@ namespace Cards
     {
         public const int Port = 1420; // Arbitrarily chosen, will change again if a problem arises.
 
-        // Static to avoid having multiple connections open at once (this won't work!)
+        // Static to avoid having multiple connections open at once
         static TcpClient Client;
         static NetworkStream Stream;
 

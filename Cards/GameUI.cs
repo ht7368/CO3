@@ -20,7 +20,7 @@ namespace Cards
             FormBorderStyle = FormBorderStyle.None;
             WindowState = FormWindowState.Maximized;
 
-            Game = new GameBox
+            Game = new GameBox()
             {
                 Location = new Point(0, 0),
                 Width = Screen.PrimaryScreen.Bounds.Width,
