@@ -78,7 +78,7 @@ namespace Cards
         }
     }
 
-    public static class Cards
+    public static partial class Cards
     {
         public static CardBuilder CardFromID(byte ID)
         {
@@ -116,183 +116,6 @@ namespace Cards
             why = "";
             return true;
         }
-
-        public static List<CardBuilder> Collection = new List<CardBuilder>()
-        {
-            new CardBuilder()
-            {
-                DeckID = 0,
-                TypeID = CardBuilder.CardType.Minion,
-
-                NameData = "TESTING DUMMY",
-                ManaCostData = 1,
-                AttackData = 0,
-                HealthData = 3,
-                DescriptionData = "DIES ON TURN END",
-                ArtData = Properties.Resources.TargetDummy,
-            },
-            new CardBuilder()
-            {
-                DeckID = 1,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "CLEAR SKY",
-                ManaCostData = 5,
-                DescriptionData = "NO EFFECT",
-                ArtData = Properties.Resources.ClearSky,
-            },
-            new CardBuilder()
-            {
-                DeckID = 2,
-                TypeID = CardBuilder.CardType.Spell,
-
-                NameData = "CLEAN SHOT",
-                ManaCostData = 5,
-                DescriptionData = "REMOVE A MINION",
-                TargetedData = true,
-                ArtData = Properties.Resources.Vanquish,
-                SpellEffectData = (s, m) =>
-                {
-                    var Target = IdGenerator.GetById(m.Targeted) as MinionCard;
-                    Target.Health = 0;
-                },
-            },
-            new CardBuilder()
-            {
-                DeckID = 3,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "ARENA",
-                ManaCostData = 6,
-                DescriptionData = "MINIONS GAIN +3 ATK ATTACKING",
-                ArtData = Properties.Resources.GrandArena,
-                PowerEffectData = new EffectData<PowerCard>
-                {{
-                        Effect.MinionAttacking, (GameState s) => (s.LastMove.Selected.AsCard() as MinionCard).Attack += 3
-                }},
-            },
-
-            new CardBuilder()
-            {
-                DeckID = 4,
-                TypeID = CardBuilder.CardType.Minion,
-
-                NameData = "DUO DEMON",
-                ManaCostData = 2,
-                AttackData = 2,
-                HealthData = 2,
-                DescriptionData = "",
-                ArtData = Properties.Resources.DuoDemon,
-            },
-            new CardBuilder()
-            {
-                DeckID = 5,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "DARK CAVE",
-                ManaCostData = 4,
-                DescriptionData = "ALL MINIONS +1/+1 WHEN CARD PLAYED",
-                ArtData = Properties.Resources.WhispersMadness,
-                PowerEffectData = new EffectData<PowerCard>
-                {{
-                        Effect.CardPlayed, (GameState s) =>
-                        {
-                            foreach (BaseCard c in s.AllCards())
-                                if (c is MinionCard)
-                                {
-                                    (c as MinionCard).Attack += 1;
-                                    (c as MinionCard).Health += 1;
-                                }
-                        }
-                }},
-            },
-            new CardBuilder()
-            {
-                DeckID = 6,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            },
-            new CardBuilder()
-            {
-                DeckID = 7,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            },
-            new CardBuilder()
-            {
-                DeckID = 8,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            }
-            ,
-            new CardBuilder()
-            {
-                DeckID = 9,
-                TypeID = CardBuilder.CardType.Minion,
-
-                NameData = "TRIO TREANT",
-                ManaCostData = 3,
-                AttackData = 3,
-                HealthData = 3,
-                DescriptionData = "",
-                ArtData = Properties.Resources.Treant,
-            },
-            new CardBuilder()
-            {
-                DeckID = 10,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            },
-            new CardBuilder()
-            {
-                DeckID = 11,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            },
-            new CardBuilder()
-            {
-                DeckID = 12,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            },
-            new CardBuilder()
-            {
-                DeckID = 13,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            },
-            new CardBuilder()
-            {
-                DeckID = 14,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            },
-            new CardBuilder()
-            {
-                DeckID = 15,
-                TypeID = CardBuilder.CardType.Power,
-
-                NameData = "PLACE HOLDER",
-                DescriptionData = "",
-            },
-        };
-
 
         // (Subject to change?) A collection of all cards. More specifically,
         // functions that take a GameState to return a card.
@@ -346,7 +169,7 @@ namespace Cards
                 Effects = new EffectData<PowerCard>
                 {
                     {
-                        Effect.MinionAttacking, (GameState s) => (s.LastMove.Selected.AsCard() as MinionCard).Attack += 3
+                        Effect.MinionAttacking, (s, m) => (s.LastMove.Selected.AsCard() as MinionCard).Attack += 3
                     }
                 }
             },
@@ -370,7 +193,7 @@ namespace Cards
                 Effects = new EffectData<PowerCard>
                 {
                     {
-                        Effect.CardPlayed, (GameState s) =>
+                        Effect.CardPlayed, (s, m) =>
                         {
                             foreach (BaseCard c in s.AllCards())
                                 if (c is MinionCard)

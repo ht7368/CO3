@@ -60,7 +60,7 @@ namespace Cards
 
     
 
-    public class EffectData<T> : Dictionary<Effect, Action<GameState>> where T: BaseCard
+    public class EffectData<T> : Dictionary<Effect, Action<GameState, T>> where T: BaseCard
     {
         // Leaving this blank, it just acts as a more specific dictionary with a shorter name,
         // whilst giving us the option to add specific functionality later.

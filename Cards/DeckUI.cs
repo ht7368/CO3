@@ -330,7 +330,8 @@ namespace Cards
                 // We won't render the last cards
                 if (StartInd + i >= Cards.Collection.Count)
                 {
-                    Boxes[i].Visible = false;
+                    for (int j = i; j < 8; j++)
+                        Boxes[j].Visible = false;
                     break;
                 }
                 var Box = Cards.Collection[StartInd + i];

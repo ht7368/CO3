@@ -96,16 +96,25 @@ namespace Cards
             yield break;
         }
 
+        public IEnumerable<MinionCard> AllOnboardMinions()
+        {
+            foreach (var c in ActivePlayer.Board)
+                yield return c;
+            foreach (var c in InactivePlayer.Board)
+                yield return c;
+            yield break;
+        }
+
         public void BroadcastEffect(Effect effect)
         {
             if (CurrentPower.Effects.ContainsKey(effect))
-                CurrentPower.Effects[effect](this);
+                CurrentPower.Effects[effect](this, CurrentPower);
          
             // Anything with an effect will have it called
             foreach (var c in AllCards())
-                if (c is MinionCard)
-                    if ((c as MinionCard).Effects.ContainsKey(effect))
-                        (c as MinionCard).Effects[effect](this);
+                if (c is MinionCard m)
+                    if (m.Effects.ContainsKey(effect))
+                        m.Effects[effect](this, m);
         }
 
         // SPECIAL CODES FOR MOVE PROCESSING
@@ -134,7 +143,7 @@ namespace Cards
             else if (nextMove.Selected == CARD_DRAW)
             {
                 // TODO: Force loss if deck is empty
-                ActivePlayer.DrawCard();
+                ActivePlayer.ManualDrawCard();
                 return null;
             }
 
@@ -188,8 +197,8 @@ namespace Cards
                     (c as MinionCard).CanAttack = true;
 
             // Allow players to draw again
-            PlayerOne.CanDraw = true;
-            PlayerTwo.CanDraw = true;
+            PlayerOne.HasNotDrawn = true;
+            PlayerTwo.HasNotDrawn = true;
 
             // Switch turn flag
             IsP1Turn = !IsP1Turn;

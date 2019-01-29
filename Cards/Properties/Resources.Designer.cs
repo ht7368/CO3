@@ -393,6 +393,16 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Vortex {
+            get {
+                object obj = ResourceManager.GetObject("Vortex", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap WhispersMadness {
             get {
                 object obj = ResourceManager.GetObject("WhispersMadness", resourceCulture);

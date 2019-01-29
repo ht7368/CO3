@@ -16,7 +16,7 @@ namespace Cards
         public int Mana = 1;
         public int ManaTurn = 1;
         public int Health = 25;
-        public bool CanDraw = true;
+        public bool HasNotDrawn = true;
         public List<BaseCard> Deck = new List<BaseCard>();
         public List<BaseCard> Hand = new List<BaseCard>();
         public List<MinionCard> Board = new List<MinionCard>();
@@ -30,12 +30,17 @@ namespace Cards
             Net = new Network();
         }
 
+        public virtual void ManualDrawCard()
+        {
+            if (!HasNotDrawn || Mana == 0 || Hand.Count >= 10)
+                return;
+            HasNotDrawn = false;
+            Mana -= 1;
+            DrawCard();
+        }
+
         public virtual void DrawCard()
         {
-            if (!CanDraw || Mana == 0 || Hand.Count >= 10)
-                return;
-            CanDraw = false;
-            Mana -= 1;
             // TODO: If empty, concede
             Hand.Add(Deck[0]);
             Deck.RemoveAt(0);

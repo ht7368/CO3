@@ -50,6 +50,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CardData.cs" />
+    <Compile Include="CardDatabase.cs" />
     <Compile Include="CardGraphics.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -334,6 +335,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Treant.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Vortex.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
