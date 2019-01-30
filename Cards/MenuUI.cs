@@ -33,11 +33,13 @@ namespace Cards
 
         private void buttonHost_Click(object sender, EventArgs e)
         {
-            /*Socket Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.IP);
-            Socket.Connect("8.8.8.8", 65530);
-            string LocalIP = (Socket.LocalEndPoint as IPEndPoint).Address.ToString();
+            var LocalIP = Dns.GetHostEntry(Dns.GetHostName())
+                .AddressList
+                .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork)
+                .OrderByDescending(ip => ip.GetAddressBytes()[3])
+                .First();
 
-            MessageBox.Show(caption: "Information", text: $"Connect to: {LocalIP}");*/
+            MessageBox.Show(caption: "Information", text: $"Connect to: {LocalIP}");
 
             var Game = new GameUI();
             Game.ShowDialog();

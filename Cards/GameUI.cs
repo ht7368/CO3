@@ -75,6 +75,7 @@ namespace Cards
         private PlayerBox EnemyHero;
         private PlayerBox PlayerHero;
         private Label NotificationLabel;
+        private System.Windows.Forms.Timer GameTimer;
 
         public GameState Game;
         public BaseCard SelectedCard;
@@ -321,6 +322,18 @@ namespace Cards
             };
             Controls.Add(NotificationLabel);
 
+            GameTimer = new System.Windows.Forms.Timer()
+            {
+                Enabled = true,
+                Interval = 1000,
+            };
+            GameTimer.Tick += (_s, _e) =>
+            {
+                RenderState(Game);
+                Game.PendingUpdate = false;
+            };
+            GameTimer.Start();
+
             RenderState(Game);
         }
 
@@ -344,17 +357,19 @@ namespace Cards
 
         private void DrawButton_Click(object sender, EventArgs e)
         {
+            if (!Game.IsP1Turn)
+                return;
             Game.ProcessMove(new Move(GameState.CARD_DRAW, 0));
             RenderState(Game);
         }
 
         private void PassButton_Click(object sender, EventArgs e)
         {
+            if (!Game.IsP1Turn)
+                return;
             SelectedCard = null;
-            Game.SwitchTurns();
+            Game.ProcessMove(new Move(GameState.TURN_PASS, 0));
             RenderState(Game);
-            if (Game.ActivePlayer == Game.PlayerOne)
-                DisplayNotification("IT IS YOUR TURN!");
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Cards
         public ConnectUI()
         {
             InitializeComponent();
+            textBoxIP.Text = "127.0.0.1";
         }
 
         private void buttonConnect_Click(object sender, EventArgs e)

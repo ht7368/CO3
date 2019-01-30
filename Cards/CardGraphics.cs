@@ -80,10 +80,7 @@ namespace Cards
                 // Centred between CardCost and CardHealth
                 Left = 36,
                 ForeColor = Color.White,
-                BackColor = card.ManaCost <= card.Game.PlayerOne.Mana ? GREEN_IND : RED_IND,
-                // Can be optimized when enemy cards in hand are hidden:- we don't need to check cards in the hand, they are hidden
-                //Image = Properties.Resources.RedBox,
-                Visible = card.Game.PlayerTwo.Board.Contains(CardReferenced) || card.Game.PlayerTwo.Hand.Contains(CardReferenced) ? false : true,
+                BackColor = card.ManaCost <= card.Game.PlayerOne.Mana && card.Game.IsP1Turn ? GREEN_IND : RED_IND,
             };
             Controls.Add(CardPlayableIndicator);
             CardPlayableIndicator.BringToFront();

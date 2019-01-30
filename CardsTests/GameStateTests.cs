@@ -49,8 +49,7 @@ namespace Cards.Tests
                 ManaCost = 0,
                 Effects = new EffectData<PowerCard>()
                 {
-                    { Effect.TurnEnd, (g) => { g.CurrentPower.ManaCost = 1; } },
-                    { Effect.CardDrawn, (g) => { g.CurrentPower.ManaCost = 2; } },
+                    // aaaaa
                 }
             };
             G.PlayerTwo.Deck.Add(new SpellCard(G));

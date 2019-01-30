@@ -30,6 +30,7 @@ namespace Cards
     // Notably, the rendering code will only see this, rendering elements seperate from logic.
     public class GameState
     {
+        public const bool DEBUG_ENABLED = true;
         public const int NUM_RESERVED_CODES = 3;
 
         public BasePlayer PlayerOne;
@@ -37,6 +38,7 @@ namespace Cards
         public PowerCard CurrentPower;
         public Move LastMove;
         public bool IsP1Turn; // Is it player one's turn?
+        public bool PendingUpdate = false;
         public Network Net;
 
         //public GameBox Box;
@@ -71,13 +73,13 @@ namespace Cards
             IsP1Turn = true;
             Net = new Network();
 
-            PlayerTwo.Deck = Enumerable
-                .Repeat((byte)0, 25)
+            PlayerOne.Deck = Enumerable
+                .Repeat((byte)1, 25)
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this))
                 .ToList();
-            PlayerOne.Deck = Enumerable
-                .Repeat((byte)1, 25)
+            PlayerTwo.Deck = Enumerable
+                .Repeat((byte)0, 25)
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this))
                 .ToList();
@@ -107,6 +109,8 @@ namespace Cards
                 PlayerOne.DrawCard();
                 PlayerTwo.DrawCard();
             }
+
+            Task.Run(() => AsyncWaitForMove());
         }
 
         // Helper functions
@@ -187,13 +191,14 @@ namespace Cards
             }
             else if (nextMove.Selected == TURN_PASS)
             {
-                SwitchTurns();
+                DoMove(nextMove);
+                Net.Send(nextMove);
                 return null;
             }
             else if (nextMove.Selected == CARD_DRAW)
             {
-                // TODO: Force loss if deck is empty
-                ActivePlayer.ManualDrawCard();
+                DoMove(nextMove);
+                Net.Send(nextMove);
                 return null;
             }
 
@@ -205,17 +210,36 @@ namespace Cards
             }
 
             Net.Send(nextMove);
-            DoMove(nextMove, Selected, Targeted);
+            DoMove(nextMove);
             return "";
         }
 
-        public void DoMove(Move nextMove, BaseCard selected, BaseCard targeted)
+        public void DoMove(Move nextMove)
         {
-            this.LastMove = nextMove;
-            InactivePlayer.Hand.Remove(selected);
-            ActivePlayer.Hand.Remove(selected);
+            if (nextMove.Selected == OPP_CONCEDE)
+            {
+                return;
+            }
+            else if (nextMove.Selected == TURN_PASS)
+            {
+                SwitchTurns();
+                return;
+            }
+            else if (nextMove.Selected == CARD_DRAW)
+            {
+                // TODO: Force loss if deck is empty
+                ActivePlayer.ManualDrawCard();
+                return;
+            }
 
-            targeted.Play();
+            BaseCard Selected = nextMove.Selected.AsCard();
+            BaseCard Targeted = nextMove.Targeted.AsCard();
+
+            this.LastMove = nextMove;
+            InactivePlayer.Hand.Remove(Selected);
+            ActivePlayer.Hand.Remove(Selected);
+
+            Targeted.Play();
             ResolveActions();
         }
 
@@ -258,16 +282,15 @@ namespace Cards
             // Switch turn flag
             IsP1Turn = !IsP1Turn;
             BroadcastEffect(Effect.TurnStart);
-
-            Task.Run(() => AsyncWaitForMove());
         }
 
         public async void AsyncWaitForMove()
         {
-            while (!IsP1Turn)
+            while (true)
             {
                 Move nextMove = await Net.Recieve();
-                DoMove(nextMove, nextMove.Selected.AsCard(), nextMove.Targeted.AsCard());
+                DoMove(nextMove);
+                PendingUpdate = true;
             }
         }
     }
