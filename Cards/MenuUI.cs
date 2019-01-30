@@ -37,7 +37,8 @@ namespace Cards
 
         private void buttonConn_Click(object sender, EventArgs e)
         {
-            var Game = new GameUI();
+            var Game = new GameUI("192.168.1.68");
+            //var Game = new GameUI("81.129.225.127");
             Game.ShowDialog();
         }
     }

@@ -8,25 +8,44 @@ namespace Cards
 {
     public partial class GameUI : Form
     {
-        public GameBox Game = new GameBox();
+        public GameBox Game;
+        public string Hostname;
 
         public GameUI()
         {
             InitializeComponent();
+            Hostname = null;
+        }
+
+        public GameUI(string hostname)
+        {
+            InitializeComponent();
+            Hostname = hostname;
         }
 
         public void GameUI_Load(object sender, EventArgs e)
         {
-            FormBorderStyle = FormBorderStyle.None;
-            WindowState = FormWindowState.Maximized;
+            //FormBorderStyle = FormBorderStyle.None;
+            //if (Screen.PrimaryScreen.Bounds.Width >= 1920)
+             //   WindowState = FormWindowState.Maximized;
 
-            Game = new GameBox()
-            {
-                Location = new Point(0, 0),
-                Width = Screen.PrimaryScreen.Bounds.Width,
-                Height = Screen.PrimaryScreen.Bounds.Height,
-                //BackColor = Color.LightYellow,
-            };
+            if (Hostname == null)
+                Game = new GameBox()
+                {
+                    Location = new Point(0, 0),
+                    Width = Screen.PrimaryScreen.Bounds.Width,
+                    Height = Screen.PrimaryScreen.Bounds.Height,
+                    //BackColor = Color.LightYellow,
+                };
+            else
+                Game = new GameBox(Hostname)
+                {
+                    Location = new Point(0, 0),
+                    Width = Screen.PrimaryScreen.Bounds.Width,
+                    Height = Screen.PrimaryScreen.Bounds.Height,
+                    //BackColor = Color.LightYellow,
+                };
+
             Game.Visible = false;
             Game.SendToBack();
             Game.InitUI();
@@ -65,6 +84,11 @@ namespace Cards
         public GameBox()
         {
             Game = new GameState();
+        }
+
+        public GameBox(string hostname)
+        {
+            Game = new GameState(hostname);
         }
 
         // Will update the visuals with the current board state.
@@ -296,28 +320,6 @@ namespace Cards
                 Font = CFont.GetFont(12),
             };
             Controls.Add(NotificationLabel);
-
-            // TESTING add cards to hand initially
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[1](Game));
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[0](Game));
-            Game.PlayerOne.Hand.Add(Cards.CardDB[0](Game));
-            Game.PlayerOne.Hand.Add(Cards.CardDB[3](Game));
-            Game.PlayerTwo.Hand.Add(Cards.CardDB[1](Game));
-            Game.PlayerOne.Hand.Add(Cards.CardDB[2](Game));
-            Game.PlayerOne.Hand.Add(Cards.CardDB[0](Game));
-            Game.PlayerOne.Hand.Add(Cards.CardDB[5](Game));
-            Game.PlayerTwo.Board.Add(Cards.CardDB[4](Game) as MinionCard);
-            Game.PlayerTwo.Board[0].OnBoard = true;
-            Game.PlayerOne.Board.Add(Cards.CardDB[4](Game) as MinionCard);
-            Game.PlayerOne.Board[0].OnBoard = true;
-
-            Random Rand = new Random();
-            for (int i = 0; i < 25; i++)
-                Game.PlayerOne.Deck.Add(Cards.CardDB[Rand.Next(0, Cards.CardDB.Count)](Game));
-            for (int i = 0; i < 25; i++)
-                Game.PlayerTwo.Deck.Add(Cards.CardDB[Rand.Next(0, Cards.CardDB.Count)](Game));
 
             RenderState(Game);
         }

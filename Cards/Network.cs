@@ -14,7 +14,7 @@ namespace Cards
 
         // Static to avoid having multiple connections open at once
         static TcpClient Client;
-        static NetworkStream Stream;
+        public static NetworkStream Stream;
 
         // Construct an instance of Network that is a host, that is, it does not have to connect to an address.
         public Network()
@@ -27,9 +27,9 @@ namespace Cards
             Stream = Client.GetStream();
         }
 
-        public Network(string hostname, int port)
+        public Network(string hostname)
         {
-            Client = new TcpClient(hostname, port);
+            Client = new TcpClient(hostname, Port);
             Stream = Client.GetStream();
         }
 
@@ -47,10 +47,10 @@ namespace Cards
             Stream.Write(Package, 0, Package.Length);
         }
 
-        public Move Recieve()
+        public async Task<Move> Recieve()
         {
             byte[] Buf = new byte[8]; // 4 bytes per uint, 2 uints
-            Stream.Read(Buf, 0, Buf.Length);
+            await Stream.ReadAsync(Buf, 0, Buf.Length);
 
             uint Selected = BitConverter.ToUInt32(Buf, 0);
             uint Targeted = BitConverter.ToUInt32(Buf, 4);

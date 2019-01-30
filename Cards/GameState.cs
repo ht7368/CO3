@@ -36,14 +36,58 @@ namespace Cards
         public BasePlayer PlayerTwo;
         public PowerCard CurrentPower;
         public Move LastMove;
-        public bool IsP1Turn = true; // Is it player one's turn?
+        public bool IsP1Turn; // Is it player one's turn?
+        public Network Net;
 
         //public GameBox Box;
 
+        public GameState(string hostname)
+        {
+            PlayerTwo = new BasePlayer();
+            PlayerOne = new BasePlayer();
+
+            IsP1Turn = false;
+            Net = new Network(hostname);
+
+            PlayerTwo.Deck = Enumerable
+                .Repeat((byte)1, 25)
+                .Select(x => Cards.CardFromID(x))
+                .Select(x => x.Build(this))
+                .ToList();
+            PlayerOne.Deck = Enumerable
+                .Repeat((byte)0, 25)
+                .Select(x => Cards.CardFromID(x))
+                .Select(x => x.Build(this))
+                .ToList();
+
+            _GameState();
+        }
+
         public GameState()
         {
-            PlayerOne = new LocalPlayer();
-            PlayerTwo = new NetworkPlayer();
+            PlayerOne = new BasePlayer();
+            PlayerTwo = new BasePlayer();
+
+            IsP1Turn = true;
+            Net = new Network();
+
+            PlayerTwo.Deck = Enumerable
+                .Repeat((byte)0, 25)
+                .Select(x => Cards.CardFromID(x))
+                .Select(x => x.Build(this))
+                .ToList();
+            PlayerOne.Deck = Enumerable
+                .Repeat((byte)1, 25)
+                .Select(x => Cards.CardFromID(x))
+                .Select(x => x.Build(this))
+                .ToList();
+
+            _GameState();
+        }
+
+        public void _GameState()
+        {
+            CurrentPower = Cards.CardFromID(8).Build(this) as PowerCard;
 
             PlayerOne.PlayerCard = new HeroCard(this)
             {
@@ -57,6 +101,12 @@ namespace Cards
                 Name = "",
                 ManaCost = 0,
             };
+
+            for (int i = 0; i < 5; i++)
+            {
+                PlayerOne.DrawCard();
+                PlayerTwo.DrawCard();
+            }
         }
 
         // Helper functions
@@ -154,13 +204,19 @@ namespace Cards
                 return "YOU CANNOT MAKE THAT MOVE.";
             }
 
-            this.LastMove = nextMove;
-            InactivePlayer.Hand.Remove(Selected);
-            ActivePlayer.Hand.Remove(Selected);
+            Net.Send(nextMove);
+            DoMove(nextMove, Selected, Targeted);
+            return "";
+        }
 
-            Selected.Play();
+        public void DoMove(Move nextMove, BaseCard selected, BaseCard targeted)
+        {
+            this.LastMove = nextMove;
+            InactivePlayer.Hand.Remove(selected);
+            ActivePlayer.Hand.Remove(selected);
+
+            targeted.Play();
             ResolveActions();
-            return null;
         }
 
         // Resolving an action involves:
@@ -182,7 +238,6 @@ namespace Cards
 
         public void SwitchTurns()
         {
-
             BroadcastEffect(Effect.TurnEnd);
 
             // Process end-of-turn mana changes
@@ -203,6 +258,17 @@ namespace Cards
             // Switch turn flag
             IsP1Turn = !IsP1Turn;
             BroadcastEffect(Effect.TurnStart);
+
+            Task.Run(() => AsyncWaitForMove());
+        }
+
+        public async void AsyncWaitForMove()
+        {
+            while (!IsP1Turn)
+            {
+                Move nextMove = await Net.Recieve();
+                DoMove(nextMove, nextMove.Selected.AsCard(), nextMove.Targeted.AsCard());
+            }
         }
     }
 }

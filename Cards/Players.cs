@@ -10,8 +10,6 @@ namespace Cards
     // In the network case, functions to get some information will end up sending network requests.
     public class BasePlayer
     {
-        protected static Network Net;
-
         public int MaxMana = 13;
         public int Mana = 1;
         public int ManaTurn = 1;
@@ -27,10 +25,9 @@ namespace Cards
 
         public BasePlayer()
         {
-            Net = new Network();
         }
 
-        public virtual void ManualDrawCard()
+        public void ManualDrawCard()
         {
             if (!HasNotDrawn || Mana == 0 || Hand.Count >= 10)
                 return;
@@ -39,7 +36,7 @@ namespace Cards
             DrawCard();
         }
 
-        public virtual void DrawCard()
+        public void DrawCard()
         {
             // TODO: If empty, concede
             Hand.Add(Deck[0]);
@@ -47,15 +44,5 @@ namespace Cards
 
             PlayerCard.Game.BroadcastEffect(Effect.CardDrawn);
         }
-    }
-
-    public class LocalPlayer : BasePlayer
-    {
-
-    }
-
-    public class NetworkPlayer : BasePlayer
-    {
-
     }
 }
