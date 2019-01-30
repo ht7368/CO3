@@ -27,7 +27,7 @@ namespace Cards
         public void InitUI()
         {
             // Firstly, create new CardBox -s from the tracked cards.
-            DisplayedCards = TrackedCards.Select(c => new CardBox(c)).ToList();
+            DisplayedCards = new List<CardBox>();
         }
 
         public void UpdateUI()

@@ -48,8 +48,8 @@ namespace Cards
 
             Game.Visible = false;
             Game.SendToBack();
-            Game.InitUI();
             Controls.Add(Game);
+            Game.InitUI();
             Game.Visible = true;
         }
     }

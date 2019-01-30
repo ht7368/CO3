@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Cards
 {
@@ -31,14 +33,23 @@ namespace Cards
 
         private void buttonHost_Click(object sender, EventArgs e)
         {
+            /*Socket Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.IP);
+            Socket.Connect("8.8.8.8", 65530);
+            string LocalIP = (Socket.LocalEndPoint as IPEndPoint).Address.ToString();
+
+            MessageBox.Show(caption: "Information", text: $"Connect to: {LocalIP}");*/
+
             var Game = new GameUI();
             Game.ShowDialog();
         }
 
         private void buttonConn_Click(object sender, EventArgs e)
         {
-            var Game = new GameUI("192.168.1.68");
-            //var Game = new GameUI("81.129.225.127");
+            var IpWindow = new ConnectUI();
+            IpWindow.ShowDialog();
+            if (string.IsNullOrWhiteSpace(IpWindow.IP))
+                return;
+            var Game = new GameUI(IpWindow.IP);
             Game.ShowDialog();
         }
     }
