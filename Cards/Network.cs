@@ -56,6 +56,32 @@ namespace Cards
             uint Targeted = BitConverter.ToUInt32(Buf, 4);
             return new Move(Selected, Targeted);
         }
+
+        public void SendDeck(byte[] deckcode)
+        {
+            Stream.Write(deckcode, 0, deckcode.Length);
+        }
+
+        public byte[] RecieveDeck()
+        {
+            // 25-card decks
+            byte[] Buf = new byte[25];
+            Stream.Read(Buf, 0, Buf.Length);
+            return Buf;
+        }
+
+        public void SendRandomSeed(int seed)
+        {
+            byte[] Buf = BitConverter.GetBytes(seed);
+            Stream.Write(Buf, 0, Buf.Length);
+        }
+
+        public int RecieveRandomSeed()
+        {
+            byte[] Buf = new byte[4];
+            Stream.Read(Buf, 0, Buf.Length);
+            return BitConverter.ToInt32(Buf, 0);
+        }
     }
 
     

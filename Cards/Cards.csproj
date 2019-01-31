@@ -62,6 +62,12 @@
       <DependentUpon>ConnectUI.cs</DependentUpon>
     </Compile>
     <Compile Include="CustomFont.cs" />
+    <Compile Include="DeckChoiceUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeckChoiceUI.Designer.cs">
+      <DependentUpon>DeckChoiceUI.cs</DependentUpon>
+    </Compile>
     <Compile Include="DeckUI.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -92,6 +98,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ConnectUI.resx">
       <DependentUpon>ConnectUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeckChoiceUI.resx">
+      <DependentUpon>DeckChoiceUI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DeckUI.resx">
       <DependentUpon>DeckUI.cs</DependentUpon>

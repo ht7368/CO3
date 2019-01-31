@@ -28,7 +28,6 @@ namespace Cards
         public int? AttackData;
         public int? HealthData;
         public bool? TargetedData;
-        public bool? SpellTargetedData;
         public EffectData<MinionCard> MinionEffectData;
         public EffectData<PowerCard> PowerEffectData;
         public Action<GameState, Move> SpellEffectData;
@@ -57,7 +56,7 @@ namespace Cards
                     Description = DescriptionData,
                     Art = ArtData,
                     SpellEffect = SpellEffectData ?? EmptyFunc,
-                    IsTargeted = SpellTargetedData.Value,
+                    IsTargeted = TargetedData.Value,
                 };
             else if (TypeID == CardType.Power)
                 return new PowerCard(g)

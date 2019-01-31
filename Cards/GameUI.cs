@@ -27,10 +27,13 @@ namespace Cards
         {
             //FormBorderStyle = FormBorderStyle.None;
             //if (Screen.PrimaryScreen.Bounds.Width >= 1920)
-             //   WindowState = FormWindowState.Maximized;
+            //   WindowState = FormWindowState.Maximized;
+
+            var Chooser = new DeckChoiceUI();
+            Chooser.ShowDialog();
 
             if (Hostname == null)
-                Game = new GameBox()
+                Game = new GameBox(Chooser.Deckcode)
                 {
                     Location = new Point(0, 0),
                     Width = Screen.PrimaryScreen.Bounds.Width,
@@ -38,7 +41,7 @@ namespace Cards
                     //BackColor = Color.LightYellow,
                 };
             else
-                Game = new GameBox(Hostname)
+                Game = new GameBox(Chooser.Deckcode, Hostname)
                 {
                     Location = new Point(0, 0),
                     Width = Screen.PrimaryScreen.Bounds.Width,
@@ -82,14 +85,14 @@ namespace Cards
 
         public static CustomFont CFont = new CustomFont();
 
-        public GameBox()
+        public GameBox(byte[] deckcode)
         {
-            Game = new GameState();
+            Game = new GameState(deckcode);
         }
 
-        public GameBox(string hostname)
+        public GameBox(byte[] deckcode, string hostname)
         {
-            Game = new GameState(hostname);
+            Game = new GameState(deckcode, hostname);
         }
 
         // Will update the visuals with the current board state.

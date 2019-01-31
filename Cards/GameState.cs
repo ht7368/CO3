@@ -41,23 +41,31 @@ namespace Cards
         public bool PendingUpdate = false;
         public Network Net;
 
+        public Random RNG;
+
         //public GameBox Box;
 
-        public GameState(string hostname)
+        public GameState(byte[] deckcode, string hostname)
         {
             PlayerTwo = new BasePlayer();
             PlayerOne = new BasePlayer();
 
             IsP1Turn = false;
+            int Seed = (int)(DateTime.Now.Ticks % int.MaxValue);
+
             Net = new Network(hostname);
 
-            PlayerTwo.Deck = Enumerable
-                .Repeat((byte)1, 25)
+            Net.SendRandomSeed(Seed);
+            RNG = new Random(Seed);
+
+            Net.SendDeck(deckcode);
+            byte[] OppDeck = Net.RecieveDeck();
+
+            PlayerTwo.Deck = OppDeck
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this))
                 .ToList();
-            PlayerOne.Deck = Enumerable
-                .Repeat((byte)0, 25)
+            PlayerOne.Deck = deckcode
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this))
                 .ToList();
@@ -65,7 +73,7 @@ namespace Cards
             _GameState();
         }
 
-        public GameState()
+        public GameState(byte[] deckcode)
         {
             PlayerOne = new BasePlayer();
             PlayerTwo = new BasePlayer();
@@ -73,13 +81,17 @@ namespace Cards
             IsP1Turn = true;
             Net = new Network();
 
-            PlayerOne.Deck = Enumerable
-                .Repeat((byte)1, 25)
+            int Seed = Net.RecieveRandomSeed();
+            RNG = new Random(Seed);
+
+            byte[] OppDeck = Net.RecieveDeck();
+            Net.SendDeck(deckcode);
+
+            PlayerOne.Deck = deckcode
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this))
                 .ToList();
-            PlayerTwo.Deck = Enumerable
-                .Repeat((byte)0, 25)
+            PlayerTwo.Deck = OppDeck
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this))
                 .ToList();
