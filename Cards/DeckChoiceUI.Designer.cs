@@ -41,6 +41,7 @@
             this.buttonSwarm.TabIndex = 0;
             this.buttonSwarm.Text = "\"Swarm\" Deck";
             this.buttonSwarm.UseVisualStyleBackColor = true;
+            this.buttonSwarm.Click += new System.EventHandler(this.buttonSwarm_Click);
             // 
             // buttonCombo
             // 
@@ -50,6 +51,7 @@
             this.buttonCombo.TabIndex = 1;
             this.buttonCombo.Text = "\"Combo\" Deck";
             this.buttonCombo.UseVisualStyleBackColor = true;
+            this.buttonCombo.Click += new System.EventHandler(this.buttonCombo_Click);
             // 
             // buttonCustom
             // 

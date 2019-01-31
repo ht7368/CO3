@@ -29,7 +29,22 @@ namespace Cards
             };
             if (Picker.ShowDialog() != DialogResult.OK)
                 return;
-            byte[] Bytes = File.ReadAllBytes(Picker.FileName);
+            Pick(Picker.FileName);
+        }
+
+        private void buttonCombo_Click(object sender, EventArgs e)
+        {
+            Pick("deckfiles/ComboDeckBeta.deck");
+        }
+
+        private void buttonSwarm_Click(object sender, EventArgs e)
+        {
+            Pick("deckfiles/SwarmDeckBeta.deck");
+        }
+
+        private void Pick(string location)
+        {
+            byte[] Bytes = File.ReadAllBytes(location);
             Deckcode = Bytes;
             Close();
         }

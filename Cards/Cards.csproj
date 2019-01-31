@@ -74,6 +74,7 @@
     <Compile Include="DeckUI.Designer.cs">
       <DependentUpon>DeckUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ext.cs" />
     <Compile Include="GameUI.cs">
       <SubType>Form</SubType>
     </Compile>

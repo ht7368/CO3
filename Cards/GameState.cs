@@ -58,6 +58,8 @@ namespace Cards
             Net.SendRandomSeed(Seed);
             RNG = new Random(Seed);
 
+            System.Windows.Forms.MessageBox.Show(caption: $"{Seed}", text: $"{Enumerable.Repeat(0, 20).Select(x => RNG.Next())}");
+
             Net.SendDeck(deckcode);
             byte[] OppDeck = Net.RecieveDeck();
 
@@ -84,6 +86,8 @@ namespace Cards
             int Seed = Net.RecieveRandomSeed();
             RNG = new Random(Seed);
 
+            System.Windows.Forms.MessageBox.Show(caption: $"{Seed}", text: $"{Enumerable.Repeat(0, 20).Select(x => RNG.Next())}");
+
             byte[] OppDeck = Net.RecieveDeck();
             Net.SendDeck(deckcode);
 
@@ -102,6 +106,9 @@ namespace Cards
         public void _GameState()
         {
             CurrentPower = Cards.CardFromID(8).Build(this) as PowerCard;
+
+            RNG.Shuffle(ActivePlayer.Deck);
+            RNG.Shuffle(InactivePlayer.Deck);
 
             PlayerOne.PlayerCard = new HeroCard(this)
             {
