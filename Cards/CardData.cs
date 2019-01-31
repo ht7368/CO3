@@ -32,12 +32,13 @@ namespace Cards
         public EffectData<PowerCard> PowerEffectData;
         public Action<GameState, Move> SpellEffectData;
 
-        public BaseCard Build(GameState g) 
+        public BaseCard Build(GameState g, BasePlayer owner) 
         {
             Action<GameState, Move> EmptyFunc = (_g, _s) => { return; };
             if (TypeID == CardType.Minion)
                 return new MinionCard(g)
                 {
+                    Owner = owner,
                     ManaCost = ManaCostData,
                     Name = NameData,
                     Description = DescriptionData,
@@ -51,6 +52,7 @@ namespace Cards
             else if (TypeID == CardType.Spell)
                 return new SpellCard(g)
                 {
+                    Owner = owner,
                     ManaCost = ManaCostData,
                     Name = NameData,
                     Description = DescriptionData,
@@ -61,6 +63,7 @@ namespace Cards
             else if (TypeID == CardType.Power)
                 return new PowerCard(g)
                 {
+                    Owner = owner,
                     ManaCost = ManaCostData,
                     Name = NameData,
                     Description = DescriptionData,

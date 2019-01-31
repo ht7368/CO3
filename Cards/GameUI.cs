@@ -25,9 +25,8 @@ namespace Cards
 
         public void GameUI_Load(object sender, EventArgs e)
         {
-            //FormBorderStyle = FormBorderStyle.None;
-            //if (Screen.PrimaryScreen.Bounds.Width >= 1920)
-            //   WindowState = FormWindowState.Maximized;
+            FormBorderStyle = FormBorderStyle.None;
+            WindowState = FormWindowState.Maximized;
 
             var Chooser = new DeckChoiceUI();
             Chooser.ShowDialog();
@@ -332,11 +331,13 @@ namespace Cards
             };
             GameTimer.Tick += (_s, _e) =>
             {
-                RenderState(Game);
-                Game.PendingUpdate = false;
+                if (Game.PendingUpdate)
+                {
+                    RenderState(Game);
+                    Game.PendingUpdate = false;
+                }
             };
             GameTimer.Start();
-
             RenderState(Game);
         }
 
@@ -355,7 +356,7 @@ namespace Cards
         private void ResetButton_Click(object sender, EventArgs e)
         {
             SelectedCard = null;
-            RenderState(Game);
+            RenderState(Game); 
         }
 
         private void DrawButton_Click(object sender, EventArgs e)

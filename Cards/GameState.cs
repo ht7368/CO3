@@ -65,11 +65,11 @@ namespace Cards
 
             PlayerTwo.Deck = OppDeck
                 .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this))
+                .Select(x => x.Build(this, PlayerTwo))
                 .ToList();
             PlayerOne.Deck = deckcode
                 .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this))
+                .Select(x => x.Build(this, PlayerOne))
                 .ToList();
 
             _GameState();
@@ -93,11 +93,11 @@ namespace Cards
 
             PlayerOne.Deck = deckcode
                 .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this))
+                .Select(x => x.Build(this, PlayerOne))
                 .ToList();
             PlayerTwo.Deck = OppDeck
                 .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this))
+                .Select(x => x.Build(this, PlayerTwo))
                 .ToList();
 
             _GameState();
@@ -105,7 +105,7 @@ namespace Cards
 
         public void _GameState()
         {
-            CurrentPower = Cards.CardFromID(8).Build(this) as PowerCard;
+            CurrentPower = Cards.CardFromID(8).Build(this, ActivePlayer) as PowerCard;
 
             RNG.Shuffle(ActivePlayer.Deck);
             RNG.Shuffle(InactivePlayer.Deck);
@@ -184,10 +184,9 @@ namespace Cards
                 CurrentPower.Effects[effect](this, CurrentPower);
          
             // Anything with an effect will have it called
-            foreach (var c in AllCards())
-                if (c is MinionCard m)
-                    if (m.Effects.ContainsKey(effect))
-                        m.Effects[effect](this, m);
+            foreach (MinionCard m in AllOnboardMinions())
+                if (m.Effects.ContainsKey(effect))
+                    m.Effects[effect](this, m);
         }
 
         // SPECIAL CODES FOR MOVE PROCESSING

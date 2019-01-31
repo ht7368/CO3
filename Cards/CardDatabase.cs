@@ -141,9 +141,9 @@ namespace Cards
                 ManaCostData = 7,
                 DescriptionData = "MINIONS GAIN +3 ATK ATTACKING",
                 ArtData = Properties.Resources.GrandArena,
-                PowerEffectData = new EffectData<PowerCard>
+                PowerEffectData = new EffectData<PowerCard>()
                 {{
-                        Effect.MinionAttacking, (s, m) => (s.LastMove.Selected.AsCard() as MinionCard).Attack += 3
+                        Effect.MinionAttacking, (s, m) => { s.LastMove.Targeted.AsCardT<MinionCard>().Attack += 3; }
                 }},
             },
             new CardBuilder()
@@ -225,7 +225,7 @@ namespace Cards
                             minion.Health -= 7;
                             return;
                         case HeroCard hero:
-                            s.InactivePlayer.Health -= 7;
+                            s.PlayerTwo.Health -= 7;
                             return;
                         default: return;
                     }

@@ -114,7 +114,7 @@ namespace Cards
                 GameBox Box = (Parent as GameBox);
                 if (Box.SelectedCard == null)
                     return;
-                Box.Game.ProcessMove(new Move(Box.SelectedCard.Id, CardReferenced.Id));
+                Box.Game.ProcessMove(new Move(Box.SelectedCard.Id, card.Game.PlayerTwo.PlayerCard.Id));
                 Box.SelectedCard = null;
                 Box.RenderState(Box.Game);
             };
