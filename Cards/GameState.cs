@@ -86,8 +86,6 @@ namespace Cards
             int Seed = Net.RecieveRandomSeed();
             RNG = new Random(Seed);
 
-            System.Windows.Forms.MessageBox.Show(caption: $"{Seed}", text: $"{Enumerable.Repeat(0, 20).Select(x => RNG.Next())}");
-
             byte[] OppDeck = Net.RecieveDeck();
             Net.SendDeck(deckcode);
 
@@ -202,18 +200,7 @@ namespace Cards
         // This function will not perform anything if the move is invalid
         public string ProcessMove(Move nextMove)
         {
-            // TODO: if 0
-            if (nextMove.Selected == OPP_CONCEDE)
-            {
-                return null;
-            }
-            else if (nextMove.Selected == TURN_PASS)
-            {
-                DoMove(nextMove);
-                Net.Send(nextMove);
-                return null;
-            }
-            else if (nextMove.Selected == CARD_DRAW)
+            if (nextMove.Selected < NUM_RESERVED_CODES)
             {
                 DoMove(nextMove);
                 Net.Send(nextMove);
@@ -254,10 +241,9 @@ namespace Cards
             BaseCard Targeted = nextMove.Targeted.AsCard();
 
             this.LastMove = nextMove;
-            InactivePlayer.Hand.Remove(Selected);
-            ActivePlayer.Hand.Remove(Selected);
+            Selected.Owner.Hand.Remove(Selected);
 
-            Targeted.Play();
+            Selected.Play();
             ResolveActions();
         }
 

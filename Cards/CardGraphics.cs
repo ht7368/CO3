@@ -147,6 +147,9 @@ namespace Cards
         public void CardClicked(CardBox card)
         {
             GameState Game = card.CardReferenced.Game;
+
+            if (card.CardReferenced == Game.PlayerTwo.PlayerCard)
+                return;
             // Get the game from the top-level gamebox by traversing up until we find the gamebox
             Control GameB = this;
             while (!(GameB is GameBox))
@@ -155,8 +158,7 @@ namespace Cards
 
             GameUI.HideNotif();
 
-            // We can look at this again when we think more about multiplayer modes (do we want local MP? - probably)
-            if (GameUI.SelectedCard == null && (!card.CardPlayableIndicator.Visible || card.CardPlayableIndicator.BackColor == card.RED_IND))
+            if (GameUI.SelectedCard == null && (!card.CardPlayableIndicator.Visible || card.CardPlayableIndicator.BackColor == card.RED_IND || card.CardReferenced.Owner == Game.PlayerTwo))
                 return;
 
             // If nothing is selected yet, we set the selected card

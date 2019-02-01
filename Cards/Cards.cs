@@ -26,15 +26,9 @@ namespace Cards
         }
 
         // Differs based on class
-        public virtual void Play()
-        {
+        public abstract void Play();
 
-        }
-
-        public virtual bool IsPlayable(Move potentialMove)
-        {
-            return false;
-        }
+        public abstract bool IsPlayable(Move potentialMove);
     }
 
     public class MinionCard : BaseCard
@@ -75,7 +69,6 @@ namespace Cards
                 Game.BroadcastEffect(Effect.CardPlayed);
                 OnBoard = true;
                 Game.ActivePlayer.Board.Add(this);
-                var a = Game.ActivePlayer.Board;
                 Game.ActivePlayer.Mana -= this.ManaCost;
                 if (Game.ActivePlayer.Mana < 0)
                     Game.ActivePlayer.Mana = 0;
@@ -94,14 +87,15 @@ namespace Cards
                 // Attack target exists,
                 // the target is a minion that has been played
                 // And the card is capable of attacking
-                if (potentialMove.Targeted == 0)
+                if (potentialMove.Targeted < GameState.NUM_RESERVED_CODES)
                     return false;
                 if (Game.InactivePlayer.PlayerCard == potentialMove.Targeted.AsCard())
                     return CanAttack;
-                if (!potentialMove.Targeted.IsCardT<MinionCard>())
-                    return false;
-                MinionCard CombatTarget = potentialMove.Targeted.AsCardT<MinionCard>();
-                return CanAttack && CombatTarget.OnBoard && Game.ActivePlayer.Board.Contains(this) && CombatTarget != this;
+                if (potentialMove.Targeted.IsCardT<HeroCard>())
+                    return CanAttack;
+                if (potentialMove.Targeted.AsCard() is MinionCard m)
+                    return CanAttack && m.OnBoard && m.Owner == Game.PlayerTwo;
+                return false;
             }
             else
             {
@@ -157,11 +151,9 @@ namespace Cards
 
         public override void Play()
         {
+            Game.ActivePlayer.Mana -= this.ManaCost;
             Game.BroadcastEffect(Effect.CardPlayed);
             this.SpellEffect(Game, Game.LastMove);
-            Game.ActivePlayer.Mana -= this.ManaCost;
-            if (Game.ActivePlayer.Mana < 0)
-                Game.ActivePlayer.Mana = 0;
         }
 
         public override bool IsPlayable(Move potentialMove)
@@ -174,10 +166,11 @@ namespace Cards
                 return false;
             if (!IsTargeted)
                 return true;
-            if (IsTargeted && !potentialMove.Targeted.IsCardT<MinionCard>())
-                return false;
-            MinionCard SpellTarget = potentialMove.Targeted.AsCardT<MinionCard>();
-            return SpellTarget.OnBoard;
+            if (potentialMove.Targeted.IsCardT<HeroCard>())
+                return true;
+            else if (potentialMove.Targeted.AsCard() is MinionCard m)
+                return m.OnBoard;
+            return false;
         }
     }
 
@@ -186,6 +179,16 @@ namespace Cards
         public HeroCard(GameState game) : base(game)
         {
 
+        }
+
+        public override void Play()
+        {
+
+        }
+
+        public override bool IsPlayable(Move potentialMove)
+        {
+            return false;
         }
     }
 }
