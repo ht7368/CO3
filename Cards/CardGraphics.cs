@@ -60,7 +60,7 @@ namespace Cards
                 BorderStyle = BorderStyle.None,
                 ForeColor = Color.White,
                 Cursor = Cursors.Arrow,
-                Font = GameBox.CFont.GetFont(12),
+                Font = GameBox.CFont.GetFont(9),
             };
             CardCost = new Label()
             {

@@ -98,6 +98,13 @@ namespace Cards
 
             ResumeLayout();
         }
+
+        public IEnumerable<CardBox> GetCards()
+        {
+            foreach (CardBox cb in DisplayedCards)
+                yield return cb;
+            yield break;
+        }
     }
 
     // A special box type for player heroes

@@ -77,7 +77,6 @@ namespace Cards
         private PlayerBox EnemyHero;
         private PlayerBox PlayerHero;
         private Label NotificationLabel;
-        private System.Windows.Forms.Timer GameTimer;
 
         public GameState Game;
         public BaseCard SelectedCard;
@@ -124,7 +123,7 @@ namespace Cards
             PlayerHero.Top = 1000;
 
             // Power region - card area where the power is displayed
-            Game.CurrentPower = Cards.CardDB[1](Game) as PowerCard;
+            Game.CurrentPower = Cards.CardFromID(8).Build(Game, Game.ActivePlayer) as PowerCard;
             PowerRegion = new PowerBox(Game.CurrentPower)
             {
                 Location = new Point(100, 100)
@@ -324,20 +323,7 @@ namespace Cards
             };
             Controls.Add(NotificationLabel);
 
-            GameTimer = new System.Windows.Forms.Timer()
-            {
-                Enabled = true,
-                Interval = 1000,
-            };
-            GameTimer.Tick += (_s, _e) =>
-            {
-                if (Game.PendingUpdate)
-                {
-                    RenderState(Game);
-                    Game.PendingUpdate = false;
-                }
-            };
-            GameTimer.Start();
+            Task.Run(() => AsyncWaitForMove());
             RenderState(Game);
         }
 
@@ -355,12 +341,14 @@ namespace Cards
 
         private void ResetButton_Click(object sender, EventArgs e)
         {
+            HideNotif();
             SelectedCard = null;
             RenderState(Game); 
         }
 
         private void DrawButton_Click(object sender, EventArgs e)
         {
+            HideNotif();
             if (!Game.IsP1Turn)
                 return;
             Game.ProcessMove(new Move(GameState.CARD_DRAW, 0));
@@ -369,11 +357,74 @@ namespace Cards
 
         private void PassButton_Click(object sender, EventArgs e)
         {
+            HideNotif();
             if (!Game.IsP1Turn)
                 return;
             SelectedCard = null;
             Game.ProcessMove(new Move(GameState.TURN_PASS, 0));
             RenderState(Game);
+        }
+
+        public async void AsyncWaitForMove()
+        {
+            while (true)
+            {
+                Move nextMove = await Game.Net.Recieve();
+                if (nextMove.Selected == GameState.TURN_PASS)
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                         DisplayNotification("YOUR OPPONENT PASSED - IT IS YOUR TURN");
+                    });
+                else if (nextMove.Selected == GameState.CARD_DRAW)
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        DisplayNotification("YOUR OPPONENT DREW A CARD");
+                    });
+
+                // Make the card selected for half a second or so, to show what the opponent is doing
+                CardBox Box = null;
+                if (nextMove.Selected.AsCard() is MinionCard m && m.OnBoard)
+                {
+                    foreach (CardBox b in EnemyBoard.GetCards())
+                        if (b.CardReferenced.Id == nextMove.Selected)
+                            Box = b;
+                }
+                else
+                {
+                    foreach (CardBox b in EnemyHand.GetCards())
+                        if (b.CardReferenced.Id == nextMove.Selected)
+                            Box = b;
+                }
+                if (Box != null)
+                {
+                    Box.Invoke((MethodInvoker)delegate
+                    {
+                       Box.BackgroundImage = Properties.Resources.SelectedCardBody;
+                    });
+                    await Task.Delay(1000);
+                    Box.Invoke((MethodInvoker)delegate
+                    {
+                        Box.BackgroundImage = Properties.Resources.CardBody;
+                    });
+                }
+
+                Game.DoMove(nextMove);
+                this.Invoke((MethodInvoker)delegate
+                {
+                    RenderState(Game);
+                });
+                
+                if (Game.PlayerOne.Health <= 0)
+                {
+                    MessageBox.Show(caption: "Information", text: "You lose!");
+                    (Parent as GameUI).Close();
+                }
+                else if (Game.PlayerTwo.Health <= 0)
+                {
+                    MessageBox.Show(caption: "Information", text: "You win!");
+                    (Parent as GameUI).Close();
+                }
+            }
         }
     }
 }

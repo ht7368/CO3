@@ -30,7 +30,6 @@ namespace Cards
     // Notably, the rendering code will only see this, rendering elements seperate from logic.
     public class GameState
     {
-        public const bool DEBUG_ENABLED = true;
         public const int NUM_RESERVED_CODES = 3;
 
         public BasePlayer PlayerOne;
@@ -38,7 +37,6 @@ namespace Cards
         public PowerCard CurrentPower;
         public Move LastMove;
         public bool IsP1Turn; // Is it player one's turn?
-        public bool PendingUpdate = false;
         public Network Net;
 
         public Random RNG;
@@ -126,8 +124,6 @@ namespace Cards
                 PlayerOne.DrawCard();
                 PlayerTwo.DrawCard();
             }
-
-            Task.Run(() => AsyncWaitForMove());
         }
 
         // Helper functions
@@ -285,17 +281,9 @@ namespace Cards
 
             // Switch turn flag
             IsP1Turn = !IsP1Turn;
+
             BroadcastEffect(Effect.TurnStart);
         }
 
-        public async void AsyncWaitForMove()
-        {
-            while (true)
-            {
-                Move nextMove = await Net.Recieve();
-                DoMove(nextMove);
-                PendingUpdate = true;
-            }
-        }
     }
 }

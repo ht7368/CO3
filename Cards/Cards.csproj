@@ -358,5 +358,23 @@
   <ItemGroup>
     <None Include="Resources\Vortex.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InsectDouble.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InsectSingle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InsectQuad.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InsectTriple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Evolution.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InsectHive.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

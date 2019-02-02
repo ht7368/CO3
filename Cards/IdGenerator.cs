@@ -13,7 +13,7 @@ namespace Cards
     public static class IdGenerator
     {
         // This is a list of all cards registered with an ID to the game.
-        private static List<BaseCard> ExistingCards = new List<BaseCard>();
+        private static Dictionary<uint, BaseCard> ExistingCards = new Dictionary<uint, BaseCard>();
         // Has to start above 0 since some IDs are reserved status codes.
         private static uint CurrMaxId = GameState.NUM_RESERVED_CODES;
         // Gives a card am ID and adds it to the list of registered cards.
@@ -21,7 +21,7 @@ namespace Cards
         {
             if (CurrMaxId == uint.MaxValue)
                 throw new OverflowException();
-            ExistingCards.Add(newCard);
+            ExistingCards.Add(CurrMaxId, newCard);
             CurrMaxId += 1;
             return CurrMaxId - 1;
         }
@@ -32,9 +32,8 @@ namespace Cards
         {
             if (id < GameState.NUM_RESERVED_CODES)
                 return null;
-            foreach (BaseCard c in ExistingCards)
-                if (c.Id == id)
-                    return c;
+            if (ExistingCards.ContainsKey(id))
+                return ExistingCards[id];
             return null;
         }
     }

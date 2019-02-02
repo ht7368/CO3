@@ -39,6 +39,7 @@ namespace Cards
         public int Health;
         public bool OnBoard = false;
         public bool CanAttack = false;
+        public Action<GameState, Move> OnPlay;
 
         public MinionCard(GameState game) : base(game)
         {
@@ -72,6 +73,8 @@ namespace Cards
                 Game.ActivePlayer.Mana -= this.ManaCost;
                 if (Game.ActivePlayer.Mana < 0)
                     Game.ActivePlayer.Mana = 0;
+                if (OnPlay != null)
+                    OnPlay(Game, Game.LastMove);
             }
             CanAttack = false;
         }

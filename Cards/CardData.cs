@@ -30,6 +30,7 @@ namespace Cards
         public bool? TargetedData;
         public EffectData<MinionCard> MinionEffectData;
         public EffectData<PowerCard> PowerEffectData;
+        public Action<GameState, Move> MinionOnPlayData;
         public Action<GameState, Move> SpellEffectData;
 
         public BaseCard Build(GameState g, BasePlayer owner) 
@@ -46,6 +47,7 @@ namespace Cards
                     Attack = AttackData.Value,
                     Health = HealthData.Value,
                     Effects = MinionEffectData ?? new EffectData<MinionCard>(),
+                    OnPlay = MinionOnPlayData,
                     OnBoard = false,
                     CanAttack = false,
                 };
@@ -121,92 +123,5 @@ namespace Cards
 
         // (Subject to change?) A collection of all cards. More specifically,
         // functions that take a GameState to return a card.
-        public static List<Func<GameState, BaseCard>> CardDB = new List<Func<GameState, BaseCard>>
-        {
-            // Testing Dummy
-            (GameState g) => new MinionCard(g)
-            {
-                Name = "TESTING DUMMY",
-                ManaCost = 1,
-                Attack = 0,
-                Health = 3,
-                Description = "DIES ON TURN END",
-                OnBoard = false,
-                Art = Properties.Resources.DeadRising,
-                /*Effects = new EffectData<MinionCard>
-                {
-                    { Effect.TurnEnd, (p) =>  { p.CardPlayed.Health = 0; } },
-                }*/
-            },
-
-            (GameState g) => new PowerCard(g)
-            {
-                Name = "CLEAR WEATHER",
-                ManaCost = 5,
-                Description = "NO EFFECT",
-                Art = Properties.Resources.ClearSky,
-                Effects = new EffectData<PowerCard> { /* None */ }
-            },
-
-            (GameState g) => new SpellCard(g)
-            {
-                Name = "VANQUISH",
-                ManaCost = 5,
-                Description = "DESTROY A MINION",
-                IsTargeted = true,
-                Art = Properties.Resources.Vanquish,
-                SpellEffect = (s, m) => 
-                {
-                    var Target = IdGenerator.GetById(m.Targeted) as MinionCard;
-                    Target.Health = 0;
-                }
-            },
-
-            (GameState g) => new PowerCard(g)
-            {
-                Name = "GRAND ARENA",
-                ManaCost = 6,
-                Description = "MINIONS GAIN +3 ATK BEFORE ATTACKING",
-                Art = Properties.Resources.GrandArena,
-                Effects = new EffectData<PowerCard>
-                {
-                    {
-                        Effect.MinionAttacking, (s, m) => (s.LastMove.Selected.AsCard() as MinionCard).Attack += 3
-                    }
-                }
-            },
-
-            (GameState g) => new MinionCard(g)
-            {
-                Name = "FIGHTING DUMMY",
-                ManaCost = 2,
-                Attack = 2,
-                Health = 2,
-                Description = "",
-                OnBoard = false,
-            },
-
-            (GameState g) => new PowerCard(g)
-            {
-                Name = "WHISPERS OF POWER",
-                ManaCost = 4,
-                Description = "ALL MINIONS +1/+1 WHEN CARD PLAYED",
-                Art = Properties.Resources.WhispersMadness,
-                Effects = new EffectData<PowerCard>
-                {
-                    {
-                        Effect.CardPlayed, (s, m) =>
-                        {
-                            foreach (BaseCard c in s.AllCards())
-                                if (c is MinionCard)
-                                {
-                                    (c as MinionCard).Attack += 1;
-                                    (c as MinionCard).Health += 1;
-                                }
-                        }
-                    }
-                }
-            }
-        };
     }
 }

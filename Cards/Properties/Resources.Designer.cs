@@ -203,6 +203,16 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Evolution {
+            get {
+                object obj = ResourceManager.GetObject("Evolution", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap GrandArena {
             get {
                 object obj = ResourceManager.GetObject("GrandArena", resourceCulture);
@@ -246,6 +256,56 @@ namespace Cards.Properties {
         internal static System.Drawing.Bitmap HeroFramePlayer {
             get {
                 object obj = ResourceManager.GetObject("HeroFramePlayer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InsectDouble {
+            get {
+                object obj = ResourceManager.GetObject("InsectDouble", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InsectHive {
+            get {
+                object obj = ResourceManager.GetObject("InsectHive", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InsectQuad {
+            get {
+                object obj = ResourceManager.GetObject("InsectQuad", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InsectSingle {
+            get {
+                object obj = ResourceManager.GetObject("InsectSingle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap InsectTriple {
+            get {
+                object obj = ResourceManager.GetObject("InsectTriple", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

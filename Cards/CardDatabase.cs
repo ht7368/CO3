@@ -286,14 +286,124 @@ namespace Cards
                 DescriptionData = "DRAW CARD WHEN MINION DIES.",
                 // Art,
                 MinionEffectData = new EffectData<MinionCard>()
-                { {
+                {{
                         Effect.MinionKilled,
                         (s, m) =>
                         {
                             m.Owner.DrawCard();
                         }
-                } }
+                }}
             },
+            new CardBuilder()
+            {
+                DeckID = 18,
+                TypeID = CardBuilder.CardType.Minion,
+
+                NameData = "INSECT SWARM",
+                ManaCostData = 3,
+                AttackData = 1,
+                HealthData = 2,
+                DescriptionData = "SUMMON 2 1/2 'INSECT SWARM'",
+                ArtData = Properties.Resources.InsectSingle,
+                MinionOnPlayData = (s, m) =>
+                {
+                    var Owner = m.Selected.AsCardT<MinionCard>().Owner;
+                    Owner.Board.Add(CardFromID(18).Build(s, Owner) as MinionCard);
+                    Owner.Board.Add(CardFromID(18).Build(s, Owner) as MinionCard);
+                }
+            },
+            new CardBuilder()
+            {
+                DeckID = 19,
+                TypeID = CardBuilder.CardType.Minion,
+
+                NameData = "INSECT QUEEN",
+                ManaCostData = 5,
+                AttackData = 3,
+                HealthData = 4,
+                DescriptionData = "SUMMON 1/2 'INSECT SWARM' ON TURN START",
+                ArtData = Properties.Resources.InsectDouble,
+                MinionEffectData = new EffectData<MinionCard>
+                {{
+                        Effect.TurnStart, (s, m) =>
+                        {
+                            m.Owner.Board.Add(CardFromID(18).Build(s, m.Owner) as MinionCard);
+                        }
+                }}
+            },
+            new CardBuilder()
+            {
+                DeckID = 20,
+                TypeID = CardBuilder.CardType.Minion,
+
+                NameData = "INSECT INFEST",
+                ManaCostData = 11,
+                AttackData = 4,
+                HealthData = 8,
+                DescriptionData = "SUMMON  3/4 'INSECT QUEEN' ON TURN END",
+                ArtData = Properties.Resources.InsectTriple,
+                MinionEffectData = new EffectData<MinionCard>
+                {{
+                        Effect.TurnEnd, (s, m) =>
+                        {
+                            m.Owner.Board.Add(CardFromID(18).Build(s, m.Owner) as MinionCard);
+                        }
+                }},
+            },
+            new CardBuilder()
+            {
+                DeckID = 21,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "INSECT HIVE",
+                ManaCostData = 7,
+                DescriptionData = "SUMMON 1/2 'INSECT SWARM' WHEN CARD DRAWN",
+                ArtData = Properties.Resources.InsectHive,
+                PowerEffectData = new EffectData<PowerCard>
+                {{
+                        Effect.CardPlayed, (s, m) =>
+                        {
+                            m.Owner.Board.Add(CardFromID(18).Build(s, m.Owner) as MinionCard);
+                        }
+                }},
+            },
+            new CardBuilder()
+            {
+                DeckID = 22,
+                TypeID = CardBuilder.CardType.Spell,
+
+                NameData = "INSECT PLAGUE",
+                ManaCostData = 5,
+                DescriptionData = "ALL INSECTS GAIN +1/+2",
+                ArtData = Properties.Resources.InsectQuad,
+                SpellEffectData = (s, m) =>
+                {
+                    foreach (MinionCard mn in m.Selected.AsCard().Owner.Board)
+                        if (mn.Name.Contains("INSECT"))
+                        {
+                            mn.Attack += 1;
+                            mn.Health += 2;
+                        }
+                },
+            },
+            new CardBuilder()
+            {
+                DeckID = 23,
+                TypeID = CardBuilder.CardType.Spell,
+
+                NameData = "MUTATION",
+                ManaCostData = 12,
+                DescriptionData = "DOUBLE YOUR MINION STATS",
+                ArtData = Properties.Resources.Evolution,
+                SpellEffectData = (s, m) =>
+                {
+                    foreach (MinionCard mn in m.Selected.AsCard().Owner.Board)
+                    {
+                        mn.Health *= 2;
+                        mn.Attack *= 2;
+                    }
+                }
+            }
         }
         // Keep these sorted by mana cost
         .OrderBy(x => x.ManaCostData).ToList();
