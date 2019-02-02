@@ -55,9 +55,9 @@ namespace Cards
             {
                 CanAttack = false;
                 Game.BroadcastEffect(Effect.MinionAttacking);
-                if (Game.LastMove.Targeted.IsCardT<HeroCard>())
+                if (Game.LastMove.Targeted.AsCard() is HeroCard h)
                 {
-                    Game.InactivePlayer.Health -= this.Attack;
+                    h.Owner.Health -= this.Attack;
                     return;
                 }
                 MinionCard Attacker = Game.LastMove.Targeted.AsCardT<MinionCard>();
@@ -73,8 +73,7 @@ namespace Cards
                 Game.ActivePlayer.Mana -= this.ManaCost;
                 if (Game.ActivePlayer.Mana < 0)
                     Game.ActivePlayer.Mana = 0;
-                if (OnPlay != null)
-                    OnPlay(Game, Game.LastMove);
+                OnPlay?.Invoke(Game, Game.LastMove);
             }
             CanAttack = false;
         }

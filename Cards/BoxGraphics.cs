@@ -8,11 +8,11 @@ using System.Windows.Forms;
 
 namespace Cards
 {
-    
 
-    
-   
-    public class CardGroupBox<T> : Panel where T: BaseCard
+
+
+
+    public class CardGroupBox<T> : Panel where T : BaseCard
     {
         // A List<BaseCard> (hand or board) is passed in and tracked
         // This is a reference to the same list, so that works fine
@@ -63,7 +63,7 @@ namespace Cards
 
             foreach (CardBox box in PendingRemove)
                 DisplayedCards.Remove(box);
-            
+
             for (int i = 0; i < RenderedFlag.Length; i++)
             {
                 if (!RenderedFlag[i])
@@ -106,59 +106,6 @@ namespace Cards
             yield break;
         }
     }
-
-    // A special box type for player heroes
-    public class PlayerBox : CardBox
-    {
-        private Label HealthLabel;
-
-        public PlayerBox(BaseCard card) : base(card)
-        {
-            Height = Width;
-            Controls.Clear();
-            Click += (_s, _e) =>
-            {
-                GameBox Box = (Parent as GameBox);
-                if (Box.SelectedCard == null)
-                    return;
-                Box.Game.ProcessMove(new Move(Box.SelectedCard.Id, card.Game.PlayerTwo.PlayerCard.Id));
-                Box.SelectedCard = null;
-                Box.RenderState(Box.Game);
-            };
-
-            HealthLabel = new Label();
-            Controls.Add(HealthLabel);
-        }
-
-        public void InitUI()
-        {
-            HealthLabel.Size = new Size(42, 22);
-            HealthLabel.ForeColor = Color.White;
-            HealthLabel.Font = GameBox.CFont.GetFont(24);
-            HealthLabel.BringToFront();
-            if (CardReferenced.Game.PlayerOne.PlayerCard == CardReferenced)
-            {
-                BackgroundImage = Properties.Resources.HeroFramePlayer;
-                HealthLabel.BackColor = Color.FromArgb(68, 197, 91);
-                HealthLabel.Left = 7;
-                HealthLabel.Top = Height - 22 - 9;
-            }
-            else
-            {
-                BackgroundImage = Properties.Resources.HeroFrameEnemy;
-                HealthLabel.BackColor = Color.FromArgb(81, 81, 81);
-                HealthLabel.Left = Width - 42 - 5;
-                HealthLabel.Top = Height - 22 - 7;
-            }
-            UpdatePlayerUI();
-        }
-
-        public void UpdatePlayerUI()
-        {
-            if (CardReferenced.Game.PlayerOne.PlayerCard == CardReferenced)
-                HealthLabel.Text = CardReferenced.Game.PlayerOne.Health.ToString();
-            else
-                HealthLabel.Text = CardReferenced.Game.PlayerTwo.Health.ToString();
-        }
-    }
 }
+
+  

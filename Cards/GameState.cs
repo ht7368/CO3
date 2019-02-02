@@ -56,8 +56,6 @@ namespace Cards
             Net.SendRandomSeed(Seed);
             RNG = new Random(Seed);
 
-            System.Windows.Forms.MessageBox.Show(caption: $"{Seed}", text: $"{Enumerable.Repeat(0, 20).Select(x => RNG.Next())}");
-
             Net.SendDeck(deckcode);
             byte[] OppDeck = Net.RecieveDeck();
 
@@ -69,6 +67,21 @@ namespace Cards
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this, PlayerOne))
                 .ToList();
+
+            PlayerOne.PlayerCard = new HeroCard(this)
+            {
+                Owner = PlayerOne,
+                Description = "",
+                Name = "",
+                ManaCost = 0,
+            };
+            PlayerTwo.PlayerCard = new HeroCard(this)
+            {
+                Owner = PlayerTwo,
+                Description = "",
+                Name = "",
+                ManaCost = 0,
+            };
 
             _GameState();
         }
@@ -96,6 +109,21 @@ namespace Cards
                 .Select(x => x.Build(this, PlayerTwo))
                 .ToList();
 
+            PlayerTwo.PlayerCard = new HeroCard(this)
+            {
+                Owner = PlayerTwo,
+                Description = "",
+                Name = "",
+                ManaCost = 0,
+            };
+            PlayerOne.PlayerCard = new HeroCard(this)
+            {
+                Owner = PlayerOne,
+                Description = "",
+                Name = "",
+                ManaCost = 0,
+            };
+
             _GameState();
         }
 
@@ -105,19 +133,6 @@ namespace Cards
 
             RNG.Shuffle(ActivePlayer.Deck);
             RNG.Shuffle(InactivePlayer.Deck);
-
-            PlayerOne.PlayerCard = new HeroCard(this)
-            {
-                Description = "",
-                Name = "",
-                ManaCost = 0,
-            };
-            PlayerTwo.PlayerCard = new HeroCard(this)
-            {
-                Description = "",
-                Name = "",
-                ManaCost = 0,
-            };
 
             for (int i = 0; i < 5; i++)
             {
@@ -152,24 +167,26 @@ namespace Cards
         // Using ActivePlayer as it is the same for both clients
         public IEnumerable<BaseCard> AllCards()
         {
+            List<BaseCard> Cards = new List<BaseCard>();
             foreach (var c in ActivePlayer.Hand)
-                yield return c;
+                Cards.Add(c);
             foreach (var c in ActivePlayer.Board)
-                yield return c;
+                Cards.Add(c);
             foreach (var c in InactivePlayer.Board)
-                yield return c;
+                Cards.Add(c);
             foreach (var c in InactivePlayer.Hand)
-                yield return c;
-            yield break;
+                Cards.Add(c);
+            return Cards;
         }
 
         public IEnumerable<MinionCard> AllOnboardMinions()
         {
+            List<MinionCard> Minions = new List<MinionCard>();
             foreach (var c in ActivePlayer.Board)
-                yield return c;
+                Minions.Add(c);
             foreach (var c in InactivePlayer.Board)
-                yield return c;
-            yield break;
+                Minions.Add(c);
+            return Minions;
         }
 
         public void BroadcastEffect(Effect effect)
@@ -271,9 +288,8 @@ namespace Cards
                 ActivePlayer.Mana = ActivePlayer.MaxMana;
 
             // Allow minions to attack again
-            foreach (BaseCard c in AllCards())
-                if (c is MinionCard)
-                    (c as MinionCard).CanAttack = true;
+            foreach (MinionCard m in AllOnboardMinions())
+                m.CanAttack = true;
 
             // Allow players to draw again
             PlayerOne.HasNotDrawn = true;

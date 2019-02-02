@@ -143,6 +143,16 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CardFlipped {
+            get {
+                object obj = ResourceManager.GetObject("CardFlipped", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap CardSelectedBody {
             get {
                 object obj = ResourceManager.GetObject("CardSelectedBody", resourceCulture);
@@ -263,6 +273,16 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap HeroFramePlayerTargeted {
+            get {
+                object obj = ResourceManager.GetObject("HeroFramePlayerTargeted", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap InsectDouble {
             get {
                 object obj = ResourceManager.GetObject("InsectDouble", resourceCulture);
@@ -363,9 +383,49 @@ namespace Cards.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ScrollMagic {
+            get {
+                object obj = ResourceManager.GetObject("ScrollMagic", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ScrollStrong {
+            get {
+                object obj = ResourceManager.GetObject("ScrollStrong", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ScrollWeak {
+            get {
+                object obj = ResourceManager.GetObject("ScrollWeak", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap SelectedCardBody {
             get {
                 object obj = ResourceManager.GetObject("SelectedCardBody", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SelectedCardBodyAlt {
+            get {
+                object obj = ResourceManager.GetObject("SelectedCardBodyAlt", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

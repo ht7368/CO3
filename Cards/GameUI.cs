@@ -382,30 +382,70 @@ namespace Cards
                     });
 
                 // Make the card selected for half a second or so, to show what the opponent is doing
-                CardBox Box = null;
+                CardBox SelectedBox = null;
                 if (nextMove.Selected.AsCard() is MinionCard m && m.OnBoard)
                 {
                     foreach (CardBox b in EnemyBoard.GetCards())
                         if (b.CardReferenced.Id == nextMove.Selected)
-                            Box = b;
+                            SelectedBox = b;
                 }
                 else
                 {
                     foreach (CardBox b in EnemyHand.GetCards())
                         if (b.CardReferenced.Id == nextMove.Selected)
-                            Box = b;
+                            SelectedBox = b;
                 }
-                if (Box != null)
+
+                BaseCard AsCard = nextMove.Targeted.AsCard();
+                CardBox TargetedBox = null;
+                bool IsHero = false;
+
+                if (AsCard is HeroCard h)
                 {
-                    Box.Invoke((MethodInvoker)delegate
+                    TargetedBox = PlayerHero;
+                    IsHero = true;
+                }
+                else if (AsCard is MinionCard mm && mm.Owner == Game.PlayerOne)
+                {
+                    foreach (CardBox b in PlayerBoard.GetCards())
+                        if (b.CardReferenced.Id == nextMove.Targeted)
+                            TargetedBox = b;
+                };
+
+                if (SelectedBox != null)
+                {
+                    if (IsHero)
+                        TargetedBox?.Invoke((MethodInvoker)delegate
+                        {
+                            TargetedBox.BackgroundImage = Properties.Resources.HeroFramePlayerTargeted;
+                        });
+                    else
+                        TargetedBox?.Invoke((MethodInvoker)delegate
+                        {
+                            TargetedBox.BackgroundImage = Properties.Resources.SelectedCardBodyAlt;
+                        });
+                    SelectedBox.Invoke((MethodInvoker)delegate
                     {
-                       Box.BackgroundImage = Properties.Resources.SelectedCardBody;
+                        SelectedBox.SetHide(false);
+                        SelectedBox.BackgroundImage = Properties.Resources.SelectedCardBody;
                     });
-                    await Task.Delay(1000);
-                    Box.Invoke((MethodInvoker)delegate
+
+                    await Task.Delay(1500);
+
+                    SelectedBox.Invoke((MethodInvoker)delegate
                     {
-                        Box.BackgroundImage = Properties.Resources.CardBody;
+                        SelectedBox.BackgroundImage = Properties.Resources.CardBody;
                     });
+                    if (IsHero)
+                        TargetedBox?.Invoke((MethodInvoker)delegate
+                        {
+                            TargetedBox.BackgroundImage = Properties.Resources.HeroFramePlayer;
+                        });
+                    else
+                        TargetedBox?.Invoke((MethodInvoker)delegate
+                        {
+                            TargetedBox.BackgroundImage = Properties.Resources.CardBody;
+                        });
                 }
 
                 Game.DoMove(nextMove);

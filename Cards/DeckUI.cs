@@ -194,9 +194,13 @@ namespace Cards
                 if (Picker.ShowDialog() != DialogResult.OK)
                     return;
                 byte[] Bytes = File.ReadAllBytes(Picker.FileName);
+                CardBuilder[] Builders = Bytes
+                    .Select(b => Cards.CardFromID(b))
+                    .OrderBy(c => c.ManaCostData)
+                    .ToArray();
                 for (int i = 0; i < SelectionBoxes.Length; i++)
                 {
-                    var Card = Cards.CardFromID(Bytes[i]);
+                    var Card = Builders[i];
                     SelectionBoxes[i].Card = Card;
                     SelectionBoxes[i].Text = Card.NameData;
                     if (Card.TypeID == CardBuilder.CardType.Minion)

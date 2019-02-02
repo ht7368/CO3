@@ -120,8 +120,5 @@ namespace Cards
             why = "";
             return true;
         }
-
-        // (Subject to change?) A collection of all cards. More specifically,
-        // functions that take a GameState to return a card.
     }
 }

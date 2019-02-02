@@ -24,6 +24,7 @@ namespace Cards
         private Label CardHealth;
         private Label CardCost;
         private Control CardPlayableIndicator;
+        private PictureBox CardHidden;
 
         public CardBox(BaseCard card) : base()
         {
@@ -73,6 +74,18 @@ namespace Cards
                 TextAlign = ContentAlignment.MiddleCenter,
                 Image = Properties.Resources.ManaBox,
             };
+            CardHidden = new PictureBox()
+            {
+                Image = Properties.Resources.CardFlipped,
+                Visible = CardReferenced.Owner == CardReferenced.Game.PlayerTwo
+                    && (!(CardReferenced is MinionCard m) || !m.OnBoard)
+                    && CardReferenced.Game.CurrentPower as BaseCard != CardReferenced,
+                Left = 0,
+                Top = 0,
+                Height = GameBox.CARD_HEIGHT,
+                Width = GameBox.CARD_WIDTH,
+            };
+            Controls.Add(CardHidden);
             CardPlayableIndicator = new Control()
             {
                 Size = new Size(6, 6),
@@ -123,8 +136,12 @@ namespace Cards
                 CardHealth.BringToFront();
                 if (minion.OnBoard)
                     CardPlayableIndicator.BackColor = minion.CanAttack ? GREEN_IND : RED_IND;
+                if (minion.Owner == minion.Game.PlayerTwo)
+                    CardPlayableIndicator.Visible = false;
                 //CardAttack.Text = (CardReferenced as MinionCard).Attack.ToString();
             }
+
+            CardHidden.BringToFront();
 
             // Ensures clicking anywhere on the card counts as a click
             foreach (Control c in Controls)
@@ -138,9 +155,14 @@ namespace Cards
             };
         }
 
-        public void SetVisibility(bool b)
+        public void SetPlayabilityVisibility(bool b)
         {
             CardPlayableIndicator.Visible = b;
+        }
+
+        public void SetHide(bool b)
+        {
+            CardHidden.Visible = b;
         }
 
         // onClick for card elements
@@ -148,7 +170,7 @@ namespace Cards
         {
             GameState Game = card.CardReferenced.Game;
 
-            if (card.CardReferenced == Game.PlayerTwo.PlayerCard)
+            if (card.CardReferenced is HeroCard || card.CardReferenced.Game.CurrentPower == card.CardReferenced || !card.CardReferenced.Game.IsP1Turn)
                 return;
             // Get the game from the top-level gamebox by traversing up until we find the gamebox
             Control GameB = this;
@@ -194,6 +216,10 @@ namespace Cards
             // If it's not player one's turn (P2 has hidden indicators so we don't care what happens to them)
             if (CardReferenced.Game.InactivePlayer == CardReferenced.Game.PlayerOne)
                 CardPlayableIndicator.BackColor = RED_IND;
+            CardHidden.Visible = CardReferenced.Owner == CardReferenced.Game.PlayerTwo
+                    && (!(CardReferenced is MinionCard m) || !m.OnBoard)
+                    && CardReferenced.Game.CurrentPower != CardReferenced;
+            CardHidden.BringToFront();
         }
     }
 
@@ -248,10 +274,61 @@ namespace Cards
                 Top = Height - GameBox.CARD_HEIGHT,
                 Left = (this.Width - GameBox.CARD_WIDTH) / 2
             };
-            Visual.SetVisibility(false);
+            Visual.SetPlayabilityVisibility(false);
             Controls.Remove(Visual);
             Controls.Add(Visual);
         }
     }
 
+    // A special box type for player heroes
+    public class PlayerBox : CardBox
+    {
+        private Label HealthLabel;
+
+        public PlayerBox(BaseCard card) : base(card)
+        {
+            Height = Width;
+            Controls.Clear();
+            Click += (_s, _e) =>
+            {
+                GameBox Box = (Parent as GameBox);
+                if (Box.SelectedCard == null)
+                    return;
+                Box.Game.ProcessMove(new Move(Box.SelectedCard.Id, card.Game.PlayerTwo.PlayerCard.Id));
+                Box.SelectedCard = null;
+                Box.RenderState(Box.Game);
+            };
+
+            HealthLabel = new Label();
+            Controls.Add(HealthLabel);
+        }
+
+        public void InitUI()
+        {
+            HealthLabel.Size = new Size(42, 22);
+            HealthLabel.ForeColor = Color.White;
+            HealthLabel.Font = GameBox.CFont.GetFont(24);
+            HealthLabel.BringToFront();
+            if (CardReferenced.Owner == CardReferenced.Game.PlayerOne)
+            {
+                BackgroundImage = Properties.Resources.HeroFramePlayer;
+                HealthLabel.BackColor = Color.FromArgb(68, 197, 91);
+                HealthLabel.Left = 7;
+                HealthLabel.Top = Height - 22 - 9;
+            }
+            else
+            {
+                BackgroundImage = Properties.Resources.HeroFrameEnemy;
+                HealthLabel.BackColor = Color.FromArgb(81, 81, 81);
+                HealthLabel.Left = Width - 42 - 5;
+                HealthLabel.Top = Height - 22 - 7;
+            }
+            UpdatePlayerUI();
+        }
+
+        public void UpdatePlayerUI()
+        {
+            HealthLabel.Text = CardReferenced.Owner.Health.ToString();
+        }
+    }
 }

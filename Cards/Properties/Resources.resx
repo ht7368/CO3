@@ -241,4 +241,22 @@
   <data name="InsectTriple" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\InsectTriple.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CardFlipped" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CardFlipped.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HeroFramePlayerTargeted" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HeroFramePlayerTargeted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ScrollMagic" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ScrollMagic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ScrollStrong" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ScrollStrong.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ScrollWeak" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ScrollWeak.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SelectedCardBodyAlt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SelectedCardBodyAlt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

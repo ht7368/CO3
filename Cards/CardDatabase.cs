@@ -136,10 +136,9 @@ namespace Cards
             {
                 DeckID = 10,
                 TypeID = CardBuilder.CardType.Power,
-
                 NameData = "ARENA",
                 ManaCostData = 7,
-                DescriptionData = "MINIONS GAIN +3 ATK ATTACKING",
+                DescriptionData = "MINIONS GAIN +3/+0 WHEN ATTACKING",
                 ArtData = Properties.Resources.GrandArena,
                 PowerEffectData = new EffectData<PowerCard>()
                 {{
@@ -159,10 +158,10 @@ namespace Cards
                 {{
                         Effect.CardPlayed, (s, m) =>
                         {
-                            foreach (MinionCard c in s.AllOnboardMinions())
+                            foreach (MinionCard mm in s.AllOnboardMinions())
                             {
-                                    (c as MinionCard).Attack += 1;
-                                    (c as MinionCard).Health += 1;
+                                mm.Attack += 1;
+                                mm.Health += 1;
                             }
                         }
                 }},
@@ -192,7 +191,7 @@ namespace Cards
                 ManaCostData = 4,
                 DescriptionData = "DEAL 4 DAMAGE",
                 TargetedData = true,
-                // ArtData = Properties.Resources.a,
+                ArtData = Properties.Resources.ScrollWeak,
                 SpellEffectData = (s, m) =>
                 {
                     switch (m.Targeted.AsCard())
@@ -201,7 +200,7 @@ namespace Cards
                             minion.Health -= 4;
                             return;
                         case HeroCard hero:
-                            s.InactivePlayer.Health -= 4;
+                            hero.Owner.Health -= 4;
                             return;
                         default: return;
                     }
@@ -216,7 +215,7 @@ namespace Cards
                 ManaCostData = 7,
                 DescriptionData = "DEAL 7 DAMAGE",
                 TargetedData = true,
-                // ArtData = Properties.Resources.a,
+                ArtData = Properties.Resources.ScrollMagic,
                 SpellEffectData = (s, m) =>
                 {
                     switch (m.Targeted.AsCard())
@@ -225,7 +224,7 @@ namespace Cards
                             minion.Health -= 7;
                             return;
                         case HeroCard hero:
-                            s.PlayerTwo.Health -= 7;
+                            hero.Owner.Health -= 7;
                             return;
                         default: return;
                     }
@@ -240,7 +239,7 @@ namespace Cards
                 ManaCostData = 11,
                 DescriptionData = "DEAL 10 DAMAGE",
                 TargetedData = true,
-                // ArtData = Properties.Resources.a,
+                ArtData = Properties.Resources.ScrollStrong,
                 SpellEffectData = (s, m) =>
                 {
                     switch (m.Targeted.AsCard())
@@ -249,7 +248,7 @@ namespace Cards
                             minion.Health -= 10;
                             return;
                         case HeroCard hero:
-                            s.InactivePlayer.Health -= 10;
+                            hero.Owner.Health -= 10;
                             return;
                         default: return;
                     }
@@ -283,7 +282,7 @@ namespace Cards
                 ManaCostData = 5,
                 AttackData = 4,
                 HealthData = 2,
-                DescriptionData = "DRAW CARD WHEN MINION DIES.",
+                DescriptionData = "DRAW A CARD WHEN MINION DIES.",
                 // Art,
                 MinionEffectData = new EffectData<MinionCard>()
                 {{
@@ -300,7 +299,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Minion,
 
                 NameData = "INSECT SWARM",
-                ManaCostData = 3,
+                ManaCostData = 4,
                 AttackData = 1,
                 HealthData = 2,
                 DescriptionData = "SUMMON 2 1/2 'INSECT SWARM'",
@@ -309,7 +308,9 @@ namespace Cards
                 {
                     var Owner = m.Selected.AsCardT<MinionCard>().Owner;
                     Owner.Board.Add(CardFromID(18).Build(s, Owner) as MinionCard);
+                    Owner.Board[Owner.Board.Count - 1].OnBoard = true;
                     Owner.Board.Add(CardFromID(18).Build(s, Owner) as MinionCard);
+                    Owner.Board[Owner.Board.Count - 1].OnBoard = true;
                 }
             },
             new CardBuilder()
@@ -318,16 +319,20 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Minion,
 
                 NameData = "INSECT QUEEN",
-                ManaCostData = 5,
+                ManaCostData = 6,
                 AttackData = 3,
                 HealthData = 4,
-                DescriptionData = "SUMMON 1/2 'INSECT SWARM' ON TURN START",
+                DescriptionData = "SUMMON A 1/2 'INSECT SWARM' ON OWNER'S TURN START",
                 ArtData = Properties.Resources.InsectDouble,
                 MinionEffectData = new EffectData<MinionCard>
                 {{
                         Effect.TurnStart, (s, m) =>
                         {
-                            m.Owner.Board.Add(CardFromID(18).Build(s, m.Owner) as MinionCard);
+                            if (m.Owner == s.ActivePlayer)
+                            {
+                                m.Owner.Board.Add(CardFromID(18).Build(s, m.Owner) as MinionCard);
+                                m.Owner.Board[m.Owner.Board.Count - 1].OnBoard = true;
+                            }
                         }
                 }}
             },
@@ -337,16 +342,20 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Minion,
 
                 NameData = "INSECT INFEST",
-                ManaCostData = 11,
+                ManaCostData = 10,
                 AttackData = 4,
                 HealthData = 8,
-                DescriptionData = "SUMMON  3/4 'INSECT QUEEN' ON TURN END",
+                DescriptionData = "SUMMON A 3/4 'INSECT QUEEN' ON OWNER'S TURN END",
                 ArtData = Properties.Resources.InsectTriple,
                 MinionEffectData = new EffectData<MinionCard>
                 {{
                         Effect.TurnEnd, (s, m) =>
                         {
-                            m.Owner.Board.Add(CardFromID(18).Build(s, m.Owner) as MinionCard);
+                            if (m.Owner == s.ActivePlayer)
+                            {
+                                m.Owner.Board.Add(CardFromID(19).Build(s, m.Owner) as MinionCard);
+                                m.Owner.Board[m.Owner.Board.Count - 1].OnBoard = true;
+                            }
                         }
                 }},
             },
@@ -356,14 +365,20 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Power,
 
                 NameData = "INSECT HIVE",
-                ManaCostData = 7,
-                DescriptionData = "SUMMON 1/2 'INSECT SWARM' WHEN CARD DRAWN",
+                ManaCostData = 4,
+                DescriptionData = "SUMMON 1/2 'INSECT SWARM' FOR BOTH PLAYERS ON CARD DRAW",
                 ArtData = Properties.Resources.InsectHive,
                 PowerEffectData = new EffectData<PowerCard>
                 {{
-                        Effect.CardPlayed, (s, m) =>
+                        Effect.CardDrawn, (s, m) =>
                         {
                             m.Owner.Board.Add(CardFromID(18).Build(s, m.Owner) as MinionCard);
+                            m.Owner.Board[m.Owner.Board.Count - 1].OnBoard = true;
+                            BasePlayer Other = s.PlayerOne;
+                            if (m.Owner == s.PlayerOne)
+                                Other = s.PlayerTwo;
+                            Other.Board.Add(CardFromID(18).Build(s, Other) as MinionCard);
+                            Other.Board[Other.Board.Count - 1].OnBoard = true;
                         }
                 }},
             },
@@ -375,6 +390,7 @@ namespace Cards
                 NameData = "INSECT PLAGUE",
                 ManaCostData = 5,
                 DescriptionData = "ALL INSECTS GAIN +1/+2",
+                TargetedData = false,
                 ArtData = Properties.Resources.InsectQuad,
                 SpellEffectData = (s, m) =>
                 {
@@ -394,6 +410,7 @@ namespace Cards
                 NameData = "MUTATION",
                 ManaCostData = 12,
                 DescriptionData = "DOUBLE YOUR MINION STATS",
+                TargetedData = false,
                 ArtData = Properties.Resources.Evolution,
                 SpellEffectData = (s, m) =>
                 {

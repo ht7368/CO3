@@ -84,8 +84,6 @@ namespace Cards
         }
     }
 
-    
-
     public class EffectData<T> : Dictionary<Effect, Action<GameState, BaseCard>> where T: BaseCard
     {
         // Leaving this blank, it just acts as a more specific dictionary with a shorter name,

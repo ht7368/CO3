@@ -299,9 +299,6 @@
     <None Include="Resources\TargetDummy.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CardFlipped.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\NoCardGraphic.png" />
   </ItemGroup>
   <ItemGroup>
@@ -375,6 +372,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\InsectHive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScrollMagic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScrollStrong.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScrollWeak.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CardFlipped.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectedCardBodyAlt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HeroFramePlayerTargeted.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
