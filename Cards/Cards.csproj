@@ -311,12 +311,6 @@
     <None Include="Resources\GrandArena.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Gust.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\DeadRising.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\DuoDemon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -350,9 +344,6 @@
     <None Include="Resources\SelectionSpell.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Treant.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Vortex.png" />
   </ItemGroup>
   <ItemGroup>
@@ -365,13 +356,67 @@
     <None Include="Resources\InsectQuad.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\InsectTriple.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Evolution.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\InsectHive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CardFlipped.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SelectedCardBodyAlt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\HeroFramePlayerTargeted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Boar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\DeadRising.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\InsectTriple.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Lich.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Runt.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Treant.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Downsize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Upsize.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Giant.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ogre.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Troll.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Harpy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Eclipse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gust.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Innovation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Intelligence.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ScrollMagic.png" />
@@ -383,13 +428,16 @@
     <None Include="Resources\ScrollWeak.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\CardFlipped.png" />
+    <None Include="Resources\Ascent.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SelectedCardBodyAlt.png" />
+    <None Include="Resources\Hunted.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\HeroFramePlayerTargeted.png" />
+    <None Include="Resources\Magi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Tsunami.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

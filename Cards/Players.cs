@@ -38,10 +38,17 @@ namespace Cards
 
         public void DrawCard()
         {
-            // TODO: If empty, concede
-            Hand.Add(Deck[0]);
-            Deck.RemoveAt(0);
-
+            if (Deck.Count == 0)
+            {
+                Health = 0;
+            }
+            else
+            {
+                if (Hand.Count < 15)
+                    Hand.Add(Deck[0]);
+                Deck.RemoveAt(0);
+            }
+            
             PlayerCard.Game.BroadcastEffect(Effect.CardDrawn);
         }
     }

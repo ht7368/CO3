@@ -259,4 +259,52 @@
   <data name="SelectedCardBodyAlt" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\SelectedCardBodyAlt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Boar" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Boar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Downsize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Downsize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Giant" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Giant.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Harpy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Harpy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Lich" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Lich.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ogre" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ogre.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Runt" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Runt.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Troll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Troll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Upsize" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Upsize.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Ascent" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Ascent.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Eclipse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Eclipse.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Hunted" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hunted.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Innovation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Innovation.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Intelligence" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Intelligence.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Magi" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Magi.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Tsunami" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Tsunami.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

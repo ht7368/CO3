@@ -104,8 +104,8 @@ namespace Cards
             EnemyHero.UpdatePlayerUI();
             PlayerHero.UpdatePlayerUI();
 
-            PlayerMana.Text = $"{Game.PlayerOne.Mana} / {Game.PlayerOne.MaxMana}";
-            EnemyMana.Text = $"{Game.PlayerTwo.Mana} / {Game.PlayerTwo.MaxMana}";
+            PlayerMana.Text = $"{Game.PlayerOne.Mana} / {Game.PlayerOne.MaxMana}\n+{(Game.PlayerOne.ManaTurn < 6 ? Game.PlayerOne.ManaTurn + 1 : 6)}";
+            EnemyMana.Text = $"{Game.PlayerTwo.Mana} / {Game.PlayerTwo.MaxMana}\n+{(Game.PlayerTwo.ManaTurn < 6 ? Game.PlayerTwo.ManaTurn + 1: 6)}";
         }
 
         // Initialise the UI by setting out ALL of the objects

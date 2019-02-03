@@ -283,7 +283,7 @@ namespace Cards
 
             // Process end-of-turn mana changes
             ActivePlayer.ManaTurn += 1;
-            ActivePlayer.Mana += ActivePlayer.ManaTurn < 5 ? ActivePlayer.ManaTurn : 5;
+            ActivePlayer.Mana += ActivePlayer.ManaTurn < 6 ? ActivePlayer.ManaTurn : 6;
             if (ActivePlayer.Mana > ActivePlayer.MaxMana)
                 ActivePlayer.Mana = ActivePlayer.MaxMana;
 

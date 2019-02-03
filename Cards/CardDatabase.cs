@@ -32,7 +32,7 @@ namespace Cards
                 AttackData = 2,
                 HealthData = 2,
                 DescriptionData = "",
-                //ArtData = Properties.Resources.DuoDemon,
+                ArtData = Properties.Resources.Runt,
             },
             new CardBuilder()
             {
@@ -44,7 +44,7 @@ namespace Cards
                 AttackData = 3,
                 HealthData = 3,
                 DescriptionData = "",
-                //ArtData = Properties.Resources.Treant,
+                ArtData = Properties.Resources.Boar,
             },
             new CardBuilder()
             {
@@ -68,7 +68,7 @@ namespace Cards
                 AttackData = 5,
                 HealthData = 5,
                 DescriptionData = "",
-                //ArtData = Properties.Resources.Treant,
+                ArtData = Properties.Resources.Harpy,
             },
             new CardBuilder()
             {
@@ -80,7 +80,7 @@ namespace Cards
                 AttackData = 6,
                 HealthData = 6,
                 DescriptionData = "",
-                //ArtData = Properties.Resources.Treant,
+                ArtData = Properties.Resources.Troll,
             },
             new CardBuilder()
             {
@@ -92,7 +92,7 @@ namespace Cards
                 AttackData = 8,
                 HealthData = 8,
                 DescriptionData = "",
-                //ArtData = Properties.Resources.Treant,
+                ArtData = Properties.Resources.Ogre,
             },
             new CardBuilder()
             {
@@ -104,7 +104,7 @@ namespace Cards
                 AttackData = 12,
                 HealthData = 12,
                 DescriptionData = "",
-                //ArtData = Properties.Resources.Treant,
+                ArtData = Properties.Resources.Giant,
             },
             new CardBuilder()
             {
@@ -142,7 +142,10 @@ namespace Cards
                 ArtData = Properties.Resources.GrandArena,
                 PowerEffectData = new EffectData<PowerCard>()
                 {{
-                        Effect.MinionAttacking, (s, m) => { s.LastMove.Targeted.AsCardT<MinionCard>().Attack += 3; }
+                        Effect.MinionAttacking, (s, m) =>
+                        {
+                            s.LastMove.Selected.AsCardT<MinionCard>().Attack += 3;
+                        }
                 }},
             },
             new CardBuilder()
@@ -172,7 +175,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Spell,
 
                 NameData = "VORTEX",
-                ManaCostData = 12,
+                ManaCostData = 11,
                 DescriptionData = "REMOVE ALL MINIONS",
                 TargetedData = false,
                 ArtData = Properties.Resources.Vortex,
@@ -188,7 +191,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Spell,
 
                 NameData = "LESSER BOLT",
-                ManaCostData = 4,
+                ManaCostData = 3,
                 DescriptionData = "DEAL 4 DAMAGE",
                 TargetedData = true,
                 ArtData = Properties.Resources.ScrollWeak,
@@ -212,7 +215,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Spell,
 
                 NameData = "MAGIC BOLT",
-                ManaCostData = 7,
+                ManaCostData = 6,
                 DescriptionData = "DEAL 7 DAMAGE",
                 TargetedData = true,
                 ArtData = Properties.Resources.ScrollMagic,
@@ -236,7 +239,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Spell,
 
                 NameData = "GREATER BOLT",
-                ManaCostData = 11,
+                ManaCostData = 9,
                 DescriptionData = "DEAL 10 DAMAGE",
                 TargetedData = true,
                 ArtData = Properties.Resources.ScrollStrong,
@@ -263,7 +266,7 @@ namespace Cards
                 ManaCostData = 4,
                 DescriptionData = "ALL MINIONS +1/+1",
                 TargetedData = false,
-                // Art
+                ArtData = Properties.Resources.Upsize,
                 SpellEffectData = (s, m) =>
                 {
                     foreach (MinionCard mn in s.AllOnboardMinions())
@@ -283,7 +286,7 @@ namespace Cards
                 AttackData = 4,
                 HealthData = 2,
                 DescriptionData = "DRAW A CARD WHEN MINION DIES.",
-                // Art,
+                ArtData = Properties.Resources.Lich,
                 MinionEffectData = new EffectData<MinionCard>()
                 {{
                         Effect.MinionKilled,
@@ -301,8 +304,8 @@ namespace Cards
                 NameData = "INSECT SWARM",
                 ManaCostData = 4,
                 AttackData = 1,
-                HealthData = 2,
-                DescriptionData = "SUMMON 2 1/2 'INSECT SWARM'",
+                HealthData = 1,
+                DescriptionData = "SUMMON 2 1/1 'INSECT SWARM'",
                 ArtData = Properties.Resources.InsectSingle,
                 MinionOnPlayData = (s, m) =>
                 {
@@ -322,7 +325,7 @@ namespace Cards
                 ManaCostData = 6,
                 AttackData = 3,
                 HealthData = 4,
-                DescriptionData = "SUMMON A 1/2 'INSECT SWARM' ON OWNER'S TURN START",
+                DescriptionData = "SUMMON A 1/1 'INSECT SWARM' ON OWNER'S TURN START",
                 ArtData = Properties.Resources.InsectDouble,
                 MinionEffectData = new EffectData<MinionCard>
                 {{
@@ -342,7 +345,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Minion,
 
                 NameData = "INSECT INFEST",
-                ManaCostData = 10,
+                ManaCostData = 11,
                 AttackData = 4,
                 HealthData = 8,
                 DescriptionData = "SUMMON A 3/4 'INSECT QUEEN' ON OWNER'S TURN END",
@@ -365,8 +368,8 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Power,
 
                 NameData = "INSECT HIVE",
-                ManaCostData = 4,
-                DescriptionData = "SUMMON 1/2 'INSECT SWARM' FOR BOTH PLAYERS ON CARD DRAW",
+                ManaCostData = 5,
+                DescriptionData = "SUMMON 1/1 'INSECT SWARM' FOR BOTH PLAYERS ON CARD DRAW",
                 ArtData = Properties.Resources.InsectHive,
                 PowerEffectData = new EffectData<PowerCard>
                 {{
@@ -389,7 +392,7 @@ namespace Cards
 
                 NameData = "INSECT PLAGUE",
                 ManaCostData = 5,
-                DescriptionData = "ALL INSECTS GAIN +1/+2",
+                DescriptionData = "ALL INSECTS GAIN +2/+2",
                 TargetedData = false,
                 ArtData = Properties.Resources.InsectQuad,
                 SpellEffectData = (s, m) =>
@@ -408,7 +411,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Spell,
 
                 NameData = "MUTATION",
-                ManaCostData = 12,
+                ManaCostData = 10,
                 DescriptionData = "DOUBLE YOUR MINION STATS",
                 TargetedData = false,
                 ArtData = Properties.Resources.Evolution,
@@ -418,6 +421,185 @@ namespace Cards
                     {
                         mn.Health *= 2;
                         mn.Attack *= 2;
+                    }
+                }
+            },
+            new CardBuilder()
+            {
+                DeckID = 24,
+                TypeID = CardBuilder.CardType.Minion,
+
+                NameData = "ZOMBIE",
+                ManaCostData = 5,
+                AttackData = 4,
+                HealthData = 4,
+                DescriptionData = "DRAW A CARD WHEN PLAYED",
+                ArtData = Properties.Resources.DeadRising,
+                MinionOnPlayData = (s, m) =>
+                {
+                    m.Targeted.AsCardT<MinionCard>().Owner.DrawCard();
+                },
+            },
+            new CardBuilder()
+            {
+                DeckID = 25,
+                TypeID = CardBuilder.CardType.Spell,
+
+                NameData = "STORM",
+                ManaCostData = 5,
+                DescriptionData = "DEAL 4 DAMAGE TO ALL MINIONS",
+                TargetedData = false,
+                ArtData = Properties.Resources.Gust,
+                SpellEffectData = (s, m) =>
+                {
+                    foreach (MinionCard mm in s.AllOnboardMinions())
+                        mm.Health -= 4;
+                }
+            },
+            new CardBuilder()
+            {
+                DeckID = 26,
+                TypeID = CardBuilder.CardType.Spell,
+
+                NameData = "FLOOD",
+                ManaCostData = 8,
+                DescriptionData = "DEAL 6 DAMAGE TO ALL MINIONS",
+                TargetedData = false,
+                ArtData = Properties.Resources.Tsunami,
+                SpellEffectData = (s, m) =>
+                {
+                    foreach (MinionCard mm in s.AllOnboardMinions())
+                        mm.Health =- 6;
+                }
+            },
+            new CardBuilder()
+            {
+                DeckID = 27,
+                TypeID = CardBuilder.CardType.Minion,
+
+                NameData = "MAGI",
+                ManaCostData = 8,
+                AttackData = 5,
+                HealthData = 1,
+                DescriptionData = "OWNER'S SPELLS ARE CAST TWICE",
+                ArtData = Properties.Resources.Magi,
+                MinionEffectData = new EffectData<MinionCard>()
+                {{
+                        Effect.CardPlayed, (s, c) =>
+                        {
+                            if (s.LastMove.Selected.AsCard() is SpellCard sp && sp.Owner == c.Owner)
+                                sp.SpellEffect(s, s.LastMove);
+                        }
+                }}
+            },
+            new CardBuilder()
+            {
+                DeckID = 28,
+                TypeID = CardBuilder.CardType.Power,
+
+                NameData = "ASCENT",
+                ManaCostData = 6,
+                DescriptionData = "GAIN 1 MANA WHEN CARD PLAYED; GAIN 2 AT TURN START",
+                ArtData = Properties.Resources.Ascent,
+                PowerEffectData = new EffectData<PowerCard>()
+                {{
+                        Effect.CardPlayed, (s, c) =>
+                        {
+                            s.ActivePlayer.Mana += 1;
+                        }
+                }, {
+                        Effect.TurnStart, (s, c) =>
+                        {
+                            s.ActivePlayer.Mana += 2;
+                        }
+                }}
+            },
+            new CardBuilder()
+            {
+                DeckID = 29,
+                TypeID = CardBuilder.CardType.Spell,
+
+                NameData = "INNOVATION",
+                ManaCostData = 0,
+                DescriptionData = "GAIN 2 MANA",
+                ArtData = Properties.Resources.Innovation,
+                TargetedData = true,
+                SpellEffectData = (s, m) =>
+                {
+                    s.ActivePlayer.Mana += 2;
+                }
+            },
+            new CardBuilder()
+            {
+                DeckID = 30,
+                TypeID = CardBuilder.CardType.Power,
+
+                ManaCostData = 7,
+                NameData = "ECLIPSE",
+                DescriptionData = "DEAL 1 DAMAGE TO ALL MINIONS ON TURN START AND END",
+                ArtData = Properties.Resources.Eclipse,
+                PowerEffectData = new EffectData<PowerCard>()
+                {{
+                        Effect.CardPlayed, (s, c) =>
+                        {
+                            foreach (MinionCard m in s.AllOnboardMinions())
+                                m.Health -= 1;
+                        }
+                }, {
+                        Effect.TurnStart, (s, c) =>
+                        {
+                            foreach (MinionCard m in s.AllOnboardMinions())
+                                m.Health -= 1;
+                        }
+                }},
+            },
+            new CardBuilder()
+            {
+                DeckID = 31,
+                TypeID = CardBuilder.CardType.Spell, 
+                
+                ManaCostData = 4,
+                NameData = "INTELLECT",
+                DescriptionData = "DRAW 2 CARDS",
+                TargetedData = false,
+                ArtData = Properties.Resources.Intelligence,
+                SpellEffectData = (s, m) =>
+                {
+                    s.ActivePlayer.DrawCard();
+                    s.ActivePlayer.DrawCard();
+                }
+            },
+            new CardBuilder()
+            {
+                DeckID = 32,
+                TypeID = CardBuilder.CardType.Spell,
+                
+                ManaCostData = 3,
+                NameData = "ASSAULT",
+                DescriptionData = "DEAL 7 DAMAGE TO ENEMY'S HERO",
+                TargetedData = false,
+                ArtData = Properties.Resources.Hunted,
+                SpellEffectData = (s, m) =>
+                {
+                    s.InactivePlayer.Health -= 7;
+                }
+            },
+            new CardBuilder()
+            {
+                DeckID = 33,
+                TypeID = CardBuilder.CardType.Spell,
+
+                NameData = "DOWNSIZE",
+                ManaCostData = 4,
+                DescriptionData = "ALL MINIONS -1/-1",
+                TargetedData = false,
+                ArtData = Properties.Resources.Downsize,
+                SpellEffectData = (s, m) =>
+                {
+                    foreach (MinionCard mm in s.AllOnboardMinions())
+                    {
+                        mm.Health -= 1;
+                        mm.Attack -= 1;
                     }
                 }
             }
