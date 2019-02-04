@@ -369,7 +369,7 @@ namespace Cards
 
                 NameData = "INSECT HIVE",
                 ManaCostData = 3,
-                DescriptionData = "SUMMON 1/1 'INSECT SWARM' FOR BOTH A PLAYER ON THE END OF THEIR TURN",
+                DescriptionData = "SUMMON 1/1 'INSECT SWARM' AT PLAYER TURN END",
                 ArtData = Properties.Resources.InsectHive,
                 PowerEffectData = new EffectData<PowerCard>
                 {{
