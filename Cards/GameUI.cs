@@ -459,7 +459,7 @@ namespace Cards
                     MessageBox.Show(caption: "Information", text: "You lose!");
                     (Parent as GameUI).Close();
                 }
-                else if (Game.PlayerTwo.Health <= 0)
+                if (Game.PlayerTwo.Health <= 0)
                 {
                     MessageBox.Show(caption: "Information", text: "You win!");
                     (Parent as GameUI).Close();

@@ -154,7 +154,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Power,
 
                 NameData = "DARK CAVE",
-                ManaCostData = 6,
+                ManaCostData = 5,
                 DescriptionData = "ALL MINIONS +1/+1 WHEN CARD PLAYED",
                 ArtData = Properties.Resources.WhispersMadness,
                 PowerEffectData = new EffectData<PowerCard>
@@ -368,20 +368,15 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Power,
 
                 NameData = "INSECT HIVE",
-                ManaCostData = 5,
-                DescriptionData = "SUMMON 1/1 'INSECT SWARM' FOR BOTH PLAYERS ON CARD DRAW",
+                ManaCostData = 3,
+                DescriptionData = "SUMMON 1/1 'INSECT SWARM' FOR BOTH A PLAYER ON THE END OF THEIR TURN",
                 ArtData = Properties.Resources.InsectHive,
                 PowerEffectData = new EffectData<PowerCard>
                 {{
-                        Effect.CardDrawn, (s, m) =>
+                        Effect.TurnEnd, (s, m) =>
                         {
-                            m.Owner.Board.Add(CardFromID(18).Build(s, m.Owner) as MinionCard);
-                            m.Owner.Board[m.Owner.Board.Count - 1].OnBoard = true;
-                            BasePlayer Other = s.PlayerOne;
-                            if (m.Owner == s.PlayerOne)
-                                Other = s.PlayerTwo;
-                            Other.Board.Add(CardFromID(18).Build(s, Other) as MinionCard);
-                            Other.Board[Other.Board.Count - 1].OnBoard = true;
+                            s.ActivePlayer.Board.Add(CardFromID(18).Build(s, s.ActivePlayer) as MinionCard);
+                            s.ActivePlayer.Board[s.ActivePlayer.Board.Count - 1].OnBoard = true;
                         }
                 }},
             },
@@ -400,7 +395,7 @@ namespace Cards
                     foreach (MinionCard mn in m.Selected.AsCard().Owner.Board)
                         if (mn.Name.Contains("INSECT"))
                         {
-                            mn.Attack += 1;
+                            mn.Attack += 2;
                             mn.Health += 2;
                         }
                 },
@@ -411,7 +406,7 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Spell,
 
                 NameData = "MUTATION",
-                ManaCostData = 10,
+                ManaCostData = 8,
                 DescriptionData = "DOUBLE YOUR MINION STATS",
                 TargetedData = false,
                 ArtData = Properties.Resources.Evolution,
@@ -523,7 +518,7 @@ namespace Cards
                 ManaCostData = 0,
                 DescriptionData = "GAIN 2 MANA",
                 ArtData = Properties.Resources.Innovation,
-                TargetedData = true,
+                TargetedData = false,
                 SpellEffectData = (s, m) =>
                 {
                     s.ActivePlayer.Mana += 2;
@@ -534,13 +529,13 @@ namespace Cards
                 DeckID = 30,
                 TypeID = CardBuilder.CardType.Power,
 
-                ManaCostData = 7,
+                ManaCostData = 6,
                 NameData = "ECLIPSE",
                 DescriptionData = "DEAL 1 DAMAGE TO ALL MINIONS ON TURN START AND END",
                 ArtData = Properties.Resources.Eclipse,
                 PowerEffectData = new EffectData<PowerCard>()
                 {{
-                        Effect.CardPlayed, (s, c) =>
+                        Effect.TurnEnd, (s, c) =>
                         {
                             foreach (MinionCard m in s.AllOnboardMinions())
                                 m.Health -= 1;
@@ -558,13 +553,14 @@ namespace Cards
                 DeckID = 31,
                 TypeID = CardBuilder.CardType.Spell, 
                 
-                ManaCostData = 4,
+                ManaCostData = 5,
                 NameData = "INTELLECT",
-                DescriptionData = "DRAW 2 CARDS",
+                DescriptionData = "DRAW 3 CARDS",
                 TargetedData = false,
                 ArtData = Properties.Resources.Intelligence,
                 SpellEffectData = (s, m) =>
                 {
+                    s.ActivePlayer.DrawCard();
                     s.ActivePlayer.DrawCard();
                     s.ActivePlayer.DrawCard();
                 }

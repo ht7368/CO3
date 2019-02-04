@@ -36,8 +36,7 @@ namespace Cards
             var LocalIP = Dns.GetHostEntry(Dns.GetHostName())
                 .AddressList
                 .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork)
-                .OrderByDescending(ip => ip.GetAddressBytes()[3])
-                .First();
+                .Aggregate("", (acc, x) => $"{acc}\n{x}");
 
             MessageBox.Show(caption: "Information", text: $"Connect to: {LocalIP}");
 

@@ -15,6 +15,15 @@ namespace Cards
     {
         public byte[] Deckcode;
 
+        public static byte[] SWARM_DECK = new byte[]
+        {
+             22, 22, 21, 21, 16, 16, 18, 18, 17, 17, 11, 11, 19, 19, 24, 24, 10, 10, 20, 20, 29, 31, 14, 14, 6
+        };
+        public static byte[] COMBO_DECK = new byte[]
+        {
+            29, 29, 32, 32, 28, 12, 27, 27, 9, 9, 15, 14, 14, 25, 25, 30, 30, 24, 24, 31, 31, 33, 33, 17, 13
+        };
+
         public DeckChoiceUI()
         {
             InitializeComponent();
@@ -34,12 +43,12 @@ namespace Cards
 
         private void buttonCombo_Click(object sender, EventArgs e)
         {
-            Pick("deckfiles/ComboDeckBeta.deck");
+            Pick("deckfiles/ComboDeck.deck");
         }
 
         private void buttonSwarm_Click(object sender, EventArgs e)
         {
-            Pick("deckfiles/SwarmDeckBeta.deck");
+            Pick("deckfiles/SwarmDeck.deck");
         }
 
         private void Pick(string location)
@@ -47,6 +56,14 @@ namespace Cards
             byte[] Bytes = File.ReadAllBytes(location);
             Deckcode = Bytes;
             Close();
+        }
+
+        private void DeckChoiceUI_Load(object sender, EventArgs e)
+        {
+            if (!File.Exists("deckfiles/SwarmDeck.deck"))
+                File.WriteAllBytes("deckfiles/SwarmDeck.deck", SWARM_DECK);
+            if (!File.Exists("deckfiles/ComboDeck.deck"))
+                File.WriteAllBytes("deckfiles/ComboDeck.deck", COMBO_DECK);
         }
     }
 }

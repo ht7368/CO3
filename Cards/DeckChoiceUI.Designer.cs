@@ -73,6 +73,7 @@
             this.Controls.Add(this.buttonSwarm);
             this.Name = "DeckChoiceUI";
             this.Text = "Choose your deck!";
+            this.Load += new System.EventHandler(this.DeckChoiceUI_Load);
             this.ResumeLayout(false);
 
         }

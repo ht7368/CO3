@@ -258,6 +258,7 @@ namespace Cards
 
             Selected.Play();
             ResolveActions();
+            ResolveActions();
         }
 
         // Resolving an action involves:

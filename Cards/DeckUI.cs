@@ -23,6 +23,8 @@ namespace Cards
         public DeckUI()
         {
             InitializeComponent();
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            WindowState = FormWindowState.Normal;
         }
 
         private void DeckUI_Load(object sender, EventArgs e)
