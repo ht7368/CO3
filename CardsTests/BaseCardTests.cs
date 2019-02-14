@@ -14,7 +14,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void BaseCardTest()
         {
-            GameState G = new GameState();
+            GameState G = new GameState(true);
             // Creates instances for testing
             var First = new MinionCard(G)
             {
@@ -38,12 +38,13 @@ namespace Cards.Tests
         [TestMethod()]
         public void IsPlayableTest()
         {
-            GameState G = new GameState();
+            GameState G = new GameState(true);
             // Create a few cards
             var First = new SpellCard(G)
             {
                 ManaCost = 0,
                 IsTargeted = true,
+                Owner = G.PlayerOne,
             };
             var Second = new MinionCard(G)
             {
@@ -51,13 +52,14 @@ namespace Cards.Tests
                 ManaCost = 0,
                 OnBoard = true,
                 CanAttack = true,
+                Owner = G.PlayerOne,
             };
             G.PlayerOne.Board.Add(Second);
             G.PlayerOne.Hand.Add(First);
             // This should NOT be playable - invalid target
             Assert.IsFalse(First.IsPlayable(new Move(First.Id, 0)));
             // This should NOT be playable - invalid target
-            Assert.IsFalse(Second.IsPlayable(new Move(Second.Id, G.PlayerOne.PlayerCard.Id)));
+            Assert.IsFalse(Second.IsPlayable(new Move(Second.Id, 0)));
             // But this should be
             Assert.IsTrue(Second.IsPlayable(new Move(Second.Id, G.PlayerTwo.PlayerCard.Id)));
             // Finally, this should be

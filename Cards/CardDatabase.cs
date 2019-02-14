@@ -31,8 +31,18 @@ namespace Cards
                 ManaCostData = 2,
                 AttackData = 2,
                 HealthData = 2,
-                DescriptionData = "",
+                DescriptionData = "+3/+3 FOR EACH 'BOAR' ON BOARD",
                 ArtData = Properties.Resources.Runt,
+                MinionOnPlayData = (s, m) =>
+                {
+                    foreach (MinionCard minion in s.ActivePlayer.Board)
+                        if (minion.Name == "BOAR")
+                        {
+                            MinionCard Self = m.Selected.AsCardT<MinionCard>();
+                            Self.Health += 3;
+                            Self.Attack += 3;
+                        }
+                },
             },
             new CardBuilder()
             {
@@ -43,8 +53,17 @@ namespace Cards
                 ManaCostData = 3,
                 AttackData = 3,
                 HealthData = 3,
-                DescriptionData = "",
+                DescriptionData = "A 'RUNT' CAN ATTACK AGAIN AFTER THIS ATTACKS",
                 ArtData = Properties.Resources.Boar,
+                MinionEffectData = new EffectData<MinionCard>()
+                {{
+                        Effect.MinionAttacking, (s, m) =>
+                        {
+                            foreach (MinionCard minion in m.Owner.Board)
+                                if (minion.Name == "RUNT")
+                                    minion.CanAttack = true;
+                        }
+                }}
             },
             new CardBuilder()
             {
@@ -531,20 +550,22 @@ namespace Cards
 
                 ManaCostData = 6,
                 NameData = "ECLIPSE",
-                DescriptionData = "DEAL 1 DAMAGE TO ALL MINIONS ON TURN START AND END",
+                DescriptionData = "50% TO DEAL 1 DAMAGE TO ALL MINIONS TURN START AND END",
                 ArtData = Properties.Resources.Eclipse,
                 PowerEffectData = new EffectData<PowerCard>()
                 {{
                         Effect.TurnEnd, (s, c) =>
                         {
-                            foreach (MinionCard m in s.AllOnboardMinions())
-                                m.Health -= 1;
+                            if (s.RNG.Next(0, 2) == 1)
+                                foreach (MinionCard m in s.AllOnboardMinions())
+                                    m.Health -= 1;
                         }
                 }, {
                         Effect.TurnStart, (s, c) =>
                         {
-                            foreach (MinionCard m in s.AllOnboardMinions())
-                                m.Health -= 1;
+                            if (s.RNG.Next(0, 2) == 1)
+                                foreach (MinionCard m in s.AllOnboardMinions())
+                                    m.Health -= 1;
                         }
                 }},
             },
@@ -586,16 +607,16 @@ namespace Cards
                 TypeID = CardBuilder.CardType.Spell,
 
                 NameData = "DOWNSIZE",
-                ManaCostData = 4,
-                DescriptionData = "ALL MINIONS -1/-1",
+                ManaCostData = 5,
+                DescriptionData = "ALL MINIONS -2/-2",
                 TargetedData = false,
                 ArtData = Properties.Resources.Downsize,
                 SpellEffectData = (s, m) =>
                 {
                     foreach (MinionCard mm in s.AllOnboardMinions())
                     {
-                        mm.Health -= 1;
-                        mm.Attack -= 1;
+                        mm.Health -= 2;
+                        mm.Attack -= 2;
                     }
                 }
             }

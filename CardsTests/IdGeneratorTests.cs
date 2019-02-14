@@ -14,7 +14,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void GetByIdTest()
         {
-            GameState G = new GameState();
+            GameState G = new GameState(true);
             // Create a card and check that getting a card by its Id is the same card
             SpellCard First = new SpellCard(G)
             {

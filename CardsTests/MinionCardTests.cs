@@ -14,7 +14,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void PlayTest()
         {
-            GameState G = new GameState();
+            GameState G = new GameState(true);
             G.CurrentPower = new PowerCard(G);
             // Create two minions, 1/4 and 2/5
             // They will end up 1/2 and 2/4 after battle
@@ -24,6 +24,7 @@ namespace Cards.Tests
                 CanAttack = true,
                 Attack = 1,
                 Health = 4,
+                Owner = G.PlayerOne,
             };
             MinionCard Second = new MinionCard(G)
             {
@@ -31,6 +32,7 @@ namespace Cards.Tests
                 CanAttack = true,
                 Attack = 2,
                 Health = 5,
+                Owner = G.PlayerTwo,
             };
             G.PlayerOne.Board.Add(First);
             G.PlayerTwo.Board.Add(Second);

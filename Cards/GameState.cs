@@ -127,6 +127,41 @@ namespace Cards
             _GameState();
         }
 
+        public GameState(bool debug)
+        {
+            PlayerTwo = new BasePlayer();
+            PlayerOne = new BasePlayer();
+
+            IsP1Turn = true;
+            RNG = new Random();
+
+            PlayerTwo.Deck = DeckChoiceUI.COMBO_DECK
+                .Select(x => Cards.CardFromID(x))
+                .Select(x => x.Build(this, PlayerTwo))
+                .ToList();
+            PlayerOne.Deck = DeckChoiceUI.SWARM_DECK
+                .Select(x => Cards.CardFromID(x))
+                .Select(x => x.Build(this, PlayerOne))
+                .ToList();
+
+            PlayerOne.PlayerCard = new HeroCard(this)
+            {
+                Owner = PlayerOne,
+                Description = "",
+                Name = "",
+                ManaCost = 0,
+            };
+            PlayerTwo.PlayerCard = new HeroCard(this)
+            {
+                Owner = PlayerTwo,
+                Description = "",
+                Name = "",
+                ManaCost = 0,
+            };
+
+            _GameState();
+        }
+
         public void _GameState()
         {
             CurrentPower = Cards.CardFromID(8).Build(this, ActivePlayer) as PowerCard;
@@ -216,7 +251,7 @@ namespace Cards
             if (nextMove.Selected < NUM_RESERVED_CODES)
             {
                 DoMove(nextMove);
-                Net.Send(nextMove);
+                Net?.Send(nextMove);
                 return null;
             }
 
@@ -227,7 +262,7 @@ namespace Cards
                 return "YOU CANNOT MAKE THAT MOVE.";
             }
 
-            Net.Send(nextMove);
+            Net?.Send(nextMove);
             DoMove(nextMove);
             return "";
         }
