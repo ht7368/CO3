@@ -46,6 +46,7 @@
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -57,6 +58,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaseCardTests.cs" />
+    <Compile Include="CardBuilderTests.cs" />
+    <Compile Include="CardsTests.cs" />
     <Compile Include="GameStateTests.cs" />
     <Compile Include="IdGeneratorTests.cs" />
     <Compile Include="MinionCardTests.cs" />

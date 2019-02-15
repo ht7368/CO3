@@ -92,11 +92,11 @@ namespace Cards
             return null;
         }
 
-        public static bool ValidateDeck(CardLabel[] cards, out string why)
+        public static bool ValidateDeck(IEnumerable<CardBuilder> cards, out string why)
         {
             // Check for too many duplicates
             var Dict = new Dictionary<int, int>();
-            foreach (CardBuilder c in cards.Select(x => x.Card))
+            foreach (CardBuilder c in cards)
                 if (c == null)
                 {
                     why = "One or more card slots is unassigned.";
@@ -112,7 +112,7 @@ namespace Cards
                     why = "Too many copies of one card. (maximum: 2)";
                     return false;
                 }
-            if (cards.Length != 25)
+            if (cards.Count() != 25)
             {
                 why = "Incorrect number of cards. (must have: 25)";
                 return false;

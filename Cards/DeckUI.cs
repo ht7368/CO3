@@ -213,7 +213,7 @@ namespace Cards
                         SelectionBoxes[i].Image = Properties.Resources.SelectionSpell;
                 }
 
-                if (!Cards.ValidateDeck(SelectionBoxes, out string why))
+                if (!Cards.ValidateDeck(SelectionBoxes.Select(x => x.Card), out string why))
                 {
                     MessageBox.Show(caption: "Deck Error!", text: why);
                     // Clear
@@ -247,7 +247,7 @@ namespace Cards
             SaveDeck.FlatAppearance.BorderColor = BACK_COLOR;
             SaveDeck.Click += (_s, _e) =>
             {
-                if (!Cards.ValidateDeck(SelectionBoxes, out string why))
+                if (!Cards.ValidateDeck(SelectionBoxes.Select(x => x.Card), out string why))
                 {
                     MessageBox.Show(caption: "Deck Error!", text: why);
                     return;
