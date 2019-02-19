@@ -81,16 +81,31 @@ namespace Cards
         public GameState Game;
         public BaseCard SelectedCard;
 
+        public Network Net;
+
         public static CustomFont CFont = new CustomFont();
 
         public GameBox(byte[] deckcode)
         {
-            Game = new GameState(deckcode);
+            Net = new Network();
+            int Seed = Net.RecieveRandomSeed();
+
+            byte[] OppDeck = Net.RecieveDeck();
+            Net.SendDeck(deckcode);
+
+            Game = new GameState(deckcode, OppDeck, true, Seed);
         }
 
         public GameBox(byte[] deckcode, string hostname)
         {
-            Game = new GameState(deckcode, hostname);
+            Net = new Network(hostname);
+            int Seed = (int)(DateTime.Now.Ticks % int.MaxValue);
+            Net.SendRandomSeed(Seed);
+
+            Net.SendDeck(deckcode);
+            byte[] OppDeck = Net.RecieveDeck();
+
+            Game = new GameState(deckcode, OppDeck, false, Seed);
         }
 
         // Will update the visuals with the current board state.
@@ -352,6 +367,7 @@ namespace Cards
             if (!Game.IsP1Turn)
                 return;
             Game.ProcessMove(new Move(GameState.CARD_DRAW, 0));
+            Net.Send(new Move(GameState.CARD_DRAW, 0));
             RenderState(Game);
         }
 
@@ -362,6 +378,7 @@ namespace Cards
                 return;
             SelectedCard = null;
             Game.ProcessMove(new Move(GameState.TURN_PASS, 0));
+            Net.Send(new Move(GameState.TURN_PASS, 0));
             RenderState(Game);
         }
 
@@ -369,7 +386,7 @@ namespace Cards
         {
             while (true)
             {
-                Move nextMove = await Game.Net.Recieve();
+                Move nextMove = await Net.Recieve();
                 if (nextMove.Selected == GameState.TURN_PASS)
                     this.Invoke((MethodInvoker)delegate
                     {
@@ -448,7 +465,7 @@ namespace Cards
                         });
                 }
 
-                Game.DoMove(nextMove);
+                Game.ProcessMove(nextMove);
                 this.Invoke((MethodInvoker)delegate
                 {
                     RenderState(Game);

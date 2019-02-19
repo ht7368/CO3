@@ -192,6 +192,7 @@ namespace Cards
             }
             // Otherwise the move is completed and processed
             GameUI.Game.ProcessMove(new Move(GameUI.SelectedCard.Id, CardReferenced.Id));
+            GameUI.Net.Send(new Move(GameUI.SelectedCard.Id, CardReferenced.Id));
             GameUI.SelectedCard = null;
             GameUI.RenderState(GameUI.Game);
         }
@@ -295,6 +296,7 @@ namespace Cards
                 if (Box.SelectedCard == null)
                     return;
                 Box.Game.ProcessMove(new Move(Box.SelectedCard.Id, card.Game.PlayerTwo.PlayerCard.Id));
+                Box.Net.Send(new Move(Box.SelectedCard.Id, card.Game.PlayerTwo.PlayerCard.Id));
                 Box.SelectedCard = null;
                 Box.RenderState(Box.Game);
             };

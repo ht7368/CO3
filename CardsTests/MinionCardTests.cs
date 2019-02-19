@@ -14,7 +14,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void PlayTest()
         {
-            GameState G = new GameState(true);
+            GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             G.CurrentPower = new PowerCard(G);
             // Create two minions, 1/4 and 2/5
             // They will end up 1/2 and 2/4 after battle

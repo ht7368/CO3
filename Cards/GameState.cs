@@ -37,109 +37,25 @@ namespace Cards
         public PowerCard CurrentPower;
         public Move LastMove;
         public bool IsP1Turn; // Is it player one's turn?
-        public Network Net;
 
         public Random RNG;
 
         //public GameBox Box;
 
-        public GameState(byte[] deckcode, string hostname)
+        public GameState(byte[] firstDeckcode, byte[] secondDeckcode, bool isP1turn, int randomSeed)
         {
+            RNG = new Random(randomSeed);
+
             PlayerTwo = new BasePlayer();
             PlayerOne = new BasePlayer();
 
-            IsP1Turn = false;
-            int Seed = (int)(DateTime.Now.Ticks % int.MaxValue);
+            IsP1Turn = isP1turn;
 
-            Net = new Network(hostname);
-
-            Net.SendRandomSeed(Seed);
-            RNG = new Random(Seed);
-
-            Net.SendDeck(deckcode);
-            byte[] OppDeck = Net.RecieveDeck();
-
-            PlayerTwo.Deck = OppDeck
+            PlayerTwo.Deck = firstDeckcode
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this, PlayerTwo))
                 .ToList();
-            PlayerOne.Deck = deckcode
-                .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this, PlayerOne))
-                .ToList();
-
-            PlayerOne.PlayerCard = new HeroCard(this)
-            {
-                Owner = PlayerOne,
-                Description = "",
-                Name = "",
-                ManaCost = 0,
-            };
-            PlayerTwo.PlayerCard = new HeroCard(this)
-            {
-                Owner = PlayerTwo,
-                Description = "",
-                Name = "",
-                ManaCost = 0,
-            };
-
-            _GameState();
-        }
-
-        public GameState(byte[] deckcode)
-        {
-            PlayerOne = new BasePlayer();
-            PlayerTwo = new BasePlayer();
-
-            IsP1Turn = true;
-            Net = new Network();
-
-            int Seed = Net.RecieveRandomSeed();
-            RNG = new Random(Seed);
-
-            byte[] OppDeck = Net.RecieveDeck();
-            Net.SendDeck(deckcode);
-
-            PlayerOne.Deck = deckcode
-                .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this, PlayerOne))
-                .ToList();
-            PlayerTwo.Deck = OppDeck
-                .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this, PlayerTwo))
-                .ToList();
-
-            PlayerTwo.PlayerCard = new HeroCard(this)
-            {
-                Owner = PlayerTwo,
-                Description = "",
-                Name = "",
-                ManaCost = 0,
-            };
-            PlayerOne.PlayerCard = new HeroCard(this)
-            {
-                Owner = PlayerOne,
-                Description = "",
-                Name = "",
-                ManaCost = 0,
-            };
-
-            _GameState();
-        }
-
-        public GameState(bool debug)
-        {
-            PlayerTwo = new BasePlayer();
-            PlayerOne = new BasePlayer();
-
-            IsP1Turn = true;
-            RNG = new Random();
-
-            PlayerTwo.Deck = DeckChoiceUI.COMBO_DECK
-                .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this, PlayerTwo))
-                .ToList();
-            PlayerOne.Deck = DeckChoiceUI.SWARM_DECK
+            PlayerOne.Deck = secondDeckcode
                 .Select(x => Cards.CardFromID(x))
                 .Select(x => x.Build(this, PlayerOne))
                 .ToList();
@@ -246,31 +162,11 @@ namespace Cards
 
         // Process a move generated either over network or locally and resolve it's events
         // This function will not perform anything if the move is invalid
-        public string ProcessMove(Move nextMove)
-        {
-            if (nextMove.Selected < NUM_RESERVED_CODES)
-            {
-                DoMove(nextMove);
-                Net?.Send(nextMove);
-                return null;
-            }
-
-            BaseCard Selected = nextMove.Selected.AsCard();
-            BaseCard Targeted = nextMove.Targeted.AsCard();
-            if (!Selected.IsPlayable(nextMove))
-            {
-                return "YOU CANNOT MAKE THAT MOVE.";
-            }
-
-            Net?.Send(nextMove);
-            DoMove(nextMove);
-            return "";
-        }
-
-        public void DoMove(Move nextMove)
+        public void ProcessMove(Move nextMove)
         {
             if (nextMove.Selected == OPP_CONCEDE)
             {
+                PlayerTwo.Health = 0;
                 return;
             }
             else if (nextMove.Selected == TURN_PASS)
@@ -280,19 +176,19 @@ namespace Cards
             }
             else if (nextMove.Selected == CARD_DRAW)
             {
-                // TODO: Force loss if deck is empty
                 ActivePlayer.ManualDrawCard();
                 return;
             }
 
             BaseCard Selected = nextMove.Selected.AsCard();
             BaseCard Targeted = nextMove.Targeted.AsCard();
+            if (IsP1Turn && !Selected.IsPlayable(nextMove))
+                return;
 
             this.LastMove = nextMove;
             Selected.Owner.Hand.Remove(Selected);
 
             Selected.Play();
-            ResolveActions();
             ResolveActions();
         }
 

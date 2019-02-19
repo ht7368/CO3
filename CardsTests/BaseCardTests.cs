@@ -14,7 +14,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void BaseCardTest()
         {
-            GameState G = new GameState(true);
+            GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             // Creates instances for testing
             var First = new MinionCard(G)
             {
@@ -38,7 +38,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void IsPlayableTest()
         {
-            GameState G = new GameState(true);
+            GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             // Create a few cards
             var First = new SpellCard(G)
             {

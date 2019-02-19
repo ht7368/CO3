@@ -14,7 +14,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void BuildTest()
         {
-            GameState G = new GameState(true);
+            GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             // For a minion
             CardBuilder MinionBuilder = new CardBuilder
             {

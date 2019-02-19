@@ -14,7 +14,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void SwitchTurnsTestMana()
         {
-            GameState Game = new GameState(true);
+            GameState Game = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             Assert.IsTrue(Game.IsP1Turn);
             Assert.AreEqual(Game.PlayerOne.Mana, 1);
 
@@ -32,7 +32,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void SwitchTurnsTest()
         {
-            GameState G = new GameState(true);
+            GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             for (int i = 0; i < 5; i++)
             {
                 BasePlayer CorrectPlayer = i % 2 == 0 ? G.PlayerOne : G.PlayerTwo;
@@ -43,7 +43,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void BroadcastEffectTest()
         {
-            GameState G = new GameState(true);
+            GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             PowerCard TestCard = new PowerCard(G)
             {
                 ManaCost = 0,

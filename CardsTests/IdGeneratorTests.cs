@@ -14,7 +14,7 @@ namespace Cards.Tests
         [TestMethod()]
         public void GetByIdTest()
         {
-            GameState G = new GameState(true);
+            GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             // Create a card and check that getting a card by its Id is the same card
             SpellCard First = new SpellCard(G)
             {
