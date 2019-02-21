@@ -23,6 +23,7 @@ namespace Cards
         public DeckUI()
         {
             InitializeComponent();
+            Text = "Build your deck!";
             FormBorderStyle = FormBorderStyle.FixedSingle;
             WindowState = FormWindowState.Normal;
         }

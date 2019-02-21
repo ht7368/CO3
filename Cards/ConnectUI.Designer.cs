@@ -68,7 +68,7 @@
             this.Controls.Add(this.textBoxIP);
             this.Controls.Add(this.labelText);
             this.Name = "ConnectUI";
-            this.Text = "ConnectUI";
+            this.Text = "Connect";
             this.ResumeLayout(false);
             this.PerformLayout();
 
