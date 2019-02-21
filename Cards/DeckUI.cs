@@ -32,6 +32,10 @@ namespace Cards
             // Initialize the directory for deck files
             if (!Directory.Exists("deckfiles"))
                 Directory.CreateDirectory("deckfiles");
+            if (!File.Exists("deckfiles/SwarmDeck.deck"))
+                File.WriteAllBytes("deckfiles/SwarmDeck.deck", SWARM_DECK);
+            if (!File.Exists("deckfiles/ComboDeck.deck"))
+                File.WriteAllBytes("deckfiles/ComboDeck.deck", COMBO_DECK);
 
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Height = 700;

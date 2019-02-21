@@ -60,6 +60,8 @@ namespace Cards
 
         private void DeckChoiceUI_Load(object sender, EventArgs e)
         {
+            if (!Directory.Exists("deckfiles"))
+                Directory.CreateDirectory("deckfiles");
             if (!File.Exists("deckfiles/SwarmDeck.deck"))
                 File.WriteAllBytes("deckfiles/SwarmDeck.deck", SWARM_DECK);
             if (!File.Exists("deckfiles/ComboDeck.deck"))

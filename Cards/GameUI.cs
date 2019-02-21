@@ -121,6 +121,17 @@ namespace Cards
 
             PlayerMana.Text = $"{Game.PlayerOne.Mana} / {Game.PlayerOne.MaxMana}\n+{(Game.PlayerOne.ManaTurn < 6 ? Game.PlayerOne.ManaTurn + 1 : 6)}";
             EnemyMana.Text = $"{Game.PlayerTwo.Mana} / {Game.PlayerTwo.MaxMana}\n+{(Game.PlayerTwo.ManaTurn < 6 ? Game.PlayerTwo.ManaTurn + 1: 6)}";
+            
+            if (Game.PlayerOne.Health <= 0)
+            {
+                MessageBox.Show(caption: "Information", text: "You lose!");
+                (Parent as GameUI).Close();
+            }
+            if (Game.PlayerTwo.Health <= 0)
+            {
+                MessageBox.Show(caption: "Information", text: "You win!");
+                (Parent as GameUI).Close();
+            }
         }
 
         // Initialise the UI by setting out ALL of the objects
@@ -388,7 +399,7 @@ namespace Cards
             {
                 Move nextMove = await Net.Recieve();
                 if (nextMove.Selected == GameState.TURN_PASS)
-                    this.Invoke((MethodInvoker)delegate
+                    this.Invoke((MethodInvoker)delegate             
                     {
                          DisplayNotification("YOUR OPPONENT PASSED - IT IS YOUR TURN");
                     });
@@ -431,16 +442,13 @@ namespace Cards
 
                 if (SelectedBox != null)
                 {
-                    if (IsHero)
-                        TargetedBox?.Invoke((MethodInvoker)delegate
-                        {
+                    TargetedBox?.Invoke((MethodInvoker)delegate
+                    {
+                        if (IsHero)
                             TargetedBox.BackgroundImage = Properties.Resources.HeroFramePlayerTargeted;
-                        });
-                    else
-                        TargetedBox?.Invoke((MethodInvoker)delegate
-                        {
+                        else
                             TargetedBox.BackgroundImage = Properties.Resources.SelectedCardBodyAlt;
-                        });
+                    });
                     SelectedBox.Invoke((MethodInvoker)delegate
                     {
                         SelectedBox.SetHide(false);
@@ -466,21 +474,11 @@ namespace Cards
                 }
 
                 Game.ProcessMove(nextMove);
+
                 this.Invoke((MethodInvoker)delegate
                 {
                     RenderState(Game);
                 });
-                
-                if (Game.PlayerOne.Health <= 0)
-                {
-                    MessageBox.Show(caption: "Information", text: "You lose!");
-                    (Parent as GameUI).Close();
-                }
-                if (Game.PlayerTwo.Health <= 0)
-                {
-                    MessageBox.Show(caption: "Information", text: "You win!");
-                    (Parent as GameUI).Close();
-                }
             }
         }
     }

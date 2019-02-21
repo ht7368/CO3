@@ -20,7 +20,6 @@ namespace Cards.Tests
             {
                 Name = "First Test",
             };
-
             var Second = new PowerCard(G)
             {
                 Name = "Second Test",

@@ -43,7 +43,7 @@ namespace Cards.Tests
         }
 
         [TestMethod()]
-        public void DefaultDeckValidationTest()
+        public void DefaultDeckValidateTest()
         {
             CardBuilder[] First = DeckChoiceUI
                 .SWARM_DECK

@@ -190,9 +190,13 @@ namespace Cards
                 BackgroundImage = Properties.Resources.SelectedCardBody;
                 return;
             }
-            // Otherwise the move is completed and processed
-            GameUI.Game.ProcessMove(new Move(GameUI.SelectedCard.Id, CardReferenced.Id));
-            GameUI.Net.Send(new Move(GameUI.SelectedCard.Id, CardReferenced.Id));
+            // Otherwise the move is completed and processe
+            Move NextMove = new Move(GameUI.SelectedCard.Id, CardReferenced.Id);
+            if (GameUI.SelectedCard.IsPlayable(NextMove))
+            {
+                GameUI.Game.ProcessMove(NextMove);
+                GameUI.Net.Send(NextMove);
+            }
             GameUI.SelectedCard = null;
             GameUI.RenderState(GameUI.Game);
         }
@@ -295,8 +299,12 @@ namespace Cards
                 GameBox Box = (Parent as GameBox);
                 if (Box.SelectedCard == null)
                     return;
-                Box.Game.ProcessMove(new Move(Box.SelectedCard.Id, card.Game.PlayerTwo.PlayerCard.Id));
-                Box.Net.Send(new Move(Box.SelectedCard.Id, card.Game.PlayerTwo.PlayerCard.Id));
+                Move NextMove = new Move(Box.SelectedCard.Id, card.Game.PlayerTwo.PlayerCard.Id);
+                if (Box.SelectedCard.IsPlayable(NextMove))
+                {
+                    Box.Game.ProcessMove(NextMove);
+                    Box.Net.Send(NextMove);
+                }
                 Box.SelectedCard = null;
                 Box.RenderState(Box.Game);
             };

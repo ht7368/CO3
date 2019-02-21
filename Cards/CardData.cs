@@ -95,29 +95,38 @@ namespace Cards
         public static bool ValidateDeck(IEnumerable<CardBuilder> cards, out string why)
         {
             // Check for too many duplicates
+            why = "";
             var Dict = new Dictionary<int, int>();
             foreach (CardBuilder c in cards)
+            {
                 if (c == null)
                 {
                     why = "One or more card slots is unassigned.";
                     return false;
                 }
-                else if (Dict.ContainsKey(c.DeckID))
+                if (Dict.ContainsKey(c.DeckID))
+                {
                     Dict[c.DeckID] += 1;
+                }
                 else
+                {
                     Dict.Add(c.DeckID, 1);
+                }
+            }
+            // Perform other checks
             foreach (var v in Dict.Values)
+            {
                 if (v > 2)
                 {
                     why = "Too many copies of one card. (maximum: 2)";
                     return false;
                 }
+            }
             if (cards.Count() != 25)
             {
                 why = "Incorrect number of cards. (must have: 25)";
                 return false;
             }
-            why = "";
             return true;
         }
     }

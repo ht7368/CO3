@@ -51,29 +51,56 @@ namespace Cards
 
             IsP1Turn = isP1turn;
 
-            PlayerTwo.Deck = firstDeckcode
-                .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this, PlayerTwo))
-                .ToList();
-            PlayerOne.Deck = secondDeckcode
-                .Select(x => Cards.CardFromID(x))
-                .Select(x => x.Build(this, PlayerOne))
-                .ToList();
-
-            PlayerOne.PlayerCard = new HeroCard(this)
+            if (isP1turn)
             {
-                Owner = PlayerOne,
-                Description = "",
-                Name = "",
-                ManaCost = 0,
-            };
-            PlayerTwo.PlayerCard = new HeroCard(this)
+                PlayerTwo.Deck = firstDeckcode
+                    .Select(x => Cards.CardFromID(x))
+                    .Select(x => x.Build(this, PlayerTwo))
+                    .ToList();
+                PlayerOne.Deck = secondDeckcode
+                    .Select(x => Cards.CardFromID(x))
+                    .Select(x => x.Build(this, PlayerOne))
+                    .ToList();
+                PlayerOne.PlayerCard = new HeroCard(this)
+                {
+                    Owner = PlayerOne,
+                    Description = "",
+                    Name = "",
+                    ManaCost = 0,
+                };
+                PlayerTwo.PlayerCard = new HeroCard(this)
+                {
+                    Owner = PlayerTwo,
+                    Description = "",
+                    Name = "",
+                    ManaCost = 0,
+                };
+            }
+            else
             {
-                Owner = PlayerTwo,
-                Description = "",
-                Name = "",
-                ManaCost = 0,
-            };
+                PlayerOne.Deck = secondDeckcode
+                    .Select(x => Cards.CardFromID(x))
+                    .Select(x => x.Build(this, PlayerOne))
+                    .ToList();
+                PlayerTwo.Deck = firstDeckcode
+                    .Select(x => Cards.CardFromID(x))
+                    .Select(x => x.Build(this, PlayerTwo))
+                    .ToList();
+                PlayerTwo.PlayerCard = new HeroCard(this)
+                {
+                    Owner = PlayerTwo,
+                    Description = "",
+                    Name = "",
+                    ManaCost = 0,
+                };
+                PlayerOne.PlayerCard = new HeroCard(this)
+                {
+                    Owner = PlayerOne,
+                    Description = "",
+                    Name = "",
+                    ManaCost = 0,
+                };
+            }
 
             _GameState();
         }
@@ -231,7 +258,7 @@ namespace Cards
             IsP1Turn = !IsP1Turn;
 
             BroadcastEffect(Effect.TurnStart);
+            ResolveActions();
         }
-
     }
 }
