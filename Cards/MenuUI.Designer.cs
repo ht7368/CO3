@@ -72,7 +72,7 @@
             this.Controls.Add(this.buttonHost);
             this.Controls.Add(this.buttonDeck);
             this.Name = "MenuUI";
-            this.Text = "Form1";
+            this.Text = "Cards v1.0";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
