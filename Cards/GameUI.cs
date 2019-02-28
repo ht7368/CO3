@@ -124,12 +124,12 @@ namespace Cards
             
             if (Game.PlayerOne.Health <= 0)
             {
-                MessageBox.Show(caption: "Information", text: "You lose!");
+                MessageBox.Show(caption: "Game over!", text: "You lose!");
                 (Parent as GameUI).Close();
             }
             if (Game.PlayerTwo.Health <= 0)
             {
-                MessageBox.Show(caption: "Information", text: "You win!");
+                MessageBox.Show(caption: "Game over!", text: "You win!");
                 (Parent as GameUI).Close();
             }
         }

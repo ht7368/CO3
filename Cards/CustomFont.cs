@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Cards
 {
-    public class CustomFont
+    public class CustomFont 
     {
         private PrivateFontCollection Fonts = new PrivateFontCollection();
 

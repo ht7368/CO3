@@ -23,13 +23,9 @@ namespace Cards
         //public abstract Move NextMove();
         //public abstract bool HasNextMove();
 
-        public BasePlayer()
-        {
-        }
-
         public void ManualDrawCard()
         {
-            if (!HasNotDrawn || Mana == 0 || Hand.Count >= 10)
+            if (!HasNotDrawn || Mana == 0)
                 return;
             HasNotDrawn = false;
             Mana -= 1;
@@ -44,7 +40,7 @@ namespace Cards
             }
             else
             {
-                if (Hand.Count < 15)
+                if (Hand.Count < 10)
                     Hand.Add(Deck[0]);
                 Deck.RemoveAt(0);
             }

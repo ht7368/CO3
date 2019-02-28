@@ -32,11 +32,17 @@ namespace Cards
 
         private void buttonHost_Click(object sender, EventArgs e)
         {
-            var LocalIP = Dns.GetHostEntry(Dns.GetHostName())
-                .AddressList
-                .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork)
-                .Aggregate("", (acc, x) => $"{acc}\n{x}");
-
+            string LocalIP = "\nCould not find your IP.\nTell the client to connect to your PC's local or public IP.";
+            try
+            {
+                LocalIP = Dns.GetHostEntry(Dns.GetHostName())
+                                .AddressList
+                                .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork)
+                                .Aggregate("", (acc, x) => $"{acc}\n{x}");
+            } catch
+            {
+                // Do nothing
+            }
             MessageBox.Show(caption: "Information", text: $"Connect to: {LocalIP}");
 
             var Game = new GameUI();

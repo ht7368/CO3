@@ -572,8 +572,8 @@ namespace Cards
             new CardBuilder()
             {
                 DeckID = 31,
-                TypeID = CardBuilder.CardType.Spell, 
-                
+                TypeID = CardBuilder.CardType.Spell,
+
                 ManaCostData = 5,
                 NameData = "INTELLECT",
                 DescriptionData = "DRAW 3 CARDS",
@@ -590,7 +590,7 @@ namespace Cards
             {
                 DeckID = 32,
                 TypeID = CardBuilder.CardType.Spell,
-                
+
                 ManaCostData = 3,
                 NameData = "ASSAULT",
                 DescriptionData = "DEAL 7 DAMAGE TO ENEMY'S HERO",
