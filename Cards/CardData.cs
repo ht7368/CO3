@@ -9,6 +9,7 @@ namespace Cards
 {
     public class CardBuilder
     {
+        // See below
         public enum CardType
         {
             Minion,
@@ -25,9 +26,12 @@ namespace Cards
         public string DescriptionData;
         public System.Drawing.Image ArtData;
 
+        // Nullable - these are only relevant for minions and are otherwise null
         public int? AttackData;
         public int? HealthData;
         public bool? TargetedData;
+        // These are specific effects that are only used for certain types of cards
+        // Expect them to be null otherwise
         public EffectData<MinionCard> MinionEffectData;
         public EffectData<PowerCard> PowerEffectData;
         public Action<GameState, Move> MinionOnPlayData;
@@ -35,7 +39,10 @@ namespace Cards
 
         public BaseCard Build(GameState g, BasePlayer owner) 
         {
+            // Used to fill in when left blank in the builder
             Action<GameState, Move> EmptyFunc = (_g, _s) => { return; };
+            // Every class has different properties set
+            // We switch on TypeID to determine this
             if (TypeID == CardType.Minion)
                 return new MinionCard(g)
                 {
@@ -95,7 +102,11 @@ namespace Cards
         public static bool ValidateDeck(IEnumerable<CardBuilder> cards, out string why)
         {
             // Check for too many duplicates
+            // "why" out parameter used to give a reason the deck is invalid
+            // Has to be set before returning from the function
             why = "";
+            // Checking no cards are duplicate by associating each ID with a count
+            // Also check for null cards
             var Dict = new Dictionary<int, int>();
             foreach (CardBuilder c in cards)
             {
@@ -113,7 +124,7 @@ namespace Cards
                     Dict.Add(c.DeckID, 1);
                 }
             }
-            // Perform other checks
+            // Perform other checks - correct no. total cards
             foreach (var v in Dict.Values)
             {
                 if (v > 2)

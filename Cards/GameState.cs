@@ -51,6 +51,13 @@ namespace Cards
 
             IsP1Turn = isP1turn;
 
+            // Important: 
+            // If any desynchronisations occur, the game will not be properly playable
+            // It is important that each card has the same ID for each user,
+            // Which means they ought to appear in the same order
+            // HOWEVER, by default this will not be the case,
+            // as PlayerOne will refer to different players for each user
+            // So we change the initialization order 
             if (isP1turn)
             {
                 PlayerTwo.Deck = firstDeckcode

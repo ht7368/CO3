@@ -49,7 +49,8 @@ namespace Cards
 
         public async Task<Move> Recieve()
         {
-            byte[] Buf = new byte[8]; // 4 bytes per uint, 2 uints
+            // 4 bytes per uint, 2 uints
+            byte[] Buf = new byte[8]; 
             await Stream.ReadAsync(Buf, 0, Buf.Length);
 
             uint Selected = BitConverter.ToUInt32(Buf, 0);

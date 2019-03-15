@@ -8,7 +8,7 @@ namespace Cards
 {
     static class Extensions
     {
-        // Implementation of fisher-yates algorithm
+        // Implementation of fisher-yates shuffle algorithm
         // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
         public static void Shuffle<T>(this Random rng, List<T> data)
         {

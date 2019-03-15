@@ -34,6 +34,7 @@ namespace Cards
 
             CardArt = new PictureBox()
             {
+                // Determined by measuring ratios on a standard screen size
                 Size = new Size(74, 74),
                 Location = new Point(13, 13),
             };

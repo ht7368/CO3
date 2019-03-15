@@ -15,6 +15,9 @@ namespace Cards
     {
         public byte[] Deckcode;
 
+        // Default decks as byte values
+        // TODO: Move into the resources folder?
+
         public static byte[] SWARM_DECK = new byte[]
         {
              22, 22, 21, 21, 16, 16, 18, 18, 17, 17, 11, 11, 19, 19, 24, 24, 10, 10, 20, 20, 29, 31, 14, 14, 6
@@ -58,6 +61,8 @@ namespace Cards
             Close();
         }
 
+        // To create the default decks in the deckfiles directory before choosing
+        // So that they are not invalid - not found
         private void DeckChoiceUI_Load(object sender, EventArgs e)
         {
             if (!Directory.Exists("deckfiles"))

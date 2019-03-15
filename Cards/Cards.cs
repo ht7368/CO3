@@ -121,11 +121,10 @@ namespace Cards
 
         public override void Play()
         {
+            // CardPlayed procs before the card effect 
             Game.BroadcastEffect(Effect.CardPlayed);
             Game.CurrentPower = this;
             Game.ActivePlayer.Mana -= this.ManaCost;
-            if (Game.ActivePlayer.Mana < 0)
-                Game.ActivePlayer.Mana = 0;
         }
 
         public override bool IsPlayable(Move potentialMove)

@@ -8,6 +8,8 @@ namespace Cards
 {
     public static partial class Cards
     {
+        // Very large list of card collection data
+        // Most follows a common format, but some functions will be explaiened
         public static List<CardBuilder> Collection = new List<CardBuilder>()
         {
             new CardBuilder()
@@ -31,10 +33,11 @@ namespace Cards
                 ManaCostData = 2,
                 AttackData = 2,
                 HealthData = 2,
-                DescriptionData = "+3/+3 FOR EACH 'BOAR' ON BOARD",
+                DescriptionData = "+3/+3 FOR EACH 'BOAR' ON YOUR BOARD",
                 ArtData = Properties.Resources.Runt,
                 MinionOnPlayData = (s, m) =>
                 {
+                    // Iterating through only friendly BOARd
                     foreach (MinionCard minion in s.ActivePlayer.Board)
                         if (minion.Name == "BOAR")
                         {
@@ -216,6 +219,7 @@ namespace Cards
                 ArtData = Properties.Resources.ScrollWeak,
                 SpellEffectData = (s, m) =>
                 {
+                    // Switch: Either of these targets need different code
                     switch (m.Targeted.AsCard())
                     {
                         case MinionCard minion:
@@ -328,6 +332,9 @@ namespace Cards
                 ArtData = Properties.Resources.InsectSingle,
                 MinionOnPlayData = (s, m) =>
                 {
+                    // Important:
+                    // Summoning these requires that they are set to be on board
+                    // They can be added to the board directly with this
                     var Owner = m.Selected.AsCardT<MinionCard>().Owner;
                     Owner.Board.Add(CardFromID(18).Build(s, Owner) as MinionCard);
                     Owner.Board[Owner.Board.Count - 1].OnBoard = true;
@@ -554,6 +561,7 @@ namespace Cards
                 ArtData = Properties.Resources.Eclipse,
                 PowerEffectData = new EffectData<PowerCard>()
                 {{
+                        // Demonstrates that cards can use RNG  
                         Effect.TurnEnd, (s, c) =>
                         {
                             if (s.RNG.Next(0, 2) == 1)
