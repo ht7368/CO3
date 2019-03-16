@@ -12,7 +12,7 @@ namespace Cards.Tests
     public class MinionCardTests
     {
         [TestMethod()]
-        public void PlayTest()
+        public void MinionPlayTest()
         {
             GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
             G.CurrentPower = new PowerCard(G);
@@ -44,6 +44,22 @@ namespace Cards.Tests
             Assert.AreEqual(First.Health, 2);
             Assert.AreEqual(Second.Attack, 2);
             Assert.AreEqual(Second.Health, 4);
+        }
+
+        [TestMethod()]
+        public void MinionEffectTest()
+        {
+            GameState G = new GameState(DeckChoiceUI.COMBO_DECK, DeckChoiceUI.COMBO_DECK, true, 0);
+
+            // Test: Can place a minion on board
+            G.PlayerOne.Mana = 10;
+            MinionCard NewCard = Cards.CardFromID(18).Build(G, G.PlayerOne) as MinionCard;
+            G.PlayerOne.Hand.Add(NewCard);
+            G.ProcessMove(new Move(NewCard.Id, 0));
+            Assert.IsTrue(NewCard.OnBoard);
+
+            // Test: Ensure "Insect Swarm" played was correct
+            Assert.IsTrue(G.PlayerOne.Board.Count == 3);
         }
     }
 }

@@ -58,13 +58,16 @@
   </Choose>
   <ItemGroup>
     <Compile Include="BaseCardTests.cs" />
+    <Compile Include="BasePlayerTests.cs" />
     <Compile Include="CardBuilderTests.cs" />
     <Compile Include="CardsTests.cs" />
     <Compile Include="GameStateTests.cs" />
     <Compile Include="IdGeneratorTests.cs" />
     <Compile Include="MinionCardTests.cs" />
     <Compile Include="MoveTests.cs" />
+    <Compile Include="PowerCardTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SpellCardTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
