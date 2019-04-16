@@ -60,11 +60,11 @@ namespace Cards
             // So we change the initialization order 
             if (isP1turn)
             {
-                PlayerTwo.Deck = firstDeckcode
+                PlayerTwo.Deck = secondDeckcode
                     .Select(x => Cards.CardFromID(x))
                     .Select(x => x.Build(this, PlayerTwo))
                     .ToList();
-                PlayerOne.Deck = secondDeckcode
+                PlayerOne.Deck = firstDeckcode
                     .Select(x => Cards.CardFromID(x))
                     .Select(x => x.Build(this, PlayerOne))
                     .ToList();
@@ -85,11 +85,11 @@ namespace Cards
             }
             else
             {
-                PlayerOne.Deck = secondDeckcode
+                PlayerOne.Deck = firstDeckcode
                     .Select(x => Cards.CardFromID(x))
                     .Select(x => x.Build(this, PlayerOne))
                     .ToList();
-                PlayerTwo.Deck = firstDeckcode
+                PlayerTwo.Deck = secondDeckcode
                     .Select(x => Cards.CardFromID(x))
                     .Select(x => x.Build(this, PlayerTwo))
                     .ToList();
